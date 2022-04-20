@@ -98,7 +98,7 @@
   [opts]
   (let [{:as opts :exo.project/keys [lib target-dir jar-file deploy-repository]} (jar opts)]
     (dd/deploy {:artifact jar-file
-                :pom-file (format "%s/classes/META-INF/maven/exoscale/%s/pom.xml"
+                :pom-file (format "%s/classes/META-INF/maven/%s/pom.xml"
                                   target-dir
                                   lib)
                 :repository {"releases" deploy-repository}
