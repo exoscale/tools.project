@@ -5,6 +5,7 @@
 
 (def default-opts
   #:exo.project{:exo.deps-version/key :patch
+                :deploy-repository {:url "s3p://exo-artifacts/releases"}
                 :target-dir "target"
                 :class-dir "target/classes"
                 :javac-opts ["-source" "11" "-target" "11"]
@@ -59,3 +60,10 @@
   (-> opts
       into-opts
       api/install))
+
+(defn deploy
+  [opts]
+  (-> opts
+      into-opts
+      api/deploy))
+

@@ -1,7 +1,8 @@
 (ns exoscale.tools.project.api
   (:refer-clojure :exclude [compile])
   (:require [clojure.tools.build.api :as b]
-            [clojure.tools.cli.api :as td]))
+            [clojure.tools.cli.api :as td]
+            [deps-deploy.deps-deploy :as dd]))
 
 (defn create-basis
   ([deps-file]
@@ -91,4 +92,16 @@
   [opts]
   (let [opts (jar opts)]
     (td/mvn-install {:jar (:exo.project/jar-file opts)})
+    opts))
+
+(defn deploy
+  [opts]
+  (let [{:as opts :exo.project/keys [lib target-dir jar-file deploy-repository]} (jar opts)]
+    (dd/deploy {:artifact jar-file
+                :pom-file (format "%s/classes/META-INF/maven/exoscale/%s/pom.xml"
+                                  target-dir
+                                  lib)
+                :repository {"releases" deploy-repository}
+                :installer :remote
+                :sign-releases? false})
     opts))
