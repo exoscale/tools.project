@@ -90,5 +90,5 @@
 (defn install
   [opts]
   (let [opts (jar opts)]
-    (td/mvn-install {:jar (:jar-file opts)})
+    (td/mvn-install {:jar (:exo.project/jar-file opts)})
     opts))
