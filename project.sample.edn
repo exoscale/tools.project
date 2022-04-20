@@ -1,0 +1,15 @@
+#:exo.project{:lib exoscale/my-lib
+              :version "0.1.0-SNAPSHOT"
+              :version-file "VERSION" ;; specify one or the other
+              :jar-file "target/yolo.jar"
+              :uberjar-file "target/yolo-uber.jar"
+              :main foo.bar.main
+
+              ;; set as defaults already
+              :deploy-repository {:url "s3p://exo-artifacts/releases"}
+              :target-dir "target"
+              :class-dir "target/classes"
+              :javac-opts ["-source" "11" "-target" "11"]
+              :src-dirs ["src" "resources"]
+              :java-src-dirs ["java"]
+              :deps-file "deps.edn"}

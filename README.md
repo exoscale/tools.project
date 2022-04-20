@@ -36,3 +36,5 @@ Commands merely forward to api calls. API calls also return an upated context, s
 
 TODO
 
+see [project.sample.edn](project.sample.edn)
+
