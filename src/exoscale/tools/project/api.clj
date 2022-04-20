@@ -1,6 +1,7 @@
 (ns exoscale.tools.project.api
   (:refer-clojure :exclude [compile])
-  (:require [clojure.tools.build.api :as b]))
+  (:require [clojure.tools.build.api :as b]
+            [clojure.tools.cli.api :as td]))
 
 (defn create-basis
   ([deps-file]
@@ -55,8 +56,11 @@
                    :target-dir class-dir})
       (println "Creating jar:" jar-file)
       (b/jar {:class-dir class-dir
-              :jar-file jar-file}))
-    opts))
+              :jar-file jar-file})
+      (into opts
+            #:exo.project{:basis basis
+                          :version version
+                          :jar-file :jar-file}))))
 
 (defn uberjar
   [opts]
@@ -78,4 +82,13 @@
              :class-dir class-dir
              :main main
              :uber-file uber-file})
+    (into opts
+          #:exo.project{:basis basis
+                        :version version
+                        :uberjar-file :uberjar-file})))
+
+(defn install
+  [opts]
+  (let [opts (jar opts)]
+    (td/mvn-install {:jar (:jar-file opts)})
     opts))

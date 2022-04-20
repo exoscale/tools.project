@@ -53,3 +53,9 @@
   (-> opts
       into-opts
       api/uberjar))
+
+(defn install
+  [opts]
+  (-> opts
+      into-opts
+      api/install))
