@@ -21,8 +21,18 @@
   [_ _ file]
   (slurp file))
 
+(defn- qualify-keys
+  [opts]
+  (update-keys (fn [k]
+                 (cond->> k
+                   (simple-keyword? k)
+                   (keyword "exo.project")))
+               opts))
+
 (defn into-opts [opts]
-  (merge default-opts  (read-project) opts))
+  (merge default-opts
+         (read-project)
+         (qualify-keys opts)))
 
 (defn clean [opts]
   (-> opts into-opts api/clean))
