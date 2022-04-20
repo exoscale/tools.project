@@ -23,11 +23,11 @@
 
 (defn- qualify-keys
   [opts]
-  (update-keys (fn [k]
-                 (cond->> k
-                   (simple-keyword? k)
-                   (keyword "exo.project")))
-               opts))
+  (update-keys opts
+               (fn [k]
+                 (if (simple-ident? k)
+                   (keyword "exo.project" (name k))
+                   k))))
 
 (defn into-opts [opts]
   (merge default-opts
