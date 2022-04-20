@@ -60,7 +60,7 @@
       (into opts
             #:exo.project{:basis basis
                           :version version
-                          :jar-file :jar-file}))))
+                          :jar-file jar-file}))))
 
 (defn uberjar
   [opts]
@@ -85,7 +85,7 @@
     (into opts
           #:exo.project{:basis basis
                         :version version
-                        :uberjar-file :uberjar-file})))
+                        :uberjar-file uber-file})))
 
 (defn install
   [opts]
