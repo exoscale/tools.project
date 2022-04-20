@@ -25,7 +25,7 @@
       (some-> version-file slurp)))
 
 (defn clean [opts]
-  (let [{:as opts :keys [target-dir]} opts]
+  (let [{:as opts :exo.project/keys [target-dir]} opts]
     (b/delete {:path target-dir})
     opts))
 
