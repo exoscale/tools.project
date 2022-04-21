@@ -8,7 +8,7 @@
 (def default-opts
   #:exo.project{:exo.deps-version/key :patch
                 :slipset.deps-deploy/exec-args
-                {:repository {"releases" {:url "s3p://exo-artifacts/releases"}}
+                {:repository {"private" {:url "s3p://exo-artifacts/releases"}}
                  :installer :remote
                  :sign-releases? false}
                 :target-dir "target"
