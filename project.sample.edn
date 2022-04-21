@@ -12,4 +12,7 @@
               :javac-opts ["-source" "11" "-target" "11"]
               :src-dirs ["src" "resources"]
               :java-src-dirs ["java"]
-              :deps-file "deps.edn"}
+              :deps-file "deps.edn"
+
+              ;; see https://github.com/slipset/deps-deploy#usage exec-args
+              :slipset.deps-deploy/exec-args {}}

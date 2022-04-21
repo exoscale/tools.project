@@ -4,7 +4,8 @@
         com.exoscale/deps-version {:git/sha "c9e66488984909ac3314096b007d72e570382c43"
                                    :git/url "https://github.com/exoscale/deps-version"}
         slipset/deps-deploy {:mvn/version "0.2.0"}
-        aero/aero {:mvn/version "1.1.6"}}
+        aero/aero {:mvn/version "1.1.6"}
+        com.exoscale/lingo {:mvn/version "1.0.0-alpha18"}}
 
  :tools/usage
  {:ns-default exoscale.tools.project}}

@@ -96,12 +96,12 @@
 
 (defn deploy
   [opts]
-  (let [{:as opts :exo.project/keys [lib target-dir jar-file deploy-repository]} (jar opts)]
-    (dd/deploy {:artifact jar-file
-                :pom-file (format "%s/classes/META-INF/maven/%s/pom.xml"
-                                  target-dir
-                                  lib)
-                :repository {"releases" deploy-repository}
-                :installer :remote
-                :sign-releases? false})
+  (let [{:as opts
+         :exo.project/keys [lib target-dir jar-file]
+         :slipset.deps-deploy/keys [exec-args]} (jar opts)]
+    (dd/deploy (into {:artifact jar-file
+                      :pom-file (format "%s/classes/META-INF/maven/%s/pom.xml"
+                                        target-dir
+                                        lib)}
+                     exec-args))
     opts))
