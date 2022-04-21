@@ -1,11 +1,11 @@
 #:exo.project{:lib exoscale/my-lib
               :version "0.1.0-SNAPSHOT"
-              :version-file "VERSION" ;; specify one or the other
+              :version-file "VERSION" ; you can specify either :version or :version-file
               :jar-file "target/yolo.jar"
               :uberjar-file "target/yolo-uber.jar"
               :main foo.bar.main
 
-              ;; set as defaults already
+              ;;; the following are set as defaults already
               :deploy-repository {:url "s3p://exo-artifacts/releases"}
               :target-dir "target"
               :class-dir "target/classes"
@@ -13,6 +13,8 @@
               :src-dirs ["src" "resources"]
               :java-src-dirs ["java"]
               :deps-file "deps.edn"
-
               ;; see https://github.com/slipset/deps-deploy#usage exec-args
-              :slipset.deps-deploy/exec-args {}}
+              :slipset.deps-deploy/exec-args
+              {:repository {"releases" {:url "s3p://exo-artifacts/releases"}}
+               :installer :remote
+               :sign-releases? false}}
