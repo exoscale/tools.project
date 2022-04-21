@@ -94,6 +94,7 @@
     (td/mvn-install {:jar (:exo.project/jar-file opts)})
     opts))
 
+;; temporary until we have something more official, hence why its keys are ns'ed
 (defn deploy
   [opts]
   (let [{:as opts
