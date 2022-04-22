@@ -6,7 +6,6 @@
               :main foo.bar.main
 
               ;;; the following are set as defaults already
-              :deploy-repository {:url "s3p://exo-artifacts/releases"}
               :target-dir "target"
               :class-dir "target/classes"
               :javac-opts ["-source" "11" "-target" "11"]
