@@ -52,3 +52,24 @@ see [project.sample.edn](project.sample.edn)
 It's loaded as an aero file. All keys are static, it's purely declarative, this
 library will make no attempt to modify its contents. You are expected to
 namespace keys, if you don't they'll be assumed to be part of `:exoscale.project/*`
+
+## clj-new template 
+
+TODO
+
+## UX Suggestion 
+
+We suggest you add the following aliases to your bash profile, all these plugins
+should be available from any module.
+
+``` bash
+## common exoscsale tools deps aliases
+alias clj-test/repl='clj -A:test'
+alias clj-test/unit='clj -X:test:test/unit'
+alias clj-test/integration='clj -X:test:test/integration'
+alias clj-test/all='clj -X:test:test/all'
+alias clj-merge-deps='clj -T:deps-modules exoscale.deps-modules/merge-deps'
+alias clj-fmt/lint='clj -M:cljfmt check'
+alias clj-fmt/format='clj -M:cljfmt fix'
+alias clj-antq='clj -M:antq outdated'
+```
