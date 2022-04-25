@@ -51,4 +51,4 @@ see [project.sample.edn](project.sample.edn)
 
 It's loaded as an aero file. All keys are static, it's purely declarative, this
 library will make no attempt to modify its contents. You are expected to
-namespace keys, if you don't they'll be assumed to be part of `:exo.project/*`
+namespace keys, if you don't they'll be assumed to be part of `:exoscale.project/*`

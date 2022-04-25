@@ -6,36 +6,37 @@
             [exoscale.lingo :as l]))
 
 (def default-opts
-  #:exo.project{:exo.deps-version/key :patch
-                :slipset.deps-deploy/exec-args
-                {:repository {"releases" {:url "s3p://exo-artifacts/releases"}}
-                 :installer :remote
-                 :sign-releases? false}
-                :target-dir "target"
-                :class-dir "target/classes"
-                :javac-opts ["-source" "11" "-target" "11"]
-                :src-dirs ["src" "resources"]
-                :java-src-dirs ["java"]
-                :deps-file "deps.edn"})
+  #:exoscale.project{:exoscale.deps-version/key :patch
+                     :slipset.deps-deploy/exec-args
+                     {:repository {"releases" {:url "s3p://exo-artifacts/releases"}}
+                      :installer :remote
+                      :sign-releases? false}
+                     :target-dir "target"
+                     :class-dir "target/classes"
+                     :javac-opts ["-source" "11" "-target" "11"]
+                     :src-dirs ["src" "resources"]
+                     :java-src-dirs ["java"]
+                     :deps-file "deps.edn"})
 
-(s/def :exo.project/lib qualified-ident?)
-(s/def :exo.project/version string?)
-(s/def :exo.project/target-dir string?)
-(s/def :exo.project/class-dir string?)
-(s/def :exo.project/javac-opts (s/coll-of string?))
-(s/def :exo.project/src-dirs (s/coll-of string?))
-(s/def :exo.project/java-src-dirs (s/coll-of string?))
-(s/def :exo.project/deps-file string?)
+(s/def :exoscale.project/lib qualified-ident?)
+(s/def :exoscale.project/version string?)
+(s/def :exoscale.project/target-dir string?)
+(s/def :exoscale.project/class-dir string?)
+(s/def :exoscale.project/javac-opts (s/coll-of string?))
+(s/def :exoscale.project/src-dirs (s/coll-of string?))
+(s/def :exoscale.project/java-src-dirs (s/coll-of string?))
+(s/def :exoscale.project/deps-file string?)
 
-(s/def :exo.project/opts
-  (s/keys :req [:exo.project/lib]
-          :opt [:exo.project/version
-                :exo.project/target-dir
-                :exo.project/class-dir
-                :exo.project/javac-opts
-                :exo.project/src-dirs
-                :exo.project/java-src-dirs
-                :exo.project/deps-file]))
+(s/def :exoscale.project/opts
+  (s/keys :req [(or :exoscale.project/lib
+                    :exoscale.project/modules)]
+          :opt [:exoscale.project/version
+                :exoscale.project/target-dir
+                :exoscale.project/class-dir
+                :exoscale.project/javac-opts
+                :exoscale.project/src-dirs
+                :exoscale.project/java-src-dirs
+                :exoscale.project/deps-file]))
 
 (defn read-project
   []
@@ -51,16 +52,16 @@
   (update-keys opts
                (fn [k]
                  (if (simple-ident? k)
-                   (keyword "exo.project" (name k))
+                   (keyword "exoscale.project" (name k))
                    k))))
 
 (defn into-opts [opts]
   (let [opts (merge default-opts
                     (read-project)
                     (qualify-keys opts))]
-    (when-not (s/valid? :exo.project/opts opts)
-      (prn "Invalid exo.project configuration")
-      (l/explain :exo.project/opts opts)
+    (when-not (s/valid? :exoscale.project/opts opts)
+      (prn "Invalid exoscale.project configuration")
+      (l/explain :exoscale.project/opts opts)
       (System/exit 1))
     opts))
 

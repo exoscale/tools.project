@@ -22,25 +22,25 @@
    (format "%s/%s-%s-standalone.jar" path lib version)))
 
 (defn get-version
-  [{:as _opts :exo.project/keys [version-file version]}]
+  [{:as _opts :exoscale.project/keys [version-file version]}]
   (or version
       (some-> version-file slurp)))
 
 (defn clean [opts]
-  (let [{:as opts :exo.project/keys [target-dir]} opts]
+  (let [{:as opts :exoscale.project/keys [target-dir]} opts]
     (b/delete {:path target-dir})
     opts))
 
 (defn compile [opts]
   (let [{:as opts
-         :exo.project/keys [basis class-dir java-src-dirs]} opts]
+         :exoscale.project/keys [basis class-dir java-src-dirs]} opts]
     (b/javac {:basis basis
               :class-dir class-dir
               :src-dirs java-src-dirs})
     opts))
 
 (defn jar [opts]
-  (let [{:exo.project/keys [_env lib _version _version-file class-dir src-dirs basis jar-file deps-file]
+  (let [{:exoscale.project/keys [_env lib _version _version-file class-dir src-dirs basis jar-file deps-file]
          :as opts} opts]
     (clean opts)
     (let [version (get-version opts)
@@ -59,13 +59,13 @@
       (b/jar {:class-dir class-dir
               :jar-file jar-file})
       (into opts
-            #:exo.project{:basis basis
-                          :version version
-                          :jar-file jar-file}))))
+            #:exoscale.project{:basis basis
+                               :version version
+                               :jar-file jar-file}))))
 
 (defn uberjar
   [opts]
-  (let [{:exo.project/keys [_env lib _version _version-file main src-dirs class-dir basis uberjar-file deps-file]
+  (let [{:exoscale.project/keys [_env lib _version _version-file main src-dirs class-dir basis uberjar-file deps-file]
          :as opts} opts
         _ (clean opts)
         version (get-version opts)
@@ -84,21 +84,21 @@
              :main main
              :uber-file uber-file})
     (into opts
-          #:exo.project{:basis basis
-                        :version version
-                        :uberjar-file uber-file})))
+          #:exoscale.project{:basis basis
+                             :version version
+                             :uberjar-file uber-file})))
 
 (defn install
   [opts]
   (let [opts (jar opts)]
-    (td/mvn-install {:jar (:exo.project/jar-file opts)})
+    (td/mvn-install {:jar (:exoscale.project/jar-file opts)})
     opts))
 
 ;; temporary until we have something more official, hence why its keys are ns'ed
 (defn deploy
   [opts]
   (let [{:as opts
-         :exo.project/keys [lib target-dir jar-file]
+         :exoscale.project/keys [lib target-dir jar-file]
          :slipset.deps-deploy/keys [exec-args]} (jar opts)]
     (dd/deploy (into {:artifact jar-file
                       :pom-file (format "%s/classes/META-INF/maven/%s/pom.xml"
