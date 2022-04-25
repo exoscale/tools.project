@@ -4,6 +4,7 @@
         com.exoscale/deps-version {:git/sha "c9e66488984909ac3314096b007d72e570382c43"
                                    :git/url "https://github.com/exoscale/deps-version"}
         slipset/deps-deploy {:mvn/version "0.2.0" :exclusions [s3-wagon-private/s3-wagon-private]}
+        com.github.liquidz/antq {:mvn/version "RELEASE"}
         exoscale/sos-wagon-private {:mvn/version "1.3.2-exoscale11"}
         aero/aero {:mvn/version "1.1.6"}
         com.exoscale/lingo {:mvn/version "1.0.0-alpha18"}}
