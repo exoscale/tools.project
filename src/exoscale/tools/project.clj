@@ -28,8 +28,7 @@
 (s/def :exoscale.project/deps-file string?)
 
 (s/def :exoscale.project/opts
-  (s/keys :req [(or :exoscale.project/lib
-                    :exoscale.project/modules)]
+  (s/keys :req [:exoscale.project/lib]
           :opt [:exoscale.project/version
                 :exoscale.project/target-dir
                 :exoscale.project/class-dir
