@@ -42,7 +42,11 @@
                 :exoscale.project/deps-file]))
 
 (defn read-project
-  [{:as _opts :exoscale.project/keys [file keypath]}]
+  [{:as opts :exoscale.project/keys [file keypath]}]
+  (prn "reading project from " (-> opts
+                                   :exoscale.project/file
+                                   io/file
+                                   .getCanonicalPath))
   (try (some-> file
                slurp
                edn/read-string
@@ -65,7 +69,9 @@
 
 (defn into-opts [opts]
   (let [opts (qualify-keys opts)
-        opts (-> (merge default-opts (read-project opts))
+        opts (-> (merge default-opts
+                        (read-project opts)
+                        opts)
                  assoc-version)]
     (when-not (s/valid? :exoscale.project/opts opts)
       (let [msg (format "Invalid exoscale.project configuration in %s"
