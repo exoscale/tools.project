@@ -3,6 +3,7 @@
   (:require [exoscale.tools.project.api :as api]
             [clojure.spec.alpha :as s]
             [clojure.edn :as edn]
+            [clojure.java.io :as io]
             [exoscale.lingo :as l]))
 
 (def default-opts
@@ -69,9 +70,15 @@
                         (qualify-keys opts))
                  assoc-version)]
     (when-not (s/valid? :exoscale.project/opts opts)
-      (prn "Invalid exoscale.project configuration")
-      (l/explain :exoscale.project/opts opts)
-      (System/exit 1))
+      (let [msg (format "Invalid exoscale.project configuration in %s"
+                        (some-> (-> opts
+                                    :exoscale.project/file
+                                    io/file
+                                    .getCanonicalPath)))]
+        (print msg)
+        (l/explain :exoscale.project/opts opts {:colors? true})
+        (flush)
+        (System/exit 1)))
     opts))
 
 (defn clean [opts]
