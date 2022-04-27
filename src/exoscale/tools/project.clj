@@ -65,9 +65,7 @@
 
 (defn into-opts [opts]
   (let [opts (qualify-keys opts)
-        opts (-> (merge default-opts
-                        (read-project opts)
-                        (qualify-keys opts))
+        opts (-> (merge default-opts (read-project opts))
                  assoc-version)]
     (when-not (s/valid? :exoscale.project/opts opts)
       (let [msg (format "Invalid exoscale.project configuration in %s"
