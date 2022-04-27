@@ -1,0 +1,8 @@
+{:linters
+ {:clojure-lsp/unused-public-var {:exclude [exoscale.tools.project/compile
+                                            exoscale.tools.project/clean
+                                            exoscale.tools.project/install
+                                            exoscale.tools.project/uberjar
+                                            exoscale.tools.project/jar
+                                            exoscale.tools.project/deploy]}}
+ :skip-comments true}

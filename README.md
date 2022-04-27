@@ -62,9 +62,7 @@ useful for chaining commands in an efficient way.
 see [project.sample.edn](project.sample.edn)
 
 All keys are static, it's purely declarative, this library will make no attempt
-to modify its contents. You are expected to namespace keys, you can avoid using
-namespaces when passing args via the command line, in which case they are
-assumed to be under `:exoscale.project/*.
+to modify its contents.
 
 ## clj-new template 
 
