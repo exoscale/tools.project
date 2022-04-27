@@ -9,15 +9,28 @@ etc...
 All commands are chainable. They take a context map an return a potentially
 updated one.
 
-It's possible to also provide a project.edn (aero) file for a project that will
-be used as a base for context for the commands mentioned before.  We merge the
-default options with the read project contents and lastly with potential
-arguments passed to the commands.
-
 Most commands use built'ins from clojure/tools.deps and clojure/tools.build. The
 only exception is `deploy` which uses slipset/deps-deploy (for now).  When
 tools.deploy lands it will replace it. For that reason the context key for the
 deploy tasks is now under `:slipset.deps-deploy/exec-args`.
+
+You can add preset project keys in a edn file that will be loaded for every
+project command. By default we assume you're doing that in `deps.edn` but you
+can specify an `:exoscale.project/file` at invocation time if you want to
+separate them (ex in a `project.edn` file alongside of `deps.edn`). You can also
+specify an :exoscale.project/keypath with the location in the loaded edn
+file. It defaults to root.
+
+A typical deps.edn file could look like this:
+``` clj
+{:exoscale.project/lib exoscale/foo-orchestator
+ :exoscale.project/version "1.0.0-SNAPSHOT"
+ 
+ :deps { ... }
+ :aliases { ... }
+ :paths [ ... ]
+ :mvn/repos { ... }}
+```
 
 ## Installation
 
@@ -44,14 +57,14 @@ Or use the api directly via `exoscale.tools.project.api`.  Commands merely
 forward to api calls. API calls also return an upated context, so that can be
 useful for chaining commands in an efficient way.
 
-
-## project.edn
+## deps.edn/project.edn
 
 see [project.sample.edn](project.sample.edn)
 
-It's loaded as an aero file. All keys are static, it's purely declarative, this
-library will make no attempt to modify its contents. You are expected to
-namespace keys, if you don't they'll be assumed to be part of `:exoscale.project/*`
+All keys are static, it's purely declarative, this library will make no attempt
+to modify its contents. You are expected to namespace keys, you can avoid using
+namespaces when passing args via the command line, in which case they are
+assumed to be under `:exoscale.project/*.
 
 ## clj-new template 
 
