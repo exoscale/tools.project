@@ -75,7 +75,7 @@
                                     :exoscale.project/file
                                     io/file
                                     .getCanonicalPath)))]
-        (print msg)
+        (println msg)
         (l/explain :exoscale.project/opts opts {:colors? true})
         (flush)
         (System/exit 1)))
