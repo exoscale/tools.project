@@ -72,6 +72,10 @@
           (System/exit 1))))
     opts))
 
+(defn help [opts]
+  (println "hello")
+  opts)
+
 (defn clean [opts]
   (-> opts into-opts api/clean))
 
