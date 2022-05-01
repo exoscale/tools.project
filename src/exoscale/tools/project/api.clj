@@ -1,6 +1,7 @@
 (ns exoscale.tools.project.api
   (:refer-clojure :exclude [compile])
   (:require [clojure.tools.build.api :as b]
+            [clojure.pprint :as pp]
             [clojure.tools.cli.api :as td]
             [deps-deploy.deps-deploy :as dd]))
 
@@ -25,6 +26,10 @@
   [{:as _opts :exoscale.project/keys [version-file version]}]
   (or version
       (some-> version-file slurp)))
+
+(defn describe
+  [opts]
+  (pp/pprint opts))
 
 (defn clean [opts]
   (let [{:as opts :exoscale.project/keys [target-dir]} opts]
@@ -64,11 +69,11 @@
                                :jar-file jar-file}))))
 
 (defn uberjar
-  [opts]
-  (let [{:exoscale.project/keys [_env lib _version _version-file main src-dirs class-dir basis uberjar-file deps-file]
-         :as opts} opts
-        _ (clean opts)
-        version (get-version opts)
+  [{:exoscale.project/keys [_env lib _version _version-file main src-dirs class-dir
+                            basis uberjar-file deps-file]
+    :as opts}]
+  (clean opts)
+  (let [version (get-version opts)
         basis (or basis (create-basis deps-file))
         uber-file (or uberjar-file (uberjar-file* (name lib) version))]
     (println "Copying src-dirs")

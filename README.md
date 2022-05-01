@@ -1,36 +1,13 @@
 # exoscale tools.project
 
-This is a small `clojure.tool` that allows to work with projects in a
-streamlined way.
+A `clojure.tool` helper to add conventions for managing projects.
+This tool intends to provide a light veneer on top of standard
+Clojure tools to help with:
 
-It provides an api to generate jars, uberjar, deploy, install, clean, release
-etc...
-
-All commands are chainable. They take a context map an return a potentially
-updated one.
-
-Most commands use built'ins from clojure/tools.deps and clojure/tools.build. The
-only exception is `deploy` which uses slipset/deps-deploy (for now).  When
-tools.deploy lands it will replace it. For that reason the context key for the
-deploy tasks is now under `:slipset.deps-deploy/exec-args`.
-
-You can add preset project keys in a edn file that will be loaded for every
-project command. By default we assume you're doing that in `deps.edn` but you
-can specify an `:exoscale.project/file` at invocation time if you want to
-separate them (ex in a `project.edn` file alongside of `deps.edn`). You can also
-specify an :exoscale.project/keypath with the location in the loaded edn
-file. It defaults to root.
-
-A typical deps.edn file could look like this:
-``` clj
-{:exoscale.project/lib exoscale/foo-orchestator
- :exoscale.project/version "1.0.0-SNAPSHOT"
- 
- :deps { ... }
- :aliases { ... }
- :paths [ ... ]
- :mvn/repos { ... }}
-```
+- Project builds
+- Multiple module management
+- Version management
+- Releases
 
 ## Installation
 
@@ -64,11 +41,41 @@ see [project.sample.edn](project.sample.edn)
 All keys are static, it's purely declarative, this library will make no attempt
 to modify its contents.
 
-## clj-new template 
+## Internals
+
+All commands are chainable. They take a context map an return a potentially
+updated one.
+
+Most commands use built'ins from clojure/tools.deps and clojure/tools.build. The
+only exception is `deploy` which uses slipset/deps-deploy (for now).  When
+tools.deploy lands it will replace it. For that reason the context key for the
+deploy tasks is now under `:slipset.deps-deploy/exec-args`.
+
+You can add preset project keys in a edn file that will be loaded for every
+project command. By default we assume you're doing that in `deps.edn` but you
+can specify an `:exoscale.project/file` at invocation time if you want to
+separate them (ex in a `project.edn` file alongside of `deps.edn`). You can also
+specify an :exoscale.project/keypath with the location in the loaded edn
+file. It defaults to root.
+
+A typical deps.edn file could look like this:
+``` clj
+{:exoscale.project/lib exoscale/foo-orchestator
+ :exoscale.project/version "1.0.0-SNAPSHOT"
+
+ :deps { ... }
+ :aliases { ... }
+ :paths [ ... ]
+ :mvn/repos { ... }}
+```
+
+
+
+## clj-new template
 
 TODO
 
-## UX Suggestion 
+## UX Suggestion
 
 We suggest you add the following aliases to your bash profile, all these plugins
 should be available from any module.
