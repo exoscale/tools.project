@@ -65,10 +65,11 @@
                                     :exoscale.project/file
                                     io/file
                                     .getCanonicalPath)))]
-        (println msg)
-        (l/explain :exoscale.project/opts opts {:colors? true})
-        (flush)
-        (System/exit 1)))
+        (binding [*out* *err*]
+          (println msg)
+          (l/explain :exoscale.project/opts opts {:colors? true})
+          (flush)
+          (System/exit 1))))
     opts))
 
 (defn clean [opts]
@@ -102,4 +103,3 @@
   (-> opts
       into-opts
       api/deploy))
-
