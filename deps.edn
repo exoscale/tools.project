@@ -1,5 +1,6 @@
 {:paths ["src"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        mvxcvi/puget {:mvn/version "1.3.2"}
         io.github.clojure/tools.build {:git/tag "v0.8.1" :git/sha "7d40500"}
         com.exoscale/deps-version {:git/sha "c9e66488984909ac3314096b007d72e570382c43"
                                    :git/url "https://github.com/exoscale/deps-version"}
