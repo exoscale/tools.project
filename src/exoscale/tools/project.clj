@@ -1,9 +1,14 @@
 (ns exoscale.tools.project
   (:refer-clojure :exclude [compile])
   (:require [exoscale.tools.project.api :as api]
+            [exoscale.tools.project.api.jar :as jar]
+            [exoscale.tools.project.api.java :as java]
+            [exoscale.tools.project.api.deploy :as deploy]
+            [clojure.tools.deps.alpha.util.dir :as td]
             [clojure.spec.alpha :as s]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
+            [clojure.java.shell :as shell]
             [exoscale.lingo :as l]))
 
 (def default-opts
@@ -31,8 +36,8 @@
 (s/def :exoscale.project/deps-file string?)
 
 (s/def :exoscale.project/opts
-  (s/keys :req [:exoscale.project/lib]
-          :opt [:exoscale.project/version
+  (s/keys :opt [:exoscale.project/lib
+                :exoscale.project/version
                 :exoscale.project/version-file
                 :exoscale.project/target-dir
                 :exoscale.project/class-dir
@@ -43,7 +48,7 @@
 
 (defn read-project
   [{:as _opts :exoscale.project/keys [file keypath]}]
-  (try (some-> file
+  (try (some-> (td/canonicalize (io/file file))
                slurp
                edn/read-string
                (get-in keypath))
@@ -53,7 +58,7 @@
   [{:as opts :exoscale.project/keys [version-file]}]
   (cond-> opts
     (some? version-file)
-    (assoc :exoscale.project/version (slurp version-file))))
+    (assoc :exoscale.project/version (slurp (td/canonicalize (io/file version-file))))))
 
 (defn into-opts [opts]
   (let [opts (-> default-opts
@@ -77,29 +82,80 @@
 (defn compile [opts]
   (-> opts
       into-opts
-      api/compile))
+      java/compile))
 
 (defn jar [opts]
   (-> opts
       into-opts
       api/clean
-      api/jar))
+      jar/jar))
 
 (defn uberjar
   [opts]
   (-> opts
       into-opts
-      api/uberjar))
+      jar/uberjar))
 
 (defn install
   [opts]
   (-> opts
       into-opts
-      api/install))
+      deploy/local))
 
 (defn deploy
   [opts]
   (-> opts
       into-opts
-      api/deploy))
+      deploy/remote))
+
+(defn run-shell
+  [args {:keys [dir env]}]
+  (let [res (apply shell/sh
+                   (concat ["sh" "-c"]
+                           args
+                           (cond-> []
+                             dir
+                             (conj :dir dir)
+                             env
+                             (conj :env env))))]
+    (when (pos? (:exit res))
+      (throw (ex-info "Command failed to run" (assoc res :cmd args))))
+    (println (:out res))
+    res))
+
+(defn run-task
+  [task opts]
+  (td/with-dir (td/as-canonical (io/file (:dir opts)))
+    ((requiring-resolve (symbol task)) opts)))
+
+(defn- run-cmds!
+  [{:as _task :keys [commands tasks]} opts]
+  (if commands
+    (run! #(run-shell % opts) commands)
+    (run! #(run-task % opts) tasks)))
+
+(defn task
+  [opts]
+  ;; let's assume we have the full env here
+  (let [{:exoscale.project/keys [deps-file]} (into-opts opts)
+        {:as root-deps-edn
+         :exoscale.project/keys [tasks]
+         :keys [id]} (edn/read-string (slurp (td/canonicalize (io/file deps-file))))
+        task-id (keyword (:id opts))
+        task (get tasks task-id)
+        for-all (:for-all task)]
+
+    (when-not task
+      (println (format "Task '%s' not found" id))
+      (System/exit 1))
+
+    (println (format "Running task: '%s'" (name task-id)))
+
+    (if for-all
+      (run! #(run-cmds! (assoc task :args opts)
+                        {:dir %})
+            (get-in root-deps-edn for-all))
+      (run-cmds! task nil))))
+
+
 

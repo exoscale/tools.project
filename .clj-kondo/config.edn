@@ -4,5 +4,6 @@
                                             exoscale.tools.project/install
                                             exoscale.tools.project/uberjar
                                             exoscale.tools.project/jar
-                                            exoscale.tools.project/deploy]}}
+                                            exoscale.tools.project/deploy
+                                            exoscale.tools.project.api/version]}}
  :skip-comments true}
