@@ -1,6 +1,7 @@
 (ns exoscale.tools.project.api
   (:refer-clojure :exclude [compile])
-  (:require [clojure.tools.build.api :as b]
+  (:require [clojure.string :as str]
+            [clojure.tools.build.api :as b]
             [clojure.tools.cli.api :as td]
             [deps-deploy.deps-deploy :as dd]))
 
@@ -24,7 +25,7 @@
 (defn get-version
   [{:as _opts :exoscale.project/keys [version-file version]}]
   (or version
-      (some-> version-file slurp)))
+      (some-> version-file slurp str/trim)))
 
 (defn clean [opts]
   (let [{:as opts :exoscale.project/keys [target-dir]} opts]

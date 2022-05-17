@@ -1,10 +1,11 @@
 (ns exoscale.tools.project
   (:refer-clojure :exclude [compile])
-  (:require [exoscale.tools.project.api :as api]
-            [clojure.spec.alpha :as s]
-            [clojure.edn :as edn]
+  (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [exoscale.lingo :as l]))
+            [clojure.spec.alpha :as s]
+            [clojure.string :as str]
+            [exoscale.lingo :as l]
+            [exoscale.tools.project.api :as api]))
 
 (def default-opts
   #:exoscale.project{:file "deps.edn"
@@ -53,7 +54,7 @@
   [{:as opts :exoscale.project/keys [version-file]}]
   (cond-> opts
     (some? version-file)
-    (assoc :exoscale.project/version (slurp version-file))))
+    (assoc :exoscale.project/version (-> version-file slurp str/trim))))
 
 (defn into-opts [opts]
   (let [opts (-> default-opts
