@@ -1,4 +1,15 @@
 (ns exoscale.tools.project.module
+  "All functions in this modules are meant to be used with -T.
+
+  They will trigger invocation of exoscale.tools.project functions with the same
+  name or tasks with same id.
+
+  If we can infer that we are in a multi-module setup at the root we will invoke
+  the corresponding task, if not we will simply call into the the
+  exoscale.tools.project function.
+
+  That essentially means that all fns here as dual purpose depending on which
+  directory they are called from"
   (:refer-clojure :exclude [compile])
   (:require [clojure.edn :as edn]
             [exoscale.tools.project :as p]))
