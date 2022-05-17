@@ -114,4 +114,6 @@
       into-opts
       tasks/task))
 
-
+(defn release
+  [opts]
+  (task (assoc opts :id :release)))
