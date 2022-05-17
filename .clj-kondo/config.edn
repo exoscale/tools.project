@@ -1,10 +1,10 @@
 {:linters
- {:clojure-lsp/unused-public-var {:exclude [exoscale.tools.project/compile
-                                            exoscale.tools.project/clean
-                                            exoscale.tools.project/install
-                                            exoscale.tools.project/uberjar
-                                            exoscale.tools.project/jar
-                                            exoscale.tools.project/deploy
-                                            exoscale.tools.project/release
+ {:clojure-lsp/unused-public-var {:exclude [exoscale.tools.project.module/compile
+                                            exoscale.tools.project.module/clean
+                                            exoscale.tools.project.module/install
+                                            exoscale.tools.project.module/uberjar
+                                            exoscale.tools.project.module/jar
+                                            exoscale.tools.project.module/deploy
+                                            exoscale.tools.project.module/release
                                             exoscale.tools.project.api/version]}}
  :skip-comments true}

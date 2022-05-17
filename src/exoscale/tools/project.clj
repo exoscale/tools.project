@@ -9,7 +9,7 @@
             [exoscale.tools.project.api.deploy :as deploy]
             [exoscale.tools.project.api.jar :as jar]
             [exoscale.tools.project.api.java :as java]
-            [exoscale.tools.project.tasks :as tasks]))
+            [exoscale.tools.project.api.tasks :as tasks]))
 
 (def default-opts
   #:exoscale.project{:file "deps.edn"
@@ -116,4 +116,8 @@
 
 (defn release
   [opts]
-  (task (assoc (into-opts opts) :id :release)))
+  (task (assoc (into-opts opts)
+               :id :test)))
+
+
+

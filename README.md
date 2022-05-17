@@ -38,13 +38,12 @@ Add this to your deps.edn
 
 ``` clj
   :project {:deps {com.exoscale/tools.project {:git/sha "..." :git/url "git@github.com:exoscale/tools.project.git"}}
-            :ns-default exoscale.tools.project}
+            :ns-default exoscale.tools.project.module}
 ```
 
 Or install the tool locally.
 
 From there you can run most commands from the cli:
-
 
 * `clj -T:project install`
 * `clj -T:project uberjar`

@@ -1,7 +1,10 @@
 {:paths ["src"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
         io.github.clojure/tools.build {:git/tag "v0.8.1" :git/sha "7d40500"}
-        slipset/deps-deploy {:mvn/version "0.2.0" :exclusions [s3-wagon-private/s3-wagon-private]}
+        slipset/deps-deploy {;; :mvn/version "0.2.0" :exclusions [s3-wagon-private/s3-wagon-private]
+                             :git/sha "44be91dcd57bd6a9e006fc1673e4811ffec4a8b9"
+                             :git/url "https://github.com/mpenet/deps-deploy.git"
+                             :exclusions [s3-wagon-private/s3-wagon-private]}
         exoscale/sos-wagon-private {:mvn/version "1.3.2-exoscale11"}
         com.exoscale/lingo {:mvn/version "1.0.0-alpha18"}}
 
