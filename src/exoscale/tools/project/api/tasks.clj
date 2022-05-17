@@ -1,4 +1,24 @@
 (ns exoscale.tools.project.api.tasks
+  "Tasks are meant to be used to compose exoscale.tools.project functions and
+  potentially run them for a set of things.
+
+  A Task is just a map.
+  #:exoscale.project.task{...}
+
+  We have 3 type of tasks for now:
+
+  * :run tasks `#:exoscale.project.task{:run some.ns/fn}` that will trigger an invocation of that task
+  * :shell tasks `#:exoscale.project.task{:shell [\"ping foo.com\" \"ping bar.com\"]}` that will trigger an invocation of the shell commands listed in order
+  * :ref tasks `#:exoscale.project.task{:ref :something}` that will invoke another task
+
+  Great, but why are we doing this?
+
+  Tasks can be repeated for \"sub modules\" if you specify a :for-all key
+  `#:exoscale.project.task{:run some.ns/fn :for-all [:exoscale.project/libs]}`
+  the task will then be run for all modules listed under that key in the
+  deps.edn file, in (execution) context, in a single process
+  potentially. Essentially a declarative version of lein sub that supports
+  composability and is not spawning as many processes as we have tasks."
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.java.shell :as shell]
@@ -8,11 +28,13 @@
             [exoscale.lingo :as l]))
 
 (def default-tasks
+  "Sets some desirable default tasks"
   {:install [#:exoscale.project.task{:run :exoscale.tools.project/install
                                      :for-all [:exoscale.project/libs]}]
    :deploy [#:exoscale.project.task{:run :exoscale.tools.project/deploy
                                     :for-all [:exoscale.project/deployables]}]
    :test []
+   ;; TODO fix release
    :release [#:exoscale.project.task{:shell ["clojure -X:deps-version update-version :file \"VERSION\" :suffix nil"
                                              "export VERSION=$(cat VERSION)"]}
              #:exoscale.project.task{:ref :deploy :for-all [:exoscale.project/libs]}
