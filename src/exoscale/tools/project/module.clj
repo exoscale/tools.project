@@ -21,8 +21,6 @@
 
 (defn task-or-tool [opts task-id project-fn]
   (let [redn @root-edn]
-    (prn task-id redn (get-in redn [:exoscale.project/tasks task-id]))
-
     ;; if it's a multi-module deps.edn with a corresponding task use that
     ;; otherwise fallback on regular project fns
     (if (or (contains? redn :exoscale.project/libs)
