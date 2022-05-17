@@ -56,8 +56,10 @@
     (assoc :exoscale.project/version (slurp version-file))))
 
 (defn into-opts [opts]
-  (let [opts (-> default-opts
-                 (merge (read-project (into default-opts opts)) opts)
+  (let [project-from-deps-edn (read-project (into default-opts opts))
+        project (read-project project-from-deps-edn)
+        opts (-> default-opts
+                 (merge project-from-deps-edn project opts)
                  assoc-version)]
     (when-not (s/valid? :exoscale.project/opts opts)
       (let [msg (format "Invalid exoscale.project configuration in %s"
