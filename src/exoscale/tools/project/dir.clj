@@ -5,7 +5,3 @@
 (defn canonicalize [f]
   (when f
     (str (td/canonicalize (io/file f)))))
-
-
-
-
