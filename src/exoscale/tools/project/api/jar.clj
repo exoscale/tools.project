@@ -1,7 +1,9 @@
 (ns exoscale.tools.project.api.jar
   (:require [clojure.tools.build.api :as b]
             [exoscale.tools.project.api :as api]
-            [exoscale.tools.project.dir :as dir]))
+            [exoscale.tools.project.dir :as dir]
+            [clojure.tools.deps.alpha.util.dir :as td]
+            [clojure.tools.build.api :as tb]))
 
 (defn jar-file*
   ([lib version]
@@ -63,7 +65,9 @@
     (println "Compiling" src-dirs)
     (b/compile-clj {:basis basis
                     :class-dir class-dir
-                    :src-dirs src-dirs})
+                    :src-dirs src-dirs
+                    :bindings {#'clojure.tools.build.api/*project-root* td/*the-dir*
+                               #'clojure.tools.deps.alpha.util.dir/*the-dir* td/*the-dir*}})
     (println "Creating uberjar: " uber-file)
     (b/uber {:basis basis
              :class-dir class-dir
