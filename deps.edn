@@ -1,14 +1,13 @@
 {:paths ["src"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
         io.github.clojure/tools.build {:git/tag "v0.8.1" :git/sha "7d40500"}
+        exoscale/deps-version {:git/sha "e5caeb9dcb4b691de59b271c36e9c21093db6557"
+                               :git/url "https://github.com/exoscale/deps-version"}
+        com.exoscale/lingo {:mvn/version "1.0.0-alpha18"}
         slipset/deps-deploy {:git/sha "b87c9299761762984bd54a285ca8fa0aac81809f"
                              :git/url "https://github.com/slipset/deps-deploy"
                              :exclusions [s3-wagon-private/s3-wagon-private]}
-        exoscale/sos-wagon-private {:mvn/version "1.3.2-exoscale11"}
-        exoscale/deps-version {;; :git/sha "2f3fb11eeca7b253292c945f913238eb881c8066"
-                               ;; :git/url "https://github.com/exoscale/deps-version"
-                               :local/root "../deps-version"}
-        com.exoscale/lingo {:mvn/version "1.0.0-alpha18"}}
+        exoscale/sos-wagon-private {:mvn/version "1.3.2-exoscale11"}}
 
  :tools/usage
  {:ns-default exoscale.tools.project.module}}
