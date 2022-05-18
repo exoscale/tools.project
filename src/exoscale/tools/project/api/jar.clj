@@ -45,7 +45,8 @@
 
 (defn uberjar
   [opts]
-  (let [{:exoscale.project/keys [_env lib _version _version-file main src-dirs class-dir basis uberjar-file deps-file]
+  (let [{:exoscale.project/keys [_env lib _version _version-file main
+                                 src-dirs class-dir basis uberjar-file deps-file]
          :as opts} opts
         _ (api/clean opts)
         version (api/get-version opts)
