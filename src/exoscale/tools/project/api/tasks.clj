@@ -33,18 +33,20 @@
                                      :for-all [:exoscale.project/libs]}]
    :deploy [#:exoscale.project.task{:run :exoscale.tools.project/deploy
                                     :for-all [:exoscale.project/deployables]}]
-   ;; TODO fix release
-   :release [#:exoscale.project.task{:run :exoscale.deps-version/update-version {:file "VERSION" :suffit nil}}
+   :release [#:exoscale.project.task{:run :exoscale.deps-version/update-version
+                                     :args {:file "VERSION" :suffix nil}}
              #:exoscale.project.task{:ref :deploy :for-all [:exoscale.project/libs]}
              #:exoscale.project.task{:ref :uberjar :for-all [:exoscale.project/deployables]}
-             #:exoscale.project.task
-              {:shell
-               ["git config --global --add safe.directory $PWD"
-                "git add VERSION"
-                (str "export VERSION=$(cat VERSION) && "
-                     "git commit -m \"Version $VERSION\" && "
-                     "git tag -a \"$VERSION\" --no-sign -m \"Release $VERSION\"")]}
-             #:exoscale.project.task{:run :exoscale.deps-version/update-version {:file "VERSION" :key :patch :suffit "SNAPSHOT"}}
+             #:exoscale.project.task{:shell
+                                     ["git config --global --add safe.directory $PWD"
+                                      "git add VERSION"
+                                      (str "export VERSION=$(cat VERSION) && "
+                                           "git commit -m \"Version $VERSION\" && "
+                                           "git tag -a \"$VERSION\" --no-sign -m \"Release $VERSION\"")]}
+             #:exoscale.project.task{:run :exoscale.deps-version/update-version
+                                     :args {:file "VERSION"
+                                            :key :patch
+                                            :suffix "SNAPSHOT"}}
              #:exoscale.project.task
               {:shell
                ["git config --global --add safe.directory $PWD"
@@ -54,7 +56,7 @@
                 "git pull && git push --follow-tags"]}]})
 
 (defn shell*
-  [cmds {:keys [dir env]}]
+  [cmds {::keys [dir env]}]
   (run! (fn [cmd]
           (let [res (apply shell/sh
                            (cond-> ["sh" "-c" cmd]
@@ -68,15 +70,11 @@
             res))
         cmds))
 
-(defmacro with-dir [dir & body]
-  `(let [dir# ~dir]
-     (binding [tb/*project-root* dir#
-               td/*the-dir* (td/as-canonical (io/file dir#))]
-       ~@body)))
-
 (defn run*
-  [task {:keys [dir] :as opts}]
-  (with-dir dir
+  [task {::keys [dir] :as opts}]
+  (prn task opts)
+  (binding [tb/*project-root* dir
+            td/*the-dir* (td/as-canonical (io/file dir))]
     ((requiring-resolve (symbol task)) opts)))
 
 (declare exoscale.tools.project.api.tasks/task)
@@ -94,11 +92,12 @@
 (s/def :exoscale.project.task/shell (s/coll-of string? :min-count 1))
 
 (defn- run-task!
-  [{:as task :exoscale.project.task/keys [shell ref run]} opts]
+  [{:as task :exoscale.project.task/keys [shell ref run args]}
+   opts]
   (let [ret (s/conform :exoscale.project/task task)]
     (case (first ret)
       :shell (shell* shell opts)
-      :run (run* run opts)
+      :run (run* run (merge {} args opts))
       :ref (exoscale.tools.project.api.tasks/task (assoc opts :id ref)))))
 
 (defn task
@@ -125,9 +124,9 @@
 
     (doseq [{:as task :exoscale.project.task/keys [for-all]} task-def]
       (if (seq for-all)
-        (run! (fn [dir] (run-task! task {:dir dir}))
+        (run! (fn [dir] (run-task! task {::dir dir}))
               (or (get-in root-deps-edn for-all)
                   (throw (ex-info (format "Missing for-all key %s" for-all)
                                   task))))
-        (run-task! task nil)))))
+        (run-task! task {::dir td/*the-dir*})))))
 
