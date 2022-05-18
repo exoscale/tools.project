@@ -51,3 +51,6 @@
 (defn deploy
   [opts]
   (task-or-tool opts :deploy p/deploy))
+
+;; for convenience
+(def task p/task)

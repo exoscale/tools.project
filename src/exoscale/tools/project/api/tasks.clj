@@ -24,6 +24,7 @@
             [clojure.java.shell :as shell]
             [clojure.spec.alpha :as s]
             [clojure.tools.deps.alpha.util.dir :as td]
+            [exoscale.tools.project.dir :as dir]
             [clojure.tools.build.api :as tb]
             [exoscale.lingo :as l]))
 
@@ -31,8 +32,23 @@
   "Sets some desirable default tasks"
   {:install [#:exoscale.project.task{:run :exoscale.tools.project/install
                                      :for-all [:exoscale.project/libs]}]
+
    :deploy [#:exoscale.project.task{:run :exoscale.tools.project/deploy
                                     :for-all [:exoscale.project/deployables]}]
+
+   :uberjar [#:exoscale.project.task{:run :exoscale.tools.project/uberjar
+                                     :for-all [:exoscale.project/deployables]}]
+
+   :compile [#:exoscale.project.task{:run :exoscale.tools.project/compile
+                                     :for-all [:exoscale.project/deployables]}
+             #:exoscale.project.task{:run :exoscale.tools.project/compile
+                                     :for-all [:exoscale.project/libs]}]
+
+   :clean [#:exoscale.project.task{:run :exoscale.tools.project/clean
+                                   :for-all [:exoscale.project/deployables]}
+           #:exoscale.project.task{:run :exoscale.tools.project/clean
+                                   :for-all [:exoscale.project/libs]}]
+
    :release [#:exoscale.project.task{:run :exoscale.deps-version/update-version
                                      :args {:file "VERSION" :suffix nil}}
              #:exoscale.project.task{:ref :deploy :for-all [:exoscale.project/libs]}
@@ -72,7 +88,6 @@
 
 (defn run*
   [task {::keys [dir] :as opts}]
-  (prn task opts)
   (binding [tb/*project-root* dir
             td/*the-dir* (td/as-canonical (io/file dir))]
     ((requiring-resolve (symbol task)) opts)))
@@ -105,7 +120,7 @@
    ;; let's assume we have the full env here
   (let [{:as root-deps-edn
          :exoscale.project/keys [tasks]
-         :keys [id]} (edn/read-string (slurp (td/canonicalize (io/file "deps.edn"))))
+         :keys [id]} (edn/read-string (slurp (dir/canonicalize "deps.edn")))
         tasks (merge default-tasks tasks)
         task-id (keyword (:id opts))
         task-def (get tasks task-id)]
@@ -124,7 +139,7 @@
 
     (doseq [{:as task :exoscale.project.task/keys [for-all]} task-def]
       (if (seq for-all)
-        (run! (fn [dir] (run-task! task {::dir dir}))
+        (run! (fn [dir] (run-task! task {::dir (dir/canonicalize dir)}))
               (or (get-in root-deps-edn for-all)
                   (throw (ex-info (format "Missing for-all key %s" for-all)
                                   task))))

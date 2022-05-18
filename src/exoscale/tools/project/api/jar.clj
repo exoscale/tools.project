@@ -1,6 +1,7 @@
 (ns exoscale.tools.project.api.jar
   (:require [clojure.tools.build.api :as b]
-            [exoscale.tools.project.api :as api]))
+            [exoscale.tools.project.api :as api]
+            [exoscale.tools.project.dir :as dir]))
 
 (defn jar-file*
   ([lib version]
@@ -19,8 +20,12 @@
          :as opts} opts]
     (api/clean opts)
     (let [version (api/get-version opts)
+          deps-file (dir/canonicalize deps-file)
           basis (or basis (api/create-basis deps-file))
-          jar-file (or jar-file (jar-file* (name lib) version))]
+          jar-file (dir/canonicalize (or jar-file (jar-file* (name lib) version)))
+          class-dir (dir/canonicalize class-dir)
+          src-dirs (map dir/canonicalize src-dirs)]
+
       (println "Writing pom.xml")
       (b/write-pom {:basis basis
                     :class-dir class-dir
@@ -44,8 +49,12 @@
          :as opts} opts
         _ (api/clean opts)
         version (api/get-version opts)
+        deps-file (dir/canonicalize deps-file)
         basis (or basis (api/create-basis deps-file))
-        uber-file (or uberjar-file (uberjar-file* (name lib) version))]
+        uber-file (dir/canonicalize (or uberjar-file (uberjar-file* (name lib) version)))
+        src-dirs (map dir/canonicalize src-dirs)
+        class-dir (dir/canonicalize class-dir)]
+
     (println "Copying src-dirs")
     (b/copy-dir {:src-dirs src-dirs
                  :target-dir class-dir})
