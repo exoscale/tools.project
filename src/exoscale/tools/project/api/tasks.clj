@@ -33,19 +33,25 @@
                                      :for-all [:exoscale.project/libs]}]
    :deploy [#:exoscale.project.task{:run :exoscale.tools.project/deploy
                                     :for-all [:exoscale.project/deployables]}]
-   :test []
    ;; TODO fix release
-   :release [#:exoscale.project.task{:shell ["clojure -X:deps-version update-version :file \"VERSION\" :suffix nil"
-                                             "export VERSION=$(cat VERSION)"]}
+   :release [#:exoscale.project.task{:run :exoscale.deps-version/update-version {:file "VERSION" :suffit nil}}
              #:exoscale.project.task{:ref :deploy :for-all [:exoscale.project/libs]}
              #:exoscale.project.task{:ref :uberjar :for-all [:exoscale.project/deployables]}
              #:exoscale.project.task
               {:shell
                ["git config --global --add safe.directory $PWD"
-                "git add VERSION && git commit -m \"Version $VERSION\" && git tag -a \"$VERSION\" --no-sign -m \"Release $VERSION\""
-                "clojure -X:deps-version update-version :key :patch :file \"VERSION\" :suffix \"SNAPSHOT\""
-                "export VERSION=$(cat VERSION)"
-                "git add VERSION && git commit -m \"Version $VERSION\" && git pull && git push --follow-tags"]}]})
+                "git add VERSION"
+                (str "export VERSION=$(cat VERSION) && "
+                     "git commit -m \"Version $VERSION\" && "
+                     "git tag -a \"$VERSION\" --no-sign -m \"Release $VERSION\"")]}
+             #:exoscale.project.task{:run :exoscale.deps-version/update-version {:file "VERSION" :key :patch :suffit "SNAPSHOT"}}
+             #:exoscale.project.task
+              {:shell
+               ["git config --global --add safe.directory $PWD"
+                (str "export VERSION=$(cat VERSION) && "
+                     "git add VERSION && "
+                     "git commit -m \"Version $VERSION\"")
+                "git pull && git push --follow-tags"]}]})
 
 (defn shell*
   [cmds {:keys [dir env]}]
