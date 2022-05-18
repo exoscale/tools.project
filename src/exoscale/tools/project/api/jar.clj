@@ -56,6 +56,7 @@
         src-dirs (map dir/canonicalize src-dirs)
         class-dir (dir/canonicalize class-dir)]
 
+    (prn :SRC-DIRS src-dirs)
     (println "Copying src-dirs")
     (b/copy-dir {:src-dirs src-dirs
                  :target-dir class-dir})
