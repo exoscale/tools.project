@@ -17,9 +17,10 @@ deploy tasks is now under `:slipset.deps-deploy/exec-args`.
 You can add preset project keys in a edn file that will be loaded for every
 project command. By default we assume you're doing that in `deps.edn` but you
 can specify an `:exoscale.project/file` at invocation time if you want to
-separate them (ex in a `project.edn` file alongside of `deps.edn`). You can also
-specify an :exoscale.project/keypath with the location in the loaded edn
-file. It defaults to root.
+separate them (ex in a `project.edn` file alongside of `deps.edn`, **at exoscale
+we tend to prefer to have everything in deps.edn**). You can also specify an
+:exoscale.project/keypath with the location in the loaded edn file. It defaults
+to root.
 
 A typical deps.edn file could look like this:
 ``` clj
