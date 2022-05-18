@@ -1,6 +1,7 @@
 (ns exoscale.tools.project.api
   (:refer-clojure :exclude [compile])
-  (:require [clojure.tools.build.api :as b]))
+  (:require [clojure.tools.build.api :as b]
+            [exoscale.deps-version :as version]))
 
 (defn create-basis
   ([deps-file]
@@ -10,7 +11,7 @@
 (defn get-version
   [{:as _opts :exoscale.project/keys [version-file version]}]
   (or version
-      (some-> version-file slurp)))
+      (some-> version-file version/read-version-file*)))
 
 (defn clean [opts]
   (let [{:as opts :exoscale.project/keys [target-dir]} opts]

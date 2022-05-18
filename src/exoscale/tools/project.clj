@@ -9,7 +9,8 @@
             [exoscale.tools.project.api.deploy :as deploy]
             [exoscale.tools.project.api.jar :as jar]
             [exoscale.tools.project.api.java :as java]
-            [exoscale.tools.project.api.tasks :as tasks]))
+            [exoscale.tools.project.api.tasks :as tasks]
+            [exoscale.deps-version :as version]))
 
 (def default-opts
   #:exoscale.project{:file "deps.edn"
@@ -58,7 +59,7 @@
   [{:as opts :exoscale.project/keys [version-file]}]
   (cond-> opts
     (some? version-file)
-    (assoc :exoscale.project/version (slurp (td/canonicalize (io/file version-file))))))
+    (assoc :exoscale.project/version (version/read-version-file* version-file))))
 
 (defn into-opts [opts]
   (let [opts (-> default-opts

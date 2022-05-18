@@ -100,7 +100,7 @@
    ;; let's assume we have the full env here
   (let [{:as root-deps-edn
          :exoscale.project/keys [tasks]
-         :keys [id]} (edn/read-string (slurp (io/file td/*the-dir* "deps.edn")))
+         :keys [id]} (edn/read-string (slurp (td/canonicalize (io/file "deps.edn"))))
         tasks (merge default-tasks tasks)
         task-id (keyword (:id opts))
         task-def (get tasks task-id)]
