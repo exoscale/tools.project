@@ -36,7 +36,10 @@
    :deploy [#:exoscale.project.task{:run :exoscale.tools.project/deploy
                                     :for-all [:exoscale.project/deployables]}]
 
-   :uberjar [#:exoscale.project.task{:run :exoscale.tools.project/uberjar
+   :uberjar [#:exoscale.project.task{:shell
+                                     ["mkdir -p resources && echo -n \"$(git rev-parse HEAD)\" > resources/git-version"]
+                                     :for-all [:exoscale.project/deployables]}
+             #:exoscale.project.task{:run :exoscale.tools.project/uberjar
                                      :for-all [:exoscale.project/deployables]}]
 
    :compile [#:exoscale.project.task{:run :exoscale.tools.project/compile
