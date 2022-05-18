@@ -58,16 +58,13 @@
         src-dirs (map dir/canonicalize src-dirs)
         class-dir (dir/canonicalize class-dir)]
 
-    (prn :class-dir src-dirs class-dir)
     (println "Copying src-dirs")
     (b/copy-dir {:src-dirs src-dirs
                  :target-dir class-dir})
     (println "Compiling" src-dirs)
     (b/compile-clj {:basis basis
                     :class-dir class-dir
-                    :src-dirs src-dirs
-                    :bindings {#'clojure.tools.build.api/*project-root* td/*the-dir*
-                               #'clojure.tools.deps.alpha.util.dir/*the-dir* td/*the-dir*}})
+                    :src-dirs src-dirs})
     (println "Creating uberjar: " uber-file)
     (b/uber {:basis basis
              :class-dir class-dir
