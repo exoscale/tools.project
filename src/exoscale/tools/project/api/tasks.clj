@@ -55,9 +55,10 @@
    :release [#:exoscale.project.task{:run :exoscale.tools.project/version-remove-snapshot}
              #:exoscale.project.task{:ref :deploy}
              #:exoscale.project.task{:ref :uberjar}
-             #:exoscale.project.task{:run :exoscale.tools.project/git-commit+tag-version}
+             #:exoscale.project.task{:run :exoscale.tools.project/git-commit-version}
+             #:exoscale.project.task{:run :exoscale.tools.project/git-tag-version}
              #:exoscale.project.task{:run :exoscale.tools.project/version-bump-and-snapshot}
-             #:exoscale.project.task{:run :exoscale.tools.project/git-commit-snapshot}
+             #:exoscale.project.task{:run :exoscale.tools.project/git-commit-version}
              #:exoscale.project.task{:run :exoscale.tools.project/git-push}]})
 
 (defn shell*

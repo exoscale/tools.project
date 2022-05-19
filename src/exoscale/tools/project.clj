@@ -134,16 +134,16 @@
       into-opts
       v/remove-snapshot))
 
-(defn git-commit+tag-version
+(defn git-commit-version
   [opts]
   (let [opts (into-opts opts)]
-    (git/commit+tag-version opts)
+    (git/commit-version opts)
     opts))
 
-(defn git-commit-snapshot
+(defn git-tag-version
   [opts]
   (let [opts (into-opts opts)]
-    (git/commit-snapshot opts)
+    (git/tag-version opts)
     opts))
 
 (defn git-push
