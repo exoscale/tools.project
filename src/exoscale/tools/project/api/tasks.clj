@@ -55,10 +55,10 @@
    :release [#:exoscale.project.task{:run :exoscale.tools.project/version-remove-snapshot}
              #:exoscale.project.task{:ref :deploy :for-all [:exoscale.project/libs]}
              #:exoscale.project.task{:ref :uberjar :for-all [:exoscale.project/deployables]}
-             #:exoscale.project.task{:run :exoscale.tools.project/release-git-version}
+             #:exoscale.project.task{:run :exoscale.tools.project/git-commit+tag-version}
              #:exoscale.project.task{:run :exoscale.tools.project/version-bump-and-snapshot}
-             #:exoscale.project.task{:run :exoscale.tools.project/release-git-snapshot}
-             #:exoscale.project.task{:run :exoscale.tools.project/release-git-push}]})
+             #:exoscale.project.task{:run :exoscale.tools.project/git-commit-snapshot}
+             #:exoscale.project.task{:run :exoscale.tools.project/git-push}]})
 
 (defn shell*
   [cmds {::keys [dir env]}]

@@ -12,7 +12,7 @@
             [exoscale.tools.project.api.java :as java]
             [exoscale.tools.project.api.tasks :as tasks]
             [exoscale.tools.project.api.version :as v]
-            [exoscale.tools.project.io :as pio]))
+            [exoscale.tools.project.api.git :as git]))
 
 (def default-opts
   #:exoscale.project{:file "deps.edn"
@@ -134,29 +134,24 @@
       into-opts
       v/remove-snapshot))
 
-(defn release-git-version
+(defn git-commit+tag-version
   [opts]
   (let [opts (into-opts opts)]
-    (pio/shell ["git config --global --add safe.directory $PWD"
-                "git add VERSION"
-                "git commit -m \"Version $VERSION\""
-                "git tag -a \"$VERSION\" --no-sign -m \"Release $VERSION\""]
-               {:dir td/*the-dir*
-                :env {"VERSION" (v/get-version opts)}})))
+    (git/commit+tag-version opts)
+    opts))
 
-(defn release-git-snapshot
+(defn git-commit-snapshot
   [opts]
   (let [opts (into-opts opts)]
-    (pio/shell ["git config --global --add safe.directory $PWD"
-                "git add VERSION"
-                "git commit -m \"Version $VERSION\""]
-               {:dir td/*the-dir*
-                :env {"VERSION" (v/get-version opts)}})))
+    (git/commit-snapshot opts)
+    opts))
 
-(defn release-git-push
-  [_]
-  (pio/shell ["git pull && git push --follow-tags"]
-             {:dir td/*the-dir*}))
+(defn git-push
+  [opts]
+  (let [opts (into-opts opts)]
+    (git/push opts)
+    opts))
+
 
 
 

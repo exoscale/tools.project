@@ -9,7 +9,7 @@
                                             exoscale.tools.project.api/version
                                             exoscale.tools.project/version-remove-snapshot
                                             exoscale.tools.project/version-bump-and-snapshot
-                                            exoscale.tools.project/release-git-version
-                                            exoscale.tools.project/release-git-snapshot
-                                            exoscale.tools.project/release-git-push]}}
+                                            exoscale.tools.project/git-push
+                                            exoscale.tools.project/git-commit+tag-version
+                                            exoscale.tools.project/git-commit-snapshot]}}
  :skip-comments true}
