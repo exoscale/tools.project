@@ -18,6 +18,6 @@
     :or {version-file "VERSION"
          version-key :patch
          version-suffix "SNAPSHOT"}}]
-  {:file version-file
-   :key version-key
-   :suffix version-suffix})
+  (version/update-version {:file version-file
+                           :key version-key
+                           :suffix version-suffix}))
