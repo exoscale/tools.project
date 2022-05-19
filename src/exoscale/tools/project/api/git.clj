@@ -5,8 +5,7 @@
 
 (defn commit+tag-version
   [opts]
-  (pio/shell ["git config --global --add safe.directory $PWD"
-              "git add VERSION"
+  (pio/shell ["git add VERSION"
               "git commit -m \"Version $VERSION\""
               "git tag -a \"$VERSION\" --no-sign -m \"Release $VERSION\""]
              {:dir td/*the-dir*
@@ -14,8 +13,7 @@
 
 (defn commit-snapshot
   [opts]
-  (pio/shell ["git config --global --add safe.directory $PWD"
-              "git add VERSION"
+  (pio/shell ["git add VERSION"
               "git commit -m \"Version $VERSION\""]
              {:dir td/*the-dir*
               :env {"VERSION" (v/get-version opts)}}))
