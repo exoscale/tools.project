@@ -34,7 +34,7 @@
                                      :for-all [:exoscale.project/libs]}]
 
    :deploy [#:exoscale.project.task{:run :exoscale.tools.project/deploy
-                                    :for-all [:exoscale.project/deployables]}]
+                                    :for-all [:exoscale.project/libs]}]
 
    :uberjar [#:exoscale.project.task{:shell
                                      ["mkdir -p resources && echo -n \"$(git rev-parse HEAD)\" > resources/git-version"]
@@ -53,8 +53,8 @@
                                    :for-all [:exoscale.project/libs]}]
 
    :release [#:exoscale.project.task{:run :exoscale.tools.project/version-remove-snapshot}
-             #:exoscale.project.task{:ref :deploy :for-all [:exoscale.project/libs]}
-             #:exoscale.project.task{:ref :uberjar :for-all [:exoscale.project/deployables]}
+             #:exoscale.project.task{:ref :deploy}
+             #:exoscale.project.task{:ref :uberjar}
              #:exoscale.project.task{:run :exoscale.tools.project/git-commit+tag-version}
              #:exoscale.project.task{:run :exoscale.tools.project/version-bump-and-snapshot}
              #:exoscale.project.task{:run :exoscale.tools.project/git-commit-snapshot}
