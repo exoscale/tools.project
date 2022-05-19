@@ -52,8 +52,7 @@
            #:exoscale.project.task{:run :exoscale.tools.project/clean
                                    :for-all [:exoscale.project/libs]}]
 
-   :release [#:exoscale.project.task{:run :exoscale.deps-version/update-version
-                                     :args {:file "VERSION" :suffix nil}}
+   :release [#:exoscale.project.task{:run :exoscale.tools.project/version-remove-snapshot}
              #:exoscale.project.task{:ref :deploy :for-all [:exoscale.project/libs]}
              #:exoscale.project.task{:ref :uberjar :for-all [:exoscale.project/deployables]}
              #:exoscale.project.task{:shell
@@ -62,10 +61,7 @@
                                       (str "export VERSION=$(cat VERSION) && "
                                            "git commit -m \"Version $VERSION\" && "
                                            "git tag -a \"$VERSION\" --no-sign -m \"Release $VERSION\"")]}
-             #:exoscale.project.task{:run :exoscale.deps-version/update-version
-                                     :args {:file "VERSION"
-                                            :key :patch
-                                            :suffix "SNAPSHOT"}}
+             #:exoscale.project.task{:run :exoscale.tools.project/version-bump-and-snapshot}
              #:exoscale.project.task
               {:shell
                ["git config --global --add safe.directory $PWD"

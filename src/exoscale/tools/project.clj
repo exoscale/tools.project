@@ -10,7 +10,8 @@
             [exoscale.tools.project.api.jar :as jar]
             [exoscale.tools.project.api.java :as java]
             [exoscale.tools.project.api.tasks :as tasks]
-            [exoscale.deps-version :as version]))
+            [exoscale.deps-version :as version]
+            [exoscale.tools.project.api.version :as v]))
 
 (def default-opts
   #:exoscale.project{:file "deps.edn"
@@ -120,5 +121,16 @@
   (task (assoc (into-opts opts)
                :id :test)))
 
+(defn version-bump-and-snapshot
+  [opts]
+  (-> opts
+      into-opts
+      v/bump-and-snapshot))
+
+(defn version-remove-snapshot
+  [opts]
+  (-> opts
+      into-opts
+      v/remove-snapshot))
 
 
