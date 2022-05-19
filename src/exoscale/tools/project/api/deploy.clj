@@ -1,8 +1,8 @@
 (ns exoscale.tools.project.api.deploy
   (:require [clojure.tools.cli.api :as td]
-            [exoscale.tools.project.dir :as dir]
             [deps-deploy.deps-deploy :as dd]
-            [exoscale.tools.project.api.jar :as j]))
+            [exoscale.tools.project.api.jar :as j]
+            [exoscale.tools.project.dir :as dir]))
 
 (defn local
   [opts]

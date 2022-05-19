@@ -22,11 +22,11 @@
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.spec.alpha :as s]
-            [clojure.tools.deps.alpha.util.dir :as td]
-            [exoscale.tools.project.dir :as dir]
-            [exoscale.tools.project.io :as pio]
             [clojure.tools.build.api :as tb]
-            [exoscale.lingo :as l]))
+            [clojure.tools.deps.alpha.util.dir :as td]
+            [exoscale.lingo :as l]
+            [exoscale.tools.project.dir :as dir]
+            [exoscale.tools.project.io :as pio]))
 
 (def default-tasks
   "Sets some desirable default tasks"

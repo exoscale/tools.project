@@ -8,11 +8,11 @@
             [exoscale.lingo :as l]
             [exoscale.tools.project.api :as api]
             [exoscale.tools.project.api.deploy :as deploy]
+            [exoscale.tools.project.api.git :as git]
             [exoscale.tools.project.api.jar :as jar]
             [exoscale.tools.project.api.java :as java]
             [exoscale.tools.project.api.tasks :as tasks]
-            [exoscale.tools.project.api.version :as v]
-            [exoscale.tools.project.api.git :as git]))
+            [exoscale.tools.project.api.version :as v]))
 
 (def default-opts
   #:exoscale.project{:file "deps.edn"

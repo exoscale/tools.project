@@ -1,8 +1,8 @@
 (ns exoscale.tools.project.api.jar
   (:require [clojure.tools.build.api :as b]
             [exoscale.tools.project.api :as api]
-            [exoscale.tools.project.dir :as dir]
-            [exoscale.tools.project.api.version :as v]))
+            [exoscale.tools.project.api.version :as v]
+            [exoscale.tools.project.dir :as dir]))
 
 (defn jar-file*
   ([lib version]
