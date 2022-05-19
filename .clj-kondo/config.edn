@@ -6,5 +6,10 @@
                                             exoscale.tools.project.module/jar
                                             exoscale.tools.project.module/deploy
                                             exoscale.tools.project.module/release
-                                            exoscale.tools.project.api/version]}}
+                                            exoscale.tools.project.api/version
+                                            exoscale.tools.project/version-remove-snapshot
+                                            exoscale.tools.project/version-bump-and-snapshot
+                                            exoscale.tools.project/release-git-version
+                                            exoscale.tools.project/release-git-snapshot
+                                            exoscale.tools.project/release-git-push]}}
  :skip-comments true}

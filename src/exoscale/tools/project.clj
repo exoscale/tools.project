@@ -4,14 +4,15 @@
             [clojure.java.io :as io]
             [clojure.spec.alpha :as s]
             [clojure.tools.deps.alpha.util.dir :as td]
+            [exoscale.deps-version :as version]
             [exoscale.lingo :as l]
             [exoscale.tools.project.api :as api]
             [exoscale.tools.project.api.deploy :as deploy]
             [exoscale.tools.project.api.jar :as jar]
             [exoscale.tools.project.api.java :as java]
             [exoscale.tools.project.api.tasks :as tasks]
-            [exoscale.deps-version :as version]
-            [exoscale.tools.project.api.version :as v]))
+            [exoscale.tools.project.api.version :as v]
+            [exoscale.tools.project.io :as pio]))
 
 (def default-opts
   #:exoscale.project{:file "deps.edn"
@@ -132,5 +133,32 @@
   (-> opts
       into-opts
       v/remove-snapshot))
+
+(defn release-git-version
+  [opts]
+  (let [opts (into-opts opts)]
+    (pio/shell ["git config --global --add safe.directory $PWD"
+                "git add VERSION"
+                "git commit -m \"Version $VERSION\""
+                "git tag -a \"$VERSION\" --no-sign -m \"Release $VERSION\""]
+               {:dir td/*the-dir*
+                :env {"VERSION" (v/get-version opts)}})))
+
+(defn release-git-snapshot
+  [opts]
+  (let [opts (into-opts opts)]
+    (pio/shell ["git config --global --add safe.directory $PWD"
+                "git add VERSION"
+                "git commit -m \"Version $VERSION\""]
+               {:dir td/*the-dir*
+                :env {"VERSION" (v/get-version opts)}})))
+
+(defn release-git-push
+  [_]
+  (pio/shell ["git pull && git push --follow-tags"]
+             {:dir td/*the-dir*}))
+
+
+
 
 

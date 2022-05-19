@@ -21,10 +21,10 @@
   composability and is not spawning as many processes as we have tasks."
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [clojure.java.shell :as shell]
             [clojure.spec.alpha :as s]
             [clojure.tools.deps.alpha.util.dir :as td]
             [exoscale.tools.project.dir :as dir]
+            [exoscale.tools.project.io :as pio]
             [clojure.tools.build.api :as tb]
             [exoscale.lingo :as l]))
 
@@ -55,35 +55,14 @@
    :release [#:exoscale.project.task{:run :exoscale.tools.project/version-remove-snapshot}
              #:exoscale.project.task{:ref :deploy :for-all [:exoscale.project/libs]}
              #:exoscale.project.task{:ref :uberjar :for-all [:exoscale.project/deployables]}
-             #:exoscale.project.task{:shell
-                                     ["git config --global --add safe.directory $PWD"
-                                      "git add VERSION"
-                                      (str "export VERSION=$(cat VERSION) && "
-                                           "git commit -m \"Version $VERSION\" && "
-                                           "git tag -a \"$VERSION\" --no-sign -m \"Release $VERSION\"")]}
+             #:exoscale.project.task{:run :exoscale.tools.project/release-git-version}
              #:exoscale.project.task{:run :exoscale.tools.project/version-bump-and-snapshot}
-             #:exoscale.project.task
-              {:shell
-               ["git config --global --add safe.directory $PWD"
-                (str "export VERSION=$(cat VERSION) && "
-                     "git add VERSION && "
-                     "git commit -m \"Version $VERSION\"")
-                "git pull && git push --follow-tags"]}]})
+             #:exoscale.project.task{:run :exoscale.tools.project/release-git-snapshot}
+             #:exoscale.project.task{:run :exoscale.tools.project/release-git-push}]})
 
 (defn shell*
   [cmds {::keys [dir env]}]
-  (run! (fn [cmd]
-          (let [res (apply shell/sh
-                           (cond-> ["sh" "-c" cmd]
-                             dir
-                             (conj :dir dir)
-                             env
-                             (conj :env env)))]
-            (when (pos? (:exit res))
-              (throw (ex-info "Command failed to run" (assoc res :cmd cmd))))
-            (println (:out res))
-            res))
-        cmds))
+  (pio/shell cmds {:dir dir :env env}))
 
 (defn run*
   [task {::keys [dir] :as opts}]
