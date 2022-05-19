@@ -1,11 +1,10 @@
 (ns exoscale.tools.project.api.version
-  (:require [clojure.string :as str]
-            [exoscale.deps-version :as version]))
+  (:require [exoscale.deps-version :as version]))
 
 (defn get-version
   [{:as _opts :exoscale.project/keys [version-file version]}]
   (or version
-      (some-> version-file version/read-version-file* str/trim)))
+      (some-> version-file version/read-version-file*)))
 
 (defn remove-snapshot
   [{:as _opts
