@@ -96,7 +96,7 @@
 (defn task
   [opts]
    ;; let's assume we have the full env here
-  (let [{:as root-deps-edn
+  (let [{:as task-deps-edn
          :exoscale.project/keys [tasks]
          :keys [id]} (edn/read-string (slurp (dir/canonicalize "deps.edn")))
         tasks (merge default-tasks tasks)
@@ -115,10 +115,11 @@
 
     (println (format "Starting task %s" task-id))
 
-    (doseq [{:as task :exoscale.project.task/keys [for-all]} task-def]
+    (doseq [{:as task :exoscale.project.task/keys [for-all]} task-def
+            :let [task (vary-meta task assoc :exoscale.tools.project.api.tasks/task-deps-edn task-deps-edn)]]
       (if (seq for-all)
         (run! (fn [dir] (run-task! task {::dir (dir/canonicalize dir)}))
-              (or (get-in root-deps-edn for-all)
+              (or (get-in task-deps-edn for-all)
                   (throw (ex-info (format "Missing for-all key %s" for-all)
                                   task))))
         (run-task! task {::dir td/*the-dir*})))))
