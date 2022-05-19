@@ -1,5 +1,5 @@
 (ns exoscale.tools.project.io
-  (:require [clojure.io.shell :as shell]))
+  (:require [clojure.java.shell :as shell]))
 
 (defn shell
   [cmds {:keys [dir env]}]
