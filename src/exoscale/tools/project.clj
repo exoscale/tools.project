@@ -151,9 +151,3 @@
   (let [opts (into-opts opts)]
     (git/push opts)
     opts))
-
-
-
-
-
-
