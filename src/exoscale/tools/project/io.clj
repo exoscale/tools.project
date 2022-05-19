@@ -1,11 +1,12 @@
 (ns exoscale.tools.project.io
-  (:require [clojure.java.shell :as shell]))
+  (:require [clojure.java.shell :as shell]
+            [clojure.string :as str]))
 
 (defn shell
   [cmds {:keys [dir env]}]
   (run! (fn [cmd]
           (let [res (apply shell/sh
-                           (cond-> ["sh" "-c" cmd]
+                           (cond-> (str/split cmd #"\s+")
                              dir
                              (conj :dir dir)
                              env
@@ -15,3 +16,4 @@
             (println (:out res))
             res))
         cmds))
+
