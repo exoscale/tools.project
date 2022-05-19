@@ -1,9 +1,11 @@
 (ns exoscale.tools.project.io
-  (:require [clojure.java.io :as io]))
+  (:require [clojure.java.io :as io]
+            [clojure.string :as str]))
 
 (defn cmd!
   [cmd {:keys [dir env]}]
   (let [pb (ProcessBuilder. ^java.util.List cmd)]
+    (println :cmd (str/join " " cmd))
     (when dir
       (.directory pb (io/file dir)))
     (when env
