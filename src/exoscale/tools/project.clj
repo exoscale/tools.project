@@ -1,10 +1,18 @@
 (ns exoscale.tools.project
   (:refer-clojure :exclude [compile])
-  (:require [exoscale.tools.project.api :as api]
-            [clojure.spec.alpha :as s]
-            [clojure.edn :as edn]
+  (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [exoscale.lingo :as l]))
+            [clojure.spec.alpha :as s]
+            [clojure.tools.deps.alpha.util.dir :as td]
+            [exoscale.deps-version :as version]
+            [exoscale.lingo :as l]
+            [exoscale.tools.project.api :as api]
+            [exoscale.tools.project.api.deploy :as deploy]
+            [exoscale.tools.project.api.git :as git]
+            [exoscale.tools.project.api.jar :as jar]
+            [exoscale.tools.project.api.java :as java]
+            [exoscale.tools.project.api.tasks :as tasks]
+            [exoscale.tools.project.api.version :as v]))
 
 (def default-opts
   #:exoscale.project{:file "deps.edn"
@@ -31,8 +39,8 @@
 (s/def :exoscale.project/deps-file string?)
 
 (s/def :exoscale.project/opts
-  (s/keys :req [:exoscale.project/lib]
-          :opt [:exoscale.project/version
+  (s/keys :opt [:exoscale.project/lib
+                :exoscale.project/version
                 :exoscale.project/version-file
                 :exoscale.project/target-dir
                 :exoscale.project/class-dir
@@ -43,7 +51,7 @@
 
 (defn read-project
   [{:as _opts :exoscale.project/keys [file keypath]}]
-  (try (some-> file
+  (try (some-> (td/canonicalize (io/file file))
                slurp
                edn/read-string
                (get-in keypath))
@@ -53,7 +61,7 @@
   [{:as opts :exoscale.project/keys [version-file]}]
   (cond-> opts
     (some? version-file)
-    (assoc :exoscale.project/version (slurp version-file))))
+    (assoc :exoscale.project/version (version/read-version-file* version-file))))
 
 (defn into-opts [opts]
   (let [opts (-> default-opts
@@ -77,29 +85,69 @@
 (defn compile [opts]
   (-> opts
       into-opts
-      api/compile))
+      java/compile))
 
 (defn jar [opts]
   (-> opts
       into-opts
       api/clean
-      api/jar))
+      jar/jar))
 
 (defn uberjar
   [opts]
   (-> opts
       into-opts
-      api/uberjar))
+      jar/uberjar))
 
 (defn install
   [opts]
   (-> opts
       into-opts
-      api/install))
+      deploy/local))
 
 (defn deploy
   [opts]
   (-> opts
       into-opts
-      api/deploy))
+      deploy/remote))
 
+(defn task
+  [opts]
+  (-> opts
+      into-opts
+      tasks/task))
+
+(defn release
+  [opts]
+  (task (assoc (into-opts opts)
+               :id :test)))
+
+(defn version-bump-and-snapshot
+  [opts]
+  (-> opts
+      into-opts
+      v/bump-and-snapshot))
+
+(defn version-remove-snapshot
+  [opts]
+  (-> opts
+      into-opts
+      v/remove-snapshot))
+
+(defn git-commit+tag-version
+  [opts]
+  (let [opts (into-opts opts)]
+    (git/commit+tag-version opts)
+    opts))
+
+(defn git-commit-snapshot
+  [opts]
+  (let [opts (into-opts opts)]
+    (git/commit-snapshot opts)
+    opts))
+
+(defn git-push
+  [opts]
+  (let [opts (into-opts opts)]
+    (git/push opts)
+    opts))

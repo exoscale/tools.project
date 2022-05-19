@@ -1,8 +1,17 @@
 {:linters
- {:clojure-lsp/unused-public-var {:exclude [exoscale.tools.project/compile
-                                            exoscale.tools.project/clean
-                                            exoscale.tools.project/install
-                                            exoscale.tools.project/uberjar
+ {:clojure-lsp/unused-public-var {:exclude [exoscale.tools.project.module/compile
+                                            exoscale.tools.project.module/clean
+                                            exoscale.tools.project.module/install
+                                            exoscale.tools.project.module/uberjar
+                                            exoscale.tools.project.module/jar
+                                            exoscale.tools.project.module/deploy
+                                            exoscale.tools.project.module/release
+                                            exoscale.tools.project.module/task
+                                            exoscale.tools.project.api/version
+                                            exoscale.tools.project/version-remove-snapshot
+                                            exoscale.tools.project/version-bump-and-snapshot
                                             exoscale.tools.project/jar
-                                            exoscale.tools.project/deploy]}}
+                                            exoscale.tools.project/git-push
+                                            exoscale.tools.project/git-commit+tag-version
+                                            exoscale.tools.project/git-commit-snapshot]}}
  :skip-comments true}
