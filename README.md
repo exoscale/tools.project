@@ -154,7 +154,7 @@ We suggest you add the following aliases to your bash profile, all these plugins
 should be available from any module.
 
 ``` bash
-## common exoscsale tools deps aliases
+## common exoscale tools deps aliases
 alias clj-test/repl='clj -A:test'
 alias clj-test/unit='clj -X:test:test/unit'
 alias clj-test/integration='clj -X:test:test/integration'

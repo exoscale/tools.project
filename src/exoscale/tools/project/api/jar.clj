@@ -47,7 +47,7 @@
 (defn uberjar
   [opts]
   (let [{:exoscale.project/keys [_env lib _version _version-file main
-                                 src-dirs class-dir basis uberjar-file deps-file]
+                                 src-dirs class-dir basis uberjar-file uber-opts deps-file]
          :as opts} opts
         _ (api/clean opts)
         version (v/get-version opts)
@@ -65,11 +65,13 @@
                     :class-dir class-dir
                     :src-dirs src-dirs})
     (println "Creating uberjar: " uber-file)
-    (b/uber {:basis basis
-             :class-dir class-dir
-             :main main
-             :uber-file uber-file})
+    (b/uber (merge uber-opts {:basis basis
+                              :class-dir class-dir
+                              :main main
+                              :uber-file uber-file}))
+                   
     (into opts
           #:exoscale.project{:basis basis
                              :version version
-                             :uberjar-file uber-file})))
+                             :uberjar-file uber-file
+                             :uber-opts uber-opts})))
