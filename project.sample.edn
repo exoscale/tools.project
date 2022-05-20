@@ -16,4 +16,13 @@
                    :slipset.deps-deploy/exec-args
                    {:repository {"releases" {:url "s3p://exo-artifacts/releases"}}
                     :installer :remote
-                    :sign-releases? false}}
+                    :sign-releases? false}
+                   :libs ["modules/foo" "modules/bar"]
+                   :libs2 ["modules/foo" "modules/bar"]
+                   :deployables ["modules/foo" "modules/bar"]
+                   :tasks {:foo [{:exoscale.project.task {:run :some.fn/f :args {}}}]
+                           :bar [{:exoscale.project.task {:run :some.fn/f
+                                                          :args {}
+                                                          :for-all [:exoscale.project/libs]}}
+                                 {:exoscale.project.task {:shell ["echo ho ho ho"]
+                                                          :for-all [:exoscale.project/deployables]}}]}}
