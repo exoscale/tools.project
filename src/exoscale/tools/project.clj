@@ -37,6 +37,7 @@
 (s/def :exoscale.project/src-dirs (s/coll-of string?))
 (s/def :exoscale.project/java-src-dirs (s/coll-of string?))
 (s/def :exoscale.project/deps-file string?)
+(s/def :exoscale.project/uber-opts map?)
 
 (s/def :exoscale.project/opts
   (s/keys :opt [:exoscale.project/lib
@@ -47,7 +48,8 @@
                 :exoscale.project/javac-opts
                 :exoscale.project/src-dirs
                 :exoscale.project/java-src-dirs
-                :exoscale.project/deps-file]))
+                :exoscale.project/deps-file
+                :exoscale.project/uber-opts]))
 
 (defn read-project
   [{:as _opts :exoscale.project/keys [file keypath]}]
