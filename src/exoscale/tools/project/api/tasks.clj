@@ -52,6 +52,21 @@
            #:exoscale.project.task{:run :exoscale.tools.project/clean
                                    :for-all [:exoscale.project/libs]}]
 
+   :format-check [#:exoscale.project.task{:run :exoscale.tools.project/format-check
+                                          :for-all [:exoscale.project/libs]}
+                  #:exoscale.project.task{:run :exoscale.tools.project/format-check
+                                          :for-all [:exoscale.project/deployables]}]
+
+   :format-fix [#:exoscale.project.task{:run :exoscale.tools.project/format-fix
+                                        :for-all [:exoscale.project/libs]}
+                #:exoscale.project.task{:run :exoscale.tools.project/format-fix
+                                        :for-all [:exoscale.project/deployables]}]
+
+   :lint [#:exoscale.project.task{:run :exoscale.tools.project/lint
+                                  :for-all [:exoscale.project/libs]}
+          #:exoscale.project.task{:run :exoscale.tools.project/lint
+                                  :for-all [:exoscale.project/deployables]}]
+
    :release [#:exoscale.project.task{:run :exoscale.tools.project/version-remove-snapshot}
              #:exoscale.project.task{:ref :deploy}
              #:exoscale.project.task{:ref :uberjar}

@@ -54,3 +54,18 @@
 
 ;; for convenience
 (def task p/task)
+
+(defn format-check
+  [opts]
+  (p/format-check opts)
+  (p/task (assoc opts :id :format-check)))
+
+(defn format-fix
+  [opts]
+  (p/format-fix opts)
+  (p/task (assoc opts :id :format-fix)))
+
+(defn lint
+  [opts]
+  (p/lint opts)
+  (p/task (assoc opts :id :lint)))

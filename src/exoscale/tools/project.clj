@@ -4,8 +4,11 @@
             [clojure.java.io :as io]
             [clojure.spec.alpha :as s]
             [clojure.tools.deps.alpha.util.dir :as td]
+            [cljfmt.main :as cljfmt]
+            [clj-kondo.core :as kondo]
             [exoscale.deps-version :as version]
             [exoscale.lingo :as l]
+            [exoscale.tools.project.dir :as dir]
             [exoscale.tools.project.api :as api]
             [exoscale.tools.project.api.deploy :as deploy]
             [exoscale.tools.project.api.git :as git]
@@ -152,4 +155,40 @@
   [opts]
   (let [opts (into-opts opts)]
     (git/push opts)
+    opts))
+
+(defn find-source-dirs
+  [{:keys                                  [aliases paths]
+    :exoscale.project/keys                 [source-path-exclusions]
+    :exoscale.tools.project.api.tasks/keys [dir]
+    :or                                    {source-path-exclusions #"resources"
+                                            dir                    "."}}]
+  (into []
+        (comp cat
+              (remove (partial re-find source-path-exclusions))
+              (map dir/canonicalize))
+        [paths (get-in aliases [:test :extra-paths])]))
+
+(defn format-check
+  [opts]
+  (let [opts    (into-opts opts)
+        srcdirs (find-source-dirs opts)]
+    (println "running format checks with cljfmt for:" (:exoscale.project/lib opts))
+    (cljfmt/check srcdirs cljfmt/default-options)
+    opts))
+
+(defn format-fix
+  [opts]
+  (let [opts    (into-opts opts)
+        srcdirs (find-source-dirs opts)]
+    (println "running format fixes with cljfmt for:" (:exoscale.project/lib opts))
+    (cljfmt/check srcdirs cljfmt/default-options)
+    opts))
+
+(defn lint
+  [opts]
+  (let [opts    (into-opts opts)
+        srcdirs (find-source-dirs opts)]
+    (println "running lint with clj-kondo for:" (:exoscale.project/lib opts))
+    (kondo/run! {:lint srcdirs})
     opts))
