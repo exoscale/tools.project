@@ -1,5 +1,4 @@
 (ns exoscale.tools.project.api
-  (:refer-clojure :exclude [compile])
   (:require [clojure.tools.build.api :as b]))
 
 (defn create-basis
@@ -11,5 +10,3 @@
   (let [{:as opts :exoscale.project/keys [target-dir]} opts]
     (b/delete {:path target-dir})
     opts))
-
-

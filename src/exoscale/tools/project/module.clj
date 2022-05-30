@@ -10,7 +10,6 @@
 
   That essentially means that all fns here as dual purpose depending on which
   directory they are called from"
-  (:refer-clojure :exclude [compile])
   (:require [clojure.edn :as edn]
             [exoscale.tools.project :as p]))
 
@@ -40,10 +39,6 @@
   [opts]
   (task-or-tool opts :clean p/clean))
 
-(defn compile
-  [opts]
-  (task-or-tool opts :compile p/compile))
-
 (defn uberjar
   [opts]
   (task-or-tool opts :uberjar p/uberjar))
@@ -54,6 +49,9 @@
 
 ;; for convenience
 (def task p/task)
+(def outdated p/outdated)
+(def merge-deps p/merge-deps)
+(def merge-aliases p/merge-aliases)
 
 (defn format-check
   [opts]

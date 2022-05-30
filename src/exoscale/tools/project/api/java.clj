@@ -14,4 +14,3 @@
     (assoc opts
            :exoscale.project/class-dir class-dir
            :exoscale.project/java-src-dirs java-src-dirs)))
-

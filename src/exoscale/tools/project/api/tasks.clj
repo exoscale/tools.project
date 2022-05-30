@@ -42,11 +42,6 @@
              #:exoscale.project.task{:run :exoscale.tools.project/uberjar
                                      :for-all [:exoscale.project/deployables]}]
 
-   :compile [#:exoscale.project.task{:run :exoscale.tools.project/compile
-                                     :for-all [:exoscale.project/deployables]}
-             #:exoscale.project.task{:run :exoscale.tools.project/compile
-                                     :for-all [:exoscale.project/libs]}]
-
    :clean [#:exoscale.project.task{:run :exoscale.tools.project/clean
                                    :for-all [:exoscale.project/deployables]}
            #:exoscale.project.task{:run :exoscale.tools.project/clean
@@ -139,4 +134,3 @@
                   (throw (ex-info (format "Missing for-all key %s" for-all)
                                   task))))
         (run-task! task {::dir td/*the-dir*})))))
-

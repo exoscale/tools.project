@@ -1,12 +1,13 @@
 (ns exoscale.tools.project
-  (:refer-clojure :exclude [compile])
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.spec.alpha :as s]
             [clojure.tools.deps.alpha.util.dir :as td]
             [cljfmt.main :as cljfmt]
             [clj-kondo.core :as kondo]
+            [antq.core :as antq]
             [exoscale.deps-version :as version]
+            [exoscale.deps-modules :as deps-modules]
             [exoscale.lingo :as l]
             [exoscale.tools.project.dir :as dir]
             [exoscale.tools.project.api :as api]
@@ -86,11 +87,6 @@
 
 (defn clean [opts]
   (-> opts into-opts api/clean))
-
-(defn compile [opts]
-  (-> opts
-      into-opts
-      java/compile))
 
 (defn jar [opts]
   (-> opts
@@ -191,4 +187,28 @@
         srcdirs (find-source-dirs opts)]
     (println "running lint with clj-kondo for:" (:exoscale.project/lib opts))
     (kondo/run! {:lint srcdirs})
+    opts))
+
+(defn merge-deps
+  [opts]
+  (let [opts    (into-opts opts)]
+    (deps-modules/merge-deps opts)
+    opts))
+
+(defn merge-aliases
+  [opts]
+  (let [opts    (into-opts opts)]
+    (deps-modules/merge-aliases opts)
+    opts))
+
+(defn outdated
+  [opts]
+  (let [opts (into-opts opts)]
+    (println "checking for outdated versions with antq for:"
+             (:exoscale.project/lib opts))
+    (antq/main* (merge {:check-clojure-tools true
+                        :directory           ["."]
+                        :reporter            "table"}
+                       (:antq.core/options opts))
+                nil)
     opts))
