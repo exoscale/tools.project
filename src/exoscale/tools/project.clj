@@ -15,7 +15,6 @@
             [exoscale.tools.project.api.deploy :as deploy]
             [exoscale.tools.project.api.git :as git]
             [exoscale.tools.project.api.jar :as jar]
-            [exoscale.tools.project.api.java :as java]
             [exoscale.tools.project.api.tasks :as tasks]
             [exoscale.tools.project.api.version :as v]))
 
@@ -155,11 +154,9 @@
     opts))
 
 (defn find-source-dirs
-  [{:keys                                  [aliases paths]
-    :exoscale.project/keys                 [source-path-exclusions]
-    :exoscale.tools.project.api.tasks/keys [dir]
-    :or                                    {source-path-exclusions #"resources"
-                                            dir                    "."}}]
+  [{:keys                  [aliases paths]
+    :exoscale.project/keys [source-path-exclusions]
+    :or                    {source-path-exclusions #"resources"}}]
   (into []
         (comp cat
               (remove (partial re-find source-path-exclusions))
