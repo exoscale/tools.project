@@ -11,6 +11,7 @@
             [exoscale.lingo :as l]
             [exoscale.tools.project.dir :as dir]
             [exoscale.tools.project.api :as api]
+            [exoscale.tools.project.api.check :as check]
             [exoscale.tools.project.api.deploy :as deploy]
             [exoscale.tools.project.api.git :as git]
             [exoscale.tools.project.api.jar :as jar]
@@ -211,4 +212,10 @@
                         :reporter            "table"}
                        (:antq.core/options opts))
                 nil)
+    opts))
+
+(defn check
+  [opts]
+  (let [opts (into-opts opts)]
+    (check/check opts)
     opts))
