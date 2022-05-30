@@ -3,7 +3,7 @@ name: Clojure CI
 on: [push]
 
 env:
-  GIT_SSH_COMMAND: "ssh -o UserKnownHostsFile=/dev/null -o StrickHostKeyChecking=no"
+  GIT_SSH_COMMAND: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
 jobs:
   build:
