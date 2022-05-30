@@ -1,5 +1,7 @@
-{:paths ["src"]
+{:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        io.github.seancorfield/deps-new {:git/tag "v0.4.9"
+                                         :git/sha "ba30a76af8b42a45f8498a168bf89518a794fce5"}
         com.github.liquidz/antq {:git/tag "1.6.774"
                                  :git/sha "ea9e71dc1ae5d782d4fbab121d5183b008abbff5"
                                  :git/url "https://github.com/liquidz/antq"}
@@ -17,20 +19,18 @@
         exoscale/deps-modules {:git/sha "cb2b718b56ec170200685551183930013da3a7bc"
                                :git/url "https://github.com/exoscale/deps-modules"}
         org.clojure/tools.deps.alpha {:mvn/version "0.14.1178"}
-        babashka/fs {:mvn/version "0.1.6"}}
-
+        babashka/fs {:mvn/version "0.1.6"}
+        rewrite-clj/rewrite-clj {:mvn/version "1.0.699-alpha"}}
 
  :aliases
  {:project {:deps {com.exoscale/tools.project {:local/root "."}}
-            :ns-default exoscale.tools.project.module}}
+            :ns-default exoscale.tools.project}}
 
  :slipset.deps-deploy/exec-args
  {:installer :remote :sign-releases? false :repository "clojars"}
 
  :exoscale.project/lib com.exoscale/tools.project
  :exoscale.project/version-file "VERSION"
- :exoscale.project/libs []
- :exoscale.project/deployables []
 
  :tools/usage
- {:ns-default exoscale.tools.project.module}}
+ {:ns-default exoscale.tools.project}}

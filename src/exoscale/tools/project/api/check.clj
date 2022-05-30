@@ -24,12 +24,20 @@
    :classpath (map io/file dirs)
    :ignore-unreadable? false))
 
+(defn- find-dirs
+  [opts]
+  (filter
+   (complement (partial re-find #"resources"))
+   (concat (or (:paths opts) ["src"])
+           (get-in opts [:aliases :test :extra-paths]))))
+
 (defn check
   [opts]
   (println "namespace checks for:" (:exoscale.project/lib opts))
-  (let [dirs       (concat (or (:paths opts) ["src"])
-                           (get-in opts [:aliases :test :extra-paths]))
+  (let [dirs       (find-dirs opts)
         namespaces (find-namespaces dirs)]
+    (println "namespace checks for:" (:exoscale.project/lib opts) "in" (doall dirs))
     (when (some false? (mapv check-ns namespaces))
       (System/exit 1))
-    (shutdown-agents)))
+    (shutdown-agents))
+  opts)

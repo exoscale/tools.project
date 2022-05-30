@@ -19,7 +19,6 @@
 (defn jar [opts]
   (let [{:exoscale.project/keys [_env lib _version _version-file class-dir src-dirs basis jar-file deps-file]
          :as opts} opts]
-    (api/clean opts)
     (let [version (v/get-version opts)
           deps-file (dir/canonicalize deps-file)
           basis (or basis (api/create-basis deps-file))
@@ -49,7 +48,6 @@
   (let [{:exoscale.project/keys [_env lib _version _version-file main
                                  src-dirs class-dir basis uberjar-file uber-opts deps-file]
          :as opts} opts
-        _ (api/clean opts)
         version (v/get-version opts)
         deps-file (dir/canonicalize deps-file)
         basis (or basis (api/create-basis deps-file))
@@ -69,7 +67,6 @@
                               :class-dir class-dir
                               :main main
                               :uber-file uber-file}))
-
     (into opts
           #:exoscale.project{:basis basis
                              :version version

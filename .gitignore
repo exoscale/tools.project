@@ -1,3 +1,5 @@
 /.cpcache/
 .lsp
 .clj-kondo/.cache
+resources/git-version
+target
