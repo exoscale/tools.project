@@ -9,11 +9,15 @@
 
 (defn shell
   "Run shell commands contained in `cmds`. The first unsuccesful exit triggers a system exit."
-  [cmds {:keys [dir env]}]
+  [cmds {:keys [dir env out]}]
   (try
-    (doseq [cmd cmds]
-      (-> (p/process {:command-args  ["sh" "-c" cmd] :dir dir :env env})
-          (check)))
+    (last
+     (for [cmd cmds]
+       (-> (p/process {:command-args (if (vector? cmd) cmd ["sh" "-c" cmd])
+                       :dir          dir
+                       :env          env
+                       :out          (or out :inherit)})
+           (check))))
     (catch Exception _
       ;; At this stage we already printed the relevant error to stdout
       (System/exit 1))))

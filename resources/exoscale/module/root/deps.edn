@@ -1,0 +1,11 @@
+{:paths ["src" "resources"]
+ :deps {org.clojure/clojure {:exoscale.deps/inherit :all}}
+
+ :exoscale.project/lib {{raw-name}}
+ :exoscale.project/version-file "../../VERSION"
+
+ :aliases
+ {:project
+  {:exoscale.deps/inherit :all}
+  :test
+  {:exoscale.deps/inherit :all}}}
