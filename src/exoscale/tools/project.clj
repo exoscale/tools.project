@@ -179,7 +179,7 @@
   (let [opts    (into-opts opts)
         srcdirs (find-source-dirs opts)]
     (println "running format fixes with cljfmt for:" (:exoscale.project/lib opts))
-    (cljfmt/check srcdirs cljfmt/default-options)
+    (cljfmt/fix srcdirs cljfmt/default-options)
     opts))
 
 (defn lint
@@ -187,7 +187,11 @@
   (let [opts    (into-opts opts)
         srcdirs (find-source-dirs opts)]
     (println "running lint with clj-kondo for:" (:exoscale.project/lib opts))
-    (kondo/run! {:lint srcdirs})
+    (let [{:keys [summary] :as results} (kondo/run! {:lint srcdirs})]
+      (kondo/print! results)
+      (flush)
+      (when (pos? (:error summary))
+        (System/exit 1)))
     opts))
 
 (defn merge-deps

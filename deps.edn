@@ -19,5 +19,17 @@
         org.clojure/tools.deps.alpha {:mvn/version "0.14.1178"}
         babashka/process {:mvn/version "0.1.3"}}
 
+ :aliases
+ {:project {:deps {com.exoscale/tools.project {:local/root "."}}
+            :ns-default exoscale.tools.project.module}}
+
+ :slipset.deps-deploy/exec-args
+ {:installer :remote :sign-releases? false :repository "clojars"}
+ 
+ :exoscale.project/lib com.exoscale/tools.project
+ :exoscale.project/version-file "VERSION"
+ :exoscale.project/libs []
+ :exoscale.project/deployables []
+
  :tools/usage
  {:ns-default exoscale.tools.project.module}}
