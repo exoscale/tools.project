@@ -69,7 +69,7 @@
                               :class-dir class-dir
                               :main main
                               :uber-file uber-file}))
-                   
+
     (into opts
           #:exoscale.project{:basis basis
                              :version version
