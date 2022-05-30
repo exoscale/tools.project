@@ -132,6 +132,7 @@
       (System/exit 1))
 
     (println (format "Starting task %s" task-id))
+    (flush)
 
     (doseq [{:as task :exoscale.project.task/keys [for-all]} task-def
             :let [task (vary-meta task assoc :exoscale.tools.project.api.tasks/task-deps-edn task-deps-edn)]]
