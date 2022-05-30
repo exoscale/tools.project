@@ -15,7 +15,9 @@
                              :exclusions [s3-wagon-private/s3-wagon-private]}
         exoscale/sos-wagon-private {:mvn/version "1.3.2-exoscale11"}
         exoscale/deps-modules {:git/sha "cb2b718b56ec170200685551183930013da3a7bc"
-                               :git/url "https://github.com/exoscale/deps-modules"}}
+                               :git/url "https://github.com/exoscale/deps-modules"}
+        org.clojure/tools.deps.alpha {:mvn/version "0.14.1178"}
+        babashka/process {:mvn/version "0.1.3"}}
 
  :tools/usage
  {:ns-default exoscale.tools.project.module}}

@@ -11,8 +11,7 @@
   That essentially means that all fns here as dual purpose depending on which
   directory they are called from"
   (:require [clojure.edn :as edn]
-            [exoscale.tools.project :as p]
-            [exoscale.tools.project.api.check :as check]))
+            [exoscale.tools.project :as p]))
 
 ;;; module aware commands
 
