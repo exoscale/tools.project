@@ -47,12 +47,18 @@
            #:exoscale.project.task{:run :exoscale.tools.project/clean
                                    :for-all [:exoscale.project/libs]}]
 
-   :format-check [#:exoscale.project.task{:run :exoscale.tools.project/format-check
+   :check [#:exoscale.project.task {:shell ["clojure -X:project:test exoscale.tools.project/check"]}]
+
+   :check/all [#:exoscale.project.task {:ref :check}
+               #:exoscale.project.task {:ref :check :for-all [:exoscale.project/libs]}
+               #:exoscale.project.task {:ref :check :for-all [:exoscale.project/deployables]}]
+
+   :format/check [#:exoscale.project.task{:run :exoscale.tools.project/format-check
                                           :for-all [:exoscale.project/libs]}
                   #:exoscale.project.task{:run :exoscale.tools.project/format-check
                                           :for-all [:exoscale.project/deployables]}]
 
-   :format-fix [#:exoscale.project.task{:run :exoscale.tools.project/format-fix
+   :format/fix [#:exoscale.project.task{:run :exoscale.tools.project/format-fix
                                         :for-all [:exoscale.project/libs]}
                 #:exoscale.project.task{:run :exoscale.tools.project/format-fix
                                         :for-all [:exoscale.project/deployables]}]
@@ -97,12 +103,13 @@
 
 (defn- run-task!
   [{:as task :exoscale.project.task/keys [shell ref run args]}
-   opts]
+   {::keys [dir] :as opts}]
   (let [ret (s/conform :exoscale.project/task task)]
     (case (first ret)
       :shell (shell* shell opts)
       :run (run* run (merge {} args opts))
-      :ref (exoscale.tools.project.api.tasks/task (assoc opts :id ref)))))
+      :ref (binding [td/*the-dir* dir]
+             (exoscale.tools.project.api.tasks/task (assoc opts :id ref))))))
 
 (defn task
   [opts]
