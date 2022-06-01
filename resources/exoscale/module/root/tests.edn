@@ -1,1 +1,1 @@
-#include ".kaocha/root.edn"
+#include "../../.kaocha/default.edn"

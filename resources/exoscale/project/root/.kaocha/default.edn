@@ -1,0 +1,11 @@
+#kaocha/v1
+{:plugins    [:kaocha.plugin/randomize
+              :kaocha.plugin/filter
+              :kaocha.plugin/capture-output
+              :kaocha.plugin/junit-xml
+              :kaocha.plugin/profiling]
+ :tests      [{:skip-meta   [:integration]}
+              {:id          :integration
+               :focus-meta  [:integration]}]
+ :kaocha.plugin.junit-xml/target-file
+ "target/test-reports/report.xml"}

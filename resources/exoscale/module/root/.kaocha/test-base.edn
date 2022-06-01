@@ -1,2 +1,0 @@
-{:type :kaocha.type/clojure.test
- :ns-patterns ["-test$"]}

@@ -1,7 +1,0 @@
-#kaocha/v1
- #merge [#include "base.edn"
-         {:tests
-          [#merge [#include "test-base.edn"
-                   {:id :unit :skip-meta [:integration]}]
-           #merge [#include "test-base.edn"
-                   {:id :integration :focus-meta [:integration]}]]}]
