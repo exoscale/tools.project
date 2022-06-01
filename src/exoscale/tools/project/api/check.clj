@@ -4,7 +4,12 @@
             [clojure.java.io :as io]
             [clojure.string  :as str]))
 
-(defn- file-for [ns] (-> ns name (str/replace \- \_) (str/replace \. \/)))
+(defn- file-for
+  [ns]
+  (-> ns
+      name
+      (str/replace \- \_)
+      (str/replace \. \/)))
 
 (defn- check-ns
   [ns]
@@ -28,8 +33,7 @@
   [opts]
   (filter
    (complement (partial re-find #"resources"))
-   (concat (or (:paths opts) ["src"])
-           (get-in opts [:aliases :test :extra-paths]))))
+   (concat (:paths opts) (get-in opts [:aliases :test :extra-paths]))))
 
 (defn check
   [opts]

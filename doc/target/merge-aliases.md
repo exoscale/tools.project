@@ -8,6 +8,10 @@ Modules to merge are inferred:
   inferred from the list of modules;
 - Otherwise, `:exoscale.deps/deps-files` is assumed to be `["deps.edn"]`
 
+When inferring deps file configuration from the list of modules, it may be useful
+to add additonal files to the list of entries processed. This can be done with
+the `:exoscale.deps/extra-deps-files` key.
+
 ### Usage
 
 ```bash
