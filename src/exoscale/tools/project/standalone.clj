@@ -148,6 +148,15 @@
       into-opts
       (tasks/task opts)))
 
+(defn prep
+  [opts]
+  (let [{:exoscale.tools.project.api.tasks/keys [dir]
+         :or {dir "."}
+         :as opts}
+        (into-opts opts)]
+    (pio/shell [["clojure" "-X:deps" "prep"]] {:dir dir})
+    opts))
+
 (defn release
   [opts]
   (-> opts

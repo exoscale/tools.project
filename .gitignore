@@ -2,4 +2,5 @@
 .lsp
 .clj-kondo/.cache
 resources/git-version
-target
+/target
+/modules/*/target

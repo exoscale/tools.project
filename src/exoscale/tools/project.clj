@@ -76,6 +76,10 @@
 (def outdated
   ps/outdated)
 
+(defn prep
+  [opts]
+  (task-or-tool opts :prep ps/prep))
+
 (defn release
   [opts]
   (ps/task (assoc opts :id :release)))
