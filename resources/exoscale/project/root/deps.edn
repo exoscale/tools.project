@@ -7,16 +7,14 @@
  :aliases
  {:project
   {:ns-default exoscale.tools.project.module
-   :extra-deps {io.github..exoscale/tools.project
+   :extra-deps {io.github.exoscale/tools.project
                 {:git/sha "b94e2945dbf6940b325ed4d86ec2cae6091944a4"}}
   :exoscale.deps/inherit :all}
   :test
   {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}
                 lambdaisland/kaocha-junit-xml {:exoscale.deps/inherit :all, :mvn/version "0.0.76"}}
-   :extra-paths ["test" "resources" "test/resources"]
+   :extra-paths ["test" "test/resources"]
    :exec-fn  kaocha.runner/exec-fn
-   :jvm-opts ["-Dio.netty.tryReflectionSetAccessible=false"
-              "-Dclojure.compiler.disable-locals-clearing=true"]
    :exoscale.deps/inherit :all}}
 
  :exoscale.project/managed-dependencies
@@ -30,4 +28,6 @@
 
   :test
   {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}
-                lambdaisland/kaocha-junit-xml {:exoscale.deps/inherit :all, :mvn/version "0.0.76"}}}}}
+                lambdaisland/kaocha-junit-xml {:exoscale.deps/inherit :all, :mvn/version "0.0.76"}}
+   :extra-paths ["test" "test/resources"]
+   :exec-fn  kaocha.runner/exec-fn}}}
