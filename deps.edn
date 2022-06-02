@@ -9,15 +9,12 @@
         clj-kondo/clj-kondo {:mvn/version "2022.05.31"}
         timofreiberg/bultitude {:mvn/version "0.3.1"}
         io.github.clojure/tools.build {:git/tag "v0.8.2" :git/sha "ba1a2bf"}
-        exoscale/deps-version {:git/sha "e5caeb9dcb4b691de59b271c36e9c21093db6557"
-                               :git/url "https://github.com/exoscale/deps-version"}
+        io.github.exoscale/deps-version {:git/sha "e5caeb9dcb4b691de59b271c36e9c21093db6557"}
         com.exoscale/lingo {:mvn/version "1.0.0-alpha19"}
-        slipset/deps-deploy {:git/sha "b87c9299761762984bd54a285ca8fa0aac81809f"
-                             :git/url "https://github.com/slipset/deps-deploy"
-                             :exclusions [s3-wagon-private/s3-wagon-private]}
+        io.github.slipset/deps-deploy {:git/sha "b87c9299761762984bd54a285ca8fa0aac81809f"
+                                       :exclusions [s3-wagon-private/s3-wagon-private]}
         exoscale/sos-wagon-private {:mvn/version "1.3.2-exoscale11"}
-        exoscale/deps-modules {:git/sha "cb2b718b56ec170200685551183930013da3a7bc"
-                               :git/url "https://github.com/exoscale/deps-modules"}
+        io.github.exoscale/deps-modules {:git/sha "cb2b718b56ec170200685551183930013da3a7bc"}
         org.clojure/tools.deps.alpha {:mvn/version "0.14.1178"}
         babashka/fs {:mvn/version "0.1.6"}
         rewrite-clj/rewrite-clj {:mvn/version "1.0.767-alpha"}}

@@ -147,7 +147,7 @@
   [opts args]
    ;; let's assume we have the full env here
   (let [{:as task-deps-edn
-         :exoscale.project/keys [tasks]
+         :exoscale.project/keys [tasks lib]
          :keys [id]} (edn/read-string (slurp (dir/canonicalize "deps.edn")))
         tasks (merge default-tasks tasks)
         task-id (keyword (:id opts))
@@ -163,7 +163,7 @@
       (println (format "Task '%s' not found" id))
       (System/exit 1))
 
-    (println (format "Starting task %s" task-id))
+    (println "starting task %s:" task-id "for:" lib)
     (flush)
 
     (doseq [{:as task :keys [for-all]} task-def
