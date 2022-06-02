@@ -73,6 +73,10 @@
    :lint [{:run :exoscale.tools.project.standalone/lint
            :for-all [:exoscale.project/modules]}]
 
+   :prep [{:run :exoscale.tools.project.standalone/prep
+           :for-all [:exoscale.project/modules]
+           :when :exoscale.project/needs-prep?}]
+
    :revision-sha [{:run :exoscale.tools.project.standalone/revision-sha
                    :for-all [:exoscale.project/modules]}]
 
@@ -163,7 +167,7 @@
       (println (format "Task '%s' not found" id))
       (System/exit 1))
 
-    (println "starting task %s:" task-id "for:" lib)
+    (println "starting task:" task-id "for:" lib)
     (flush)
 
     (doseq [{:as task :keys [for-all]} task-def
