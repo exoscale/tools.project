@@ -56,9 +56,8 @@
    :clean [{:run :exoscale.tools.project.standalone/clean
             :for-all [:exoscale.project/modules]}]
 
-   :check [{:shell ["clojure -X:project:test exoscale.tools.project.standalone/standalone-check"]}]
-
-   :check/all [{:ref :check :for-all [:exoscale.project/modules]}]
+   :check [{:run   :exoscale.tools.project.standalone/check
+            :for-all [:exoscale.project/modules]}]
 
    :test [{:run :exoscale.tools.project.standalone/test
            :for-all [:exoscale.project/modules]

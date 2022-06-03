@@ -109,9 +109,11 @@
 (defn prep
   [opts]
   (let [{:exoscale.tools.project.api.tasks/keys [dir]
+         :exoscale.project/keys [lib]
          :or {dir "."}
          :as opts}
         (into-opts opts)]
+    (println "running prep task for dependencies in:" lib)
     (pio/shell [["clojure" "-X:deps" "prep"]] {:dir dir})
     opts))
 
@@ -295,11 +297,14 @@
 
 (defn check
   [opts]
-  (-> (into-opts opts)
-      prep
-      prep-self
-      (assoc :id :check)
-      (task)))
+  (let [opts (-> (into-opts opts)
+                 prep
+                 prep-self)
+        dir  (or (:exoscale.tools.project.api.tasks/dir opts) ".")]
+    (pio/shell [["clojure" "-X:project:test"
+                 "exoscale.tools.project.standalone/standalone-check"]]
+               {:dir dir})
+    opts))
 
 (defn uberjar
   [opts]
