@@ -34,7 +34,7 @@
 
 (defn check
   [opts]
-  (task-or-tool opts :check/all ps/check))
+  (task-or-tool opts :check ps/check))
 
 (defn clean
   [opts]
