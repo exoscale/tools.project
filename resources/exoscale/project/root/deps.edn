@@ -7,8 +7,8 @@
  :aliases
  {:project
   {:ns-default exoscale.tools.project
-   :extra-deps {io.github.exoscale/tools.project
-                {:git/sha "266c82621dffcd4b21de5e9e32739da922d91a00"}}
+   :deps {io.github.exoscale/tools.project
+          {:git/sha "4750c37d7750d7e57786eaa5add940d29b30fb57"}}
   :exoscale.deps/inherit :all}
   :test
   {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}
@@ -23,8 +23,8 @@
  :exoscale.project/managed-aliases
  {:project
   {:ns-default exoscale.tools.project
-   :extra-deps {io.github.exoscale/tools.project
-                {:git/sha "266c82621dffcd4b21de5e9e32739da922d91a00"}}}
+   :deps {io.github.exoscale/tools.project
+          {:git/sha "4750c37d7750d7e57786eaa5add940d29b30fb57"}}}
 
   :test
   {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}
