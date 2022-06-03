@@ -49,6 +49,9 @@
              :unless :exoscale.project/prevent-deploy?
              :for-all [:exoscale.project/modules]}]
 
+   :jar [{:run :exoscale.tools.project.standalone/jar
+          :for-all [:exoscale.project/modules]}]
+
    :uberjar [{:run :exoscale.tools.project.standalone/uberjar
               :when :exoscale.project/uberjar?
               :for-all [:exoscale.project/modules]}]
