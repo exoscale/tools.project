@@ -8,7 +8,7 @@
  {:project
   {:ns-default exoscale.tools.project
    :deps {io.github.exoscale/tools.project
-          {:git/sha "4750c37d7750d7e57786eaa5add940d29b30fb57"}}
+          {:git/sha "25a55930cf7bf142be710bfbbf076fa713338ced"}}
   :exoscale.deps/inherit :all}
   :test
   {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}
@@ -24,7 +24,7 @@
  {:project
   {:ns-default exoscale.tools.project
    :deps {io.github.exoscale/tools.project
-          {:git/sha "4750c37d7750d7e57786eaa5add940d29b30fb57"}}}
+          {:git/sha "25a55930cf7bf142be710bfbbf076fa713338ced"}}}
 
   :test
   {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}
