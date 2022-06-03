@@ -16,7 +16,6 @@
             [exoscale.tools.project.io :as pio]
             [exoscale.tools.project.template :as template]
             [exoscale.tools.project.api :as api]
-            [exoscale.tools.project.api.check :as check]
             [exoscale.tools.project.api.deploy :as deploy]
             [exoscale.tools.project.api.git :as git]
             [exoscale.tools.project.api.jar :as jar]
@@ -289,20 +288,30 @@
       into-opts
       api/revision-sha))
 
-(defn standalone-check
+;; We do this here to avoid forcing the registration of
+;; the project tool as an extra-dep
+(def deps-check-config
+  '{:aliases
+    {:spootnik-deps-check
+     {:extra-deps {org.spootnik/deps-check {:mvn/version "0.5.2"}}}}})
+
+(defn- find-dirs
   [opts]
-  (-> (into-opts opts)
-      (api/revision-sha)
-      (check/check)))
+  (vec
+   (filter
+    (complement (partial re-find #"resources"))
+    (concat (:paths opts) (get-in opts [:aliases :test :extra-paths])))))
 
 (defn check
   [opts]
-  (let [opts (-> (into-opts opts)
-                 prep
-                 prep-self)
-        dir  (or (:exoscale.tools.project.api.tasks/dir opts) ".")]
-    (pio/shell [["clojure" "-X:project:test"
-                 "exoscale.tools.project.standalone/standalone-check"]]
+  (let [opts        (-> (into-opts opts)
+                        (api/revision-sha)
+                        prep
+                        prep-self)
+        dir         (or (:exoscale.tools.project.api.tasks/dir opts) ".")
+        source-dirs (find-dirs opts)]
+    (pio/shell [["clojure" "-Sdeps" (pr-str deps-check-config) "-X:spootnik-deps-check:test"
+                 "spootnik.deps-check/check" ":paths" (pr-str source-dirs)]]
                {:dir dir})
     opts))
 
