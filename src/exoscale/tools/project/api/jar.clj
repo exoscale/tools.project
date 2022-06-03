@@ -18,30 +18,30 @@
 
 (defn jar [opts]
   (let [{:exoscale.project/keys [_env lib _version _version-file class-dir src-dirs basis jar-file deps-file]
-         :as opts} opts]
-    (let [version (v/get-version opts)
-          deps-file (dir/canonicalize deps-file)
-          basis (or basis (api/create-basis deps-file))
-          jar-file (dir/canonicalize (or jar-file (jar-file* (name lib) version)))
-          class-dir (dir/canonicalize class-dir)
-          src-dirs (map dir/canonicalize src-dirs)]
+         :as opts} opts
+        version (v/get-version opts)
+        deps-file (dir/canonicalize deps-file)
+        basis (or basis (api/create-basis deps-file))
+        jar-file (dir/canonicalize (or jar-file (jar-file* (name lib) version)))
+        class-dir (dir/canonicalize class-dir)
+        src-dirs (map dir/canonicalize src-dirs)]
 
-      (println "Writing pom.xml")
-      (b/write-pom {:basis basis
-                    :class-dir class-dir
-                    :lib lib
-                    :src-dirs src-dirs
-                    :version version})
-      (println "Copying src-dirs: " src-dirs)
-      (b/copy-dir {:src-dirs src-dirs
-                   :target-dir class-dir})
-      (println "Creating jar:" jar-file)
-      (b/jar {:class-dir class-dir
-              :jar-file jar-file})
-      (into opts
-            #:exoscale.project{:basis basis
-                               :version version
-                               :jar-file jar-file}))))
+    (println "Writing pom.xml")
+    (b/write-pom {:basis basis
+                  :class-dir class-dir
+                  :lib lib
+                  :src-dirs src-dirs
+                  :version version})
+    (println "Copying src-dirs: " src-dirs)
+    (b/copy-dir {:src-dirs src-dirs
+                 :target-dir class-dir})
+    (println "Creating jar:" jar-file)
+    (b/jar {:class-dir class-dir
+            :jar-file jar-file})
+    (into opts
+          #:exoscale.project{:basis basis
+                             :version version
+                             :jar-file jar-file})))
 
 (defn uberjar
   [opts]
