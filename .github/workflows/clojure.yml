@@ -28,6 +28,10 @@ jobs:
           /root/.m2
         key: ${{ runner.os }}-${{ hashFiles('**/deps.edn') }}
 
+    - name: Initial prep
+      id: prep
+      run: clj -T:build aot-compile
+
     - name: Check
       id: check
       run: clojure -T:project check
