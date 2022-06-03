@@ -45,7 +45,7 @@
 
 (defn uberjar
   [opts]
-  (let [{:exoscale.project/keys [_env lib _version _version-file main
+  (let [{:exoscale.project/keys [_env lib _version _version-file main compile-opts
                                  src-dirs class-dir basis uberjar-file uber-opts deps-file]
          :as opts} opts
         version (v/get-version opts)
@@ -58,10 +58,18 @@
     (println "Copying src-dirs")
     (b/copy-dir {:src-dirs src-dirs
                  :target-dir class-dir})
+    (println "Writing pom.xml")
+    (b/write-pom {:basis basis
+                  :class-dir class-dir
+                  :lib lib
+                  :src-dirs src-dirs
+                  :version version})
     (println "Compiling" src-dirs)
-    (b/compile-clj {:basis basis
-                    :class-dir class-dir
-                    :src-dirs src-dirs})
+    (b/compile-clj (cond-> {:basis basis
+                            :class-dir class-dir
+                            :src-dirs src-dirs}
+                     (some? compile-opts)
+                     (assoc :compile-opts compile-opts)))
     (println "Creating uberjar: " uber-file)
     (b/uber (merge uber-opts {:basis basis
                               :class-dir class-dir

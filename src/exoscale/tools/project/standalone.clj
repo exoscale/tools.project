@@ -123,14 +123,16 @@
           {f :fn :keys [alias ensure]} prep-lib]
       (when (some? prep-lib)
         (when-not (s/valid? :deps/prep-lib prep-lib)
-          (l/explain :deps/prep-lib prep-lib {:colors? true})
-          (flush)
-          (System/exit 1))
+          (binding [*out* *err*]
+            (l/explain :deps/prep-lib prep-lib {:colors? true})
+            (flush)
+            (System/exit 1)))
         (println "running prep task for:" lib)
         (pio/shell [["clojure" (str "-X" alias) (str f)]] {:dir dir})
         (when (and (some? ensure) (not (fs/exists? ensure)))
           (binding [*out* *err*]
             (println "prep failed to produce the required output file or directory:" ensure)
+            (flush)
             (System/exit 1)))))
     opts))
 
@@ -219,7 +221,7 @@
 (defn find-source-dirs
   [{:keys                  [aliases paths]
     :exoscale.project/keys [source-path-exclusions]
-    :or                    {source-path-exclusions #"resources"}}]
+    :or                    {source-path-exclusions #"^(resources|target|classes)"}}]
   (into []
         (comp cat
               (remove (partial re-find source-path-exclusions))
