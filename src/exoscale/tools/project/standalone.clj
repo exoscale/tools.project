@@ -221,9 +221,10 @@
 (defn find-source-dirs
   [{:keys                  [aliases paths]
     :exoscale.project/keys [source-path-exclusions]
-    :or                    {source-path-exclusions #"^(resources|target|classes)"}}]
+    :or                    {source-path-exclusions #"(resources|^target|^classes)"}}]
   (into []
         (comp cat
+              (filter (comp fs/exists? dir/canonicalize))
               (remove (partial re-find source-path-exclusions))
               (map dir/canonicalize))
         [paths (get-in aliases [:test :extra-paths])]))
@@ -293,13 +294,6 @@
     {:spootnik-deps-check
      {:extra-deps {org.spootnik/deps-check {:mvn/version "0.5.2"}}}}})
 
-(defn- find-dirs
-  [opts]
-  (vec
-   (filter
-    (complement (partial re-find #"resources"))
-    (concat (:paths opts) (get-in opts [:aliases :test :extra-paths])))))
-
 (defn check
   [opts]
   (let [opts        (-> (into-opts opts)
@@ -307,7 +301,7 @@
                         prep-self
                         (api/revision-sha))
         dir         (or (:exoscale.tools.project.api.tasks/dir opts) ".")
-        source-dirs (find-dirs opts)]
+        source-dirs (find-source-dirs opts)]
     (pio/shell [["clojure" "-Sdeps" (pr-str deps-check-config) "-X:spootnik-deps-check:test"
                  "spootnik.deps-check/check" ":paths" (pr-str source-dirs)]]
                {:dir dir})

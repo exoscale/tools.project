@@ -32,6 +32,7 @@ directory:
 
 ``` bash
 clojure -T:project jar
+clojure -T:project uberjar
 ```
 
 A convenience `Makefile` is provided with projects bootstrapped with
@@ -86,7 +87,18 @@ following functionality:
 
 - All targets adopt a default behavior that is dependent on whether they are called
   for a *multi-module*, or *standalone* project.
-- Default facilities are present to share dependencies and aliases across modules (through [deps-modules](https://github.com/exoscale/deps-modules)
+- Submodules of a project *must* be transparent to tooling, i.e: each submodule of
+  a project should have its own fully functional `deps.edn` file, requiring no
+  additional tooling.
+- Default facilities are present to share dependencies and aliases across modules
+  (through [deps-modules](https://github.com/exoscale/deps-modules).
+  
+Under the cover,
+[deps-modules](https://github.com/exoscale/deps-modules) uses a
+mechanism to allow dependency expressions to inherit dependencies from
+the parent module. To ensure that submodules remain fully independent,
+deps files are rewritten (see [merge-deps](doc/target/merge-deps.md)
+and [merge-aliases](doc/target/merge-aliases.md) for details.
 
 Let's assume the following module structure:
 
@@ -115,3 +127,10 @@ add the following:
 **tools.project** supports seamless transitions from standalone projects
 to multi module ones. See [`add-module`](doc/target/add-module.md) for
 help on how to add a first module.
+
+## Contributing
+
+When developing against **tools.project**, due to the presence of a
+`project.clj` namespace in the repository, if you use cider, you'll
+have to jack in from the top level directory, otherwise cider gets
+confused and tries to treat the repository as a leiningen one.

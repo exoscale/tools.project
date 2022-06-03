@@ -11,6 +11,7 @@ clojure -T:project uberjar
 ### Additional project behavior
 
 - `:exoscale.project/uberjar?`: Only produce the uberjar when set to `true`. Defaults to `false`.
+- `:exoscale.project/compile-opts`: A map of options as for [`compile-clj`](https://clojure.github.io/tools.build/clojure.tools.build.api.html#var-compile-clj).
 
 ### Multi-module project behavior
 

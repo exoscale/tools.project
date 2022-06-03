@@ -1,6 +1,6 @@
-## `release` target
+## `lint` target
 
-Perform a 
+Perform a
 Perform linting of source files through [clj-kondo](https://github.com/clj-kondo/clj-kondo).
 
 ### Usage
@@ -8,6 +8,12 @@ Perform linting of source files through [clj-kondo](https://github.com/clj-kondo
 ```bash
 clojure -T:project lint
 ```
+
+### Configuration
+
+The following options may be provided
+
+- `:exoscale.project/source-path-exclusions`: A regex of paths to exclude, defaults to `#"(resources|^target|^classes)"`
 
 ### Multi-module project behavior
 
