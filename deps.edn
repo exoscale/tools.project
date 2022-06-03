@@ -31,8 +31,6 @@
          :ns-default build
          :paths ["build"]}}
 
-
-
  :slipset.deps-deploy/exec-args
  {:installer :remote :sign-releases? false :repository "clojars"}
 
