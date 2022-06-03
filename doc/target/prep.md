@@ -4,6 +4,9 @@ Run the [prep task](https://clojure.org/guides/deps_and_cli#prep_libs) of depend
 To avoid unnecessarily running in all sub modules, predicated
 on `:exoscale.project/needs-prep?` in the deps edn file.
 
+This is implicitly ran for `check`, `jar`, and `uberjar` and thus is only useful
+as a debugging facility.
+
 ### Usage
 
 ```bash

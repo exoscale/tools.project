@@ -88,6 +88,10 @@
   [opts]
   (task-or-tool opts :revision-sha ps/revision-sha))
 
+(defn prep-self
+  [opts]
+  (task-or-tool opts :prep-self ps/prep-self))
+
 (def task
   ps/task)
 

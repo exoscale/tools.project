@@ -87,7 +87,11 @@
              {:run :exoscale.tools.project.standalone/git-tag-version}
              {:run :exoscale.tools.project.standalone/version-bump-and-snapshot}
              {:run :exoscale.tools.project.standalone/git-commit-version}
-             {:run :exoscale.tools.project.standalone/git-push}]})
+             {:run :exoscale.tools.project.standalone/git-push}]
+
+   :prep-self [{:run :exoscale.tools.project.standalone/prep-self
+                :for-all [:exoscale.project/modules]
+                :when :deps/prep-lib}]})
 
 (defn shell*
   [cmds {::keys [dir env]}]
