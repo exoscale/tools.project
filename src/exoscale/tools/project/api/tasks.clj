@@ -59,7 +59,7 @@
    :clean [{:run :exoscale.tools.project.standalone/clean
             :for-all [:exoscale.project/modules]}]
 
-   :check [{:run   :exoscale.tools.project.standalone/check
+   :check [{:run :exoscale.tools.project.standalone/check
             :for-all [:exoscale.project/modules]}]
 
    :test [{:run :exoscale.tools.project.standalone/test
