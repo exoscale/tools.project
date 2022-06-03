@@ -301,9 +301,9 @@
 (defn check
   [opts]
   (let [opts        (-> (into-opts opts)
-                        (api/revision-sha)
                         prep
-                        prep-self)
+                        prep-self
+                        (api/revision-sha))
         dir         (or (:exoscale.tools.project.api.tasks/dir opts) ".")
         source-dirs (find-dirs opts)]
     (pio/shell [["clojure" "-Sdeps" (pr-str deps-check-config) "-X:spootnik-deps-check:test"
