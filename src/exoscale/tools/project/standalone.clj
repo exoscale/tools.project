@@ -26,10 +26,6 @@
   #:exoscale.project{:file "deps.edn"
                      :keypath []
                      :exoscale.deps-version/key :patch
-                     :slipset.deps-deploy/exec-args
-                     {:repository {"releases" {:url "s3p://exo-artifacts/releases"}}
-                      :installer :remote
-                      :sign-releases? false}
                      :target-dir "target"
                      :class-dir "target/classes"
                      :javac-opts ["-source" "11" "-target" "11"]

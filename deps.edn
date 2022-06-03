@@ -1,4 +1,4 @@
-{:paths ["src" "resources"]
+{:paths ["src" "resources" "target/classes"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
         io.github.seancorfield/deps-new {:git/tag "v0.4.9"
                                          :git/sha "ba30a76af8b42a45f8498a168bf89518a794fce5"}
@@ -17,9 +17,21 @@
         babashka/fs {:mvn/version "0.1.6"}
         rewrite-clj/rewrite-clj {:mvn/version "1.0.767-alpha"}}
 
+ :deps/prep-lib
+ {:alias :build
+  :fn    build/aot-compile
+  :ensure "target/classes"}
+ 
  :aliases
  {:project {:deps {com.exoscale/tools.project {:local/root "."}}
-            :ns-default exoscale.tools.project}}
+            :extra-paths ["prep"]
+            :jvm-opts ["-Dclojure.compiler.direct-linking=true"]
+            :ns-default exoscale.tools.project}
+ :build {:deps {io.github.clojure/tools.build {:git/tag "v0.8.2" :git/sha "ba1a2bf"}}
+         :ns-default build
+         :paths ["build"]}}
+
+
 
  :slipset.deps-deploy/exec-args
  {:installer :remote :sign-releases? false :repository "clojars"}

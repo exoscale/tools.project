@@ -12,14 +12,9 @@ clojure -T:project deploy
 ### Additional project configuration
 
 - `:exoscale.project/remote-deploy?`: Remote deploys are not attempted when set to `false`. Defaults to `true
-- `:slipset.deps-deploy/exec-args`: Exec arguments for [deps-deploy](https://github.com/slipset/deps-deploy). Defaults to:
+- `:slipset.deps-deploy/exec-args`: Exec arguments for [deps-deploy](https://github.com/slipset/deps-deploy).
 
-```clojure
-{:repository {"releases" {:url "s3p://exo-artifacts/releases"}}
- :installer :remote
- :sign-releases? false}
-```
-
+Note that by default if pushing to object storage, an Exoscale SOS bucket is assumed.
 
 ### Multi-module project behavior
 
