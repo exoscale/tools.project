@@ -53,6 +53,7 @@ A convenience `Makefile` is provided with projects bootstrapped with
 - [merge-aliases](doc/target/merge-aliases.md): managed alias management
 - [outdated](doc/target/outdated.md): outdated version check
 - [prep](doc/target/prep.md): handle prep libs
+- [prep-self](doc/target/prep-self.md): handle prep task for the current project
 - [release](doc/target/release.md): project release
 - [task](doc/target/task.md): arbitrary task run
 - [test](doc/target/test.md): run tests

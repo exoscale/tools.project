@@ -4,6 +4,7 @@
             [clojure.java.io :as io]
             [clojure.spec.alpha :as s]
             [clojure.tools.deps.alpha.util.dir :as td]
+            [clojure.tools.deps.alpha.specs]
             [cljfmt.main :as cljfmt]
             [clj-kondo.core :as kondo]
             [antq.core :as antq]
@@ -105,6 +106,37 @@
         (System/exit 1)))
     opts))
 
+(defn prep
+  [opts]
+  (let [{:exoscale.tools.project.api.tasks/keys [dir]
+         :or {dir "."}
+         :as opts}
+        (into-opts opts)]
+    (pio/shell [["clojure" "-X:deps" "prep"]] {:dir dir})
+    opts))
+
+(defn prep-self
+  [opts]
+  (let [{:exoscale.project/keys [deps-file lib]
+         :exoscale.tools.project.api.tasks/keys [dir]
+         :or {dir "."}
+         :as opts}
+        (into-opts opts)]
+    (let [{:deps/keys [prep-lib]} (-> deps-file slurp edn/read-string)
+          {f :fn :keys [alias ensure]} prep-lib]
+      (when (some? prep-lib)
+        (when-not (s/valid? :deps/prep-lib prep-lib)
+          (l/explain :deps/prep-lib prep-lib {:colors? true})
+          (flush)
+          (System/exit 1))
+        (println "running prep task for:" lib)
+        (pio/shell [["clojure" (str "-X" alias) (str f)]] {:dir dir})
+        (when (and (some? ensure) (not (fs/exists? ensure)))
+          (binding [*out* *err*]
+            (println "prep failed to produce the required output file or directory:" ensure)
+            (System/exit 1)))))
+    opts))
+
 (defn add-module
   [opts]
   (-> opts
@@ -122,6 +154,8 @@
   (-> opts
       into-opts
       api/clean
+      prep
+      prep-self
       jar/jar))
 
 (defn init
@@ -147,15 +181,6 @@
   (-> opts
       into-opts
       (tasks/task opts)))
-
-(defn prep
-  [opts]
-  (let [{:exoscale.tools.project.api.tasks/keys [dir]
-         :or {dir "."}
-         :as opts}
-        (into-opts opts)]
-    (pio/shell [["clojure" "-X:deps" "prep"]] {:dir dir})
-    opts))
 
 (defn release
   [opts]
@@ -271,6 +296,8 @@
 (defn check
   [opts]
   (-> (into-opts opts)
+      prep
+      prep-self
       (assoc :id :check)
       (task)))
 
@@ -280,6 +307,8 @@
       into-opts
       api/clean
       api/revision-sha
+      prep
+      prep-self
       jar/uberjar))
 
 (defn test
