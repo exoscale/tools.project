@@ -60,6 +60,11 @@ A convenience `Makefile` is provided with projects bootstrapped with
 - [test](doc/target/test.md): run tests
 - [uberjar](doc/target/uberjar.md): standalone JAR generation
 
+Note that **tools.project** does not provide a `repl` task, this is due to the
+fact that `deps.edn` files are always fully function when using this tool, the
+standard `clj` tool can be used to start a REPL, editor integration will also
+remain fully functional.
+
 ## Configuration
 
 A few keys control the configuration of the project. A minimum configuration
@@ -92,7 +97,7 @@ following functionality:
   additional tooling.
 - Default facilities are present to share dependencies and aliases across modules
   (through [deps-modules](https://github.com/exoscale/deps-modules).
-  
+
 Under the cover,
 [deps-modules](https://github.com/exoscale/deps-modules) uses a
 mechanism to allow dependency expressions to inherit dependencies from
