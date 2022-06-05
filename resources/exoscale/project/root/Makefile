@@ -55,7 +55,7 @@ install: ## Install all modules to local maven repo
 	$(CLJ) -T:project install
 
 version: ## Output project version
-	@echo $(shell cat $(ROOT_DIR)/VERSION)
+	@$(CLJ) -T:project version
 
 repl: ## Launch repl (no aliases)
 	@clj
@@ -75,8 +75,7 @@ build: uberjar
 
 .SILENT: info
 info: ## Show repo information
-	@printf "version:\t%s\n" $(shell cat $(ROOT_DIR)/VERSION)
-	@printf "git-ref:\t%s\n" $(shell git rev-parse HEAD)
+	@$(CLJ) -T:project info
 
 help:  ## Display this help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)

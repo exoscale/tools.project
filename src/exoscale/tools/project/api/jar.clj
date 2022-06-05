@@ -1,8 +1,12 @@
 (ns exoscale.tools.project.api.jar
   (:require [clojure.tools.build.api :as b]
-            [exoscale.tools.project.api :as api]
             [exoscale.tools.project.api.version :as v]
             [exoscale.tools.project.dir :as dir]))
+(defn- create-basis
+  ([deps-file]
+   (b/create-basis {:project deps-file}))
+  ([]
+   (create-basis "deps.edn")))
 
 (defn jar-file*
   ([lib version]
@@ -21,7 +25,7 @@
          :as opts} opts
         version (v/get-version opts)
         deps-file (dir/canonicalize deps-file)
-        basis (or basis (api/create-basis deps-file))
+        basis (or basis (create-basis deps-file))
         jar-file (dir/canonicalize (or jar-file (jar-file* (name lib) version)))
         class-dir (dir/canonicalize class-dir)
         src-dirs (map dir/canonicalize src-dirs)]
@@ -50,7 +54,7 @@
          :as opts} opts
         version (v/get-version opts)
         deps-file (dir/canonicalize deps-file)
-        basis (or basis (api/create-basis deps-file))
+        basis (or basis (create-basis deps-file))
         uber-file (dir/canonicalize (or uberjar-file (uberjar-file* (name lib) version)))
         src-dirs (map dir/canonicalize src-dirs)
         class-dir (dir/canonicalize class-dir)]

@@ -55,6 +55,9 @@
 (def init
   ps/init)
 
+(def info
+  ps/info)
+
 (defn install
   [opts]
   (task-or-tool opts :install ps/install))
@@ -102,3 +105,6 @@
 (defn uberjar
   [opts]
   (task-or-tool opts :uberjar ps/uberjar))
+
+(def version
+  ps/version)

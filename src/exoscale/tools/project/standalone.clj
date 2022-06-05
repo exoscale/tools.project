@@ -5,15 +5,10 @@
             [clojure.spec.alpha :as s]
             [clojure.tools.deps.alpha.util.dir :as td]
             [clojure.tools.deps.alpha.specs]
-            [cljfmt.main :as cljfmt]
-            [clj-kondo.core :as kondo]
-            [antq.core :as antq]
             [babashka.fs :as fs]
             [exoscale.deps-version :as version]
             [exoscale.deps-modules :as deps-modules]
             [exoscale.lingo :as l]
-            [exoscale.tools.project.dir :as dir]
-            [exoscale.tools.project.io :as pio]
             [exoscale.tools.project.template :as template]
             [exoscale.tools.project.api :as api]
             [exoscale.tools.project.api.deploy :as deploy]
@@ -101,79 +96,34 @@
         (System/exit 1)))
     opts))
 
-(defn prep
-  [opts]
-  (let [{:exoscale.tools.project.api.tasks/keys [dir]
-         :exoscale.project/keys [lib]
-         :or {dir "."}
-         :as opts}
-        (into-opts opts)]
-    (println "running prep task for dependencies in:" lib)
-    (pio/shell [["clojure" "-X:deps" "prep"]] {:dir dir})
-    opts))
+;; actions meant to be called from the command line
 
-(defn prep-self
-  [opts]
-  (let [{:exoscale.project/keys [deps-file lib]
-         :exoscale.tools.project.api.tasks/keys [dir]
-         :or {dir "."}
-         :as opts}
-        (into-opts opts)]
-    (let [{:deps/keys [prep-lib]} (-> deps-file slurp edn/read-string)
-          {f :fn :keys [alias ensure]} prep-lib]
-      (when (some? prep-lib)
-        (when-not (s/valid? :deps/prep-lib prep-lib)
-          (binding [*out* *err*]
-            (l/explain :deps/prep-lib prep-lib {:colors? true})
-            (flush)
-            (System/exit 1)))
-        (println "running prep task for:" lib)
-        (pio/shell [["clojure" (str "-X" alias) (str f)]] {:dir dir})
-        (when (and (some? ensure) (not (fs/exists? ensure)))
-          (binding [*out* *err*]
-            (println "prep failed to produce the required output file or directory:" ensure)
-            (flush)
-            (System/exit 1)))))
-    opts))
+(def ^{:arglists '([opts])} prep
+  (comp api/prep into-opts))
 
-(defn add-module
-  [opts]
-  (-> opts
-      into-opts
-      template/add-module))
+(def ^{:arglists '([opts])} prep-self
+  (comp api/prep-self into-opts))
 
-(defn clean
-  [opts]
-  (-> opts
-      into-opts
-      api/clean))
+(def ^{:arglists '([opts])} add-module
+  (comp template/add-module into-opts))
 
-(defn jar
-  [opts]
-  (-> opts
-      into-opts
-      api/clean
-      prep
-      prep-self
-      jar/jar))
+(def ^{:arglists '([opts])} clean
+  (comp api/clean into-opts))
 
-(defn init
-  [opts]
-  (-> opts
-      into-opts
-      template/init))
+(def ^{:arglists '([opts])} jar
+  (comp jar/jar api/prep-self api/prep api/clean into-opts))
 
-(defn install
-  [opts]
-  (-> opts
-      into-opts
-      deploy/local))
+(def ^{:arglists '([opts])} init
+  (comp template/init into-opts))
 
-(defn deploy
-  [opts]
-  (-> opts
-      into-opts
-      deploy/remote))
+(def ^{:arglists '([opts])} info
+  (comp api/info into-opts))
+
+(def ^{:arglists '([opts])} install
+  (comp deploy/local into-opts))
+
+(def ^{:arglists '([opts])} deploy
+  (comp deploy/remote into-opts))
 
 (defn task
   [opts]
@@ -186,146 +136,56 @@
   (-> opts
       into-opts
       (assoc :id :release)
-      task))
+      (tasks/task opts)))
 
-(defn version-bump-and-snapshot
-  [opts]
-  (-> opts
-      into-opts
-      v/bump-and-snapshot))
+(def ^{:arglists '([opts])} version-bump-and-snapshot
+  (comp v/bump-and-snapshot into-opts))
 
-(defn version-remove-snapshot
-  [opts]
-  (-> opts
-      into-opts
-      v/remove-snapshot))
+(def ^{:arglists '([opts])} version-remove-snapshot
+  (comp v/remove-snapshot into-opts))
 
-(defn git-commit-version
-  [opts]
-  (let [opts (into-opts opts)]
-    (git/commit-version opts)
-    opts))
+(def ^{:arglists '([opts])} git-commit-version
+  (comp git/commit-version into-opts))
 
-(defn git-tag-version
-  [opts]
-  (let [opts (into-opts opts)]
-    (git/tag-version opts)
-    opts))
+(def ^{:arglists '([opts])} git-tag-version
+  (comp git/tag-version into-opts))
 
-(defn git-push
-  [opts]
-  (let [opts (into-opts opts)]
-    (git/push opts)
-    opts))
+(def ^{:arglists '([opts])} git-push
+  (comp git/push into-opts))
 
-(defn find-source-dirs
-  [{:keys                  [aliases paths]
-    :exoscale.project/keys [source-path-exclusions]
-    :or                    {source-path-exclusions #"(resources|^target|^classes)"}}]
-  (into []
-        (comp cat
-              (filter (comp fs/exists? dir/canonicalize))
-              (remove (partial re-find source-path-exclusions))
-              (map dir/canonicalize))
-        [paths (get-in aliases [:test :extra-paths])]))
+(def ^{:arglists '([opts])} format-check
+  (comp api/format-check into-opts))
 
-(defn format-check
-  [opts]
-  (let [opts    (into-opts opts)
-        srcdirs (find-source-dirs opts)]
-    (println "running format checks with cljfmt for:" (:exoscale.project/lib opts))
-    (cljfmt/check srcdirs cljfmt/default-options)
-    opts))
+(def ^{:arglists '([opts])} format-fix
+  (comp api/format-fix into-opts))
 
-(defn format-fix
-  [opts]
-  (let [opts    (into-opts opts)
-        srcdirs (find-source-dirs opts)]
-    (println "running format fixes with cljfmt for:" (:exoscale.project/lib opts))
-    (cljfmt/fix srcdirs cljfmt/default-options)
-    opts))
-
-(defn lint
-  [opts]
-  (let [opts    (into-opts opts)
-        srcdirs (find-source-dirs opts)]
-    (println "running lint with clj-kondo for:" (:exoscale.project/lib opts))
-    (let [{:keys [summary] :as results} (kondo/run! {:lint srcdirs})]
-      (kondo/print! results)
-      (flush)
-      (when (pos? (:error summary))
-        (System/exit 1)))
-    opts))
+(def ^{:arglists '([opts])} lint
+  (comp api/lint into-opts))
 
 (defn merge-deps
   [opts]
-  (let [opts (into-opts opts)]
-    (deps-modules/merge-deps opts)
-    opts))
+  (doto (into-opts opts)
+    (deps-modules/merge-deps)))
 
 (defn merge-aliases
   [opts]
-  (let [opts (into-opts opts)]
-    (deps-modules/merge-aliases opts)
-    opts))
+  (doto (into-opts opts)
+    (deps-modules/merge-aliases)))
 
-(defn outdated
-  [opts]
-  (let [opts (into-opts opts)]
-    (println "checking for outdated versions with antq for:"
-             (:exoscale.project/lib opts))
-    (antq/main* (merge {:check-clojure-tools true
-                        :directory           ["."]
-                        :reporter            "table"}
-                       (:antq.core/options opts))
-                nil)
-    opts))
+(def ^{:arglists '([opts])} outdated
+  (comp api/outdated into-opts))
 
-(defn revision-sha
-  [opts]
-  (-> opts
-      into-opts
-      api/revision-sha))
+(def ^{:arglists '([opts])} revision-sha
+  (comp api/revision-sha into-opts))
 
-;; We do this here to avoid forcing the registration of
-;; the project tool as an extra-dep
-(def deps-check-config
-  '{:aliases
-    {:spootnik-deps-check
-     {:extra-deps {org.spootnik/deps-check {:mvn/version "0.5.2"}}}}})
+(def ^{:arglists '([opts])} check
+  (comp api/check api/revision-sha api/prep-self api/prep into-opts))
 
-(defn check
-  [opts]
-  (let [opts        (-> (into-opts opts)
-                        prep
-                        prep-self
-                        (api/revision-sha))
-        dir         (or (:exoscale.tools.project.api.tasks/dir opts) ".")
-        source-dirs (find-source-dirs opts)]
-    (pio/shell [["clojure" "-Sdeps" (pr-str deps-check-config) "-X:spootnik-deps-check:test"
-                 "spootnik.deps-check/check" ":paths" (pr-str source-dirs)]]
-               {:dir dir})
-    opts))
+(def ^{:arglists '([opts])} uberjar
+  (comp jar/uberjar api/revision-sha api/prep-self api/prep api/clean into-opts))
 
-(defn uberjar
-  [opts]
-  (-> opts
-      into-opts
-      api/clean
-      api/revision-sha
-      prep
-      prep-self
-      jar/uberjar))
+(def ^{:arglists '([opts])} test
+  api/test)
 
-(defn test
-  [opts]
-  (let [dir     (or (:exoscale.tools.project.api.tasks/dir opts) ".")
-        cmdline (reduce-kv
-                 (fn [cmdline k v]
-                   (-> cmdline
-                       (conj (pr-str k))
-                       (conj (pr-str v))))
-                 ["clojure" "-X:test"]
-                 (dissoc opts :exoscale.tools.project.api.tasks/dir))]
-    (pio/shell [cmdline] {:dir dir}))
-  (into-opts opts))
+(def ^{:arglists '([opts])} version
+  (comp api/version into-opts))
