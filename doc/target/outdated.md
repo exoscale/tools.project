@@ -5,7 +5,7 @@ Perform outdated version checks with [antq](https://github.com/liquidz/antq).
 ### Usage
 
 ```bash
-clojure -T:project merge-aliases
+clojure -T:project outdated
 ```
 
 ### Multi-module project behavior

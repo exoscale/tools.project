@@ -11,7 +11,7 @@ clojure -T:project release
 
 ### Additional project configuration
 
-Since `release` is a task, the default task configuration can be overriden
+Since `release` is a task, the default task configuration can be overridden
 using standard task configuration:
 
 
