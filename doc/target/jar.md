@@ -1,4 +1,4 @@
-## `add-module` target
+## `jar` target
 
 Create JAR and POM files for the project
 
