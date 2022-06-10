@@ -84,7 +84,6 @@
 
    :release [{:run :exoscale.tools.project.standalone/version-remove-snapshot}
              {:ref :deploy}
-             {:ref :uberjar}
              {:run :exoscale.tools.project.standalone/git-commit-version}
              {:run :exoscale.tools.project.standalone/git-tag-version}
              {:run :exoscale.tools.project.standalone/version-bump-and-snapshot}
