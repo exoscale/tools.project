@@ -173,7 +173,10 @@
       (println (format "Task '%s' not found" id))
       (System/exit 1))
 
-    (println "starting task:" task-id "for:" lib)
+    (println "starting task:" task-id
+             (if lib
+               (str "for:" lib)
+               "from `root`"))
     (flush)
 
     (doseq [{:as task :keys [for-all]} task-def
