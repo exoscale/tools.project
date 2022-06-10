@@ -129,29 +129,27 @@
       :ref (binding [td/*the-dir* dir]
              (exoscale.tools.project.api.tasks/task (assoc opts :id ref) opts)))))
 
+(defn- filter-dir?
+  [task sub-edn]
+  (let [when' (get sub-edn (:when task) true)
+        unless' (get sub-edn (:unless task))]
+    (and (not unless') when')))
+
 (defn- relevant-dir?
   [task dir]
-  (let [subproject-edn (edn/read-string (slurp (str dir "/deps.edn")))]
-    (boolean
-     (if (some? (:when task))
-       (get subproject-edn (:when task))
-       (not (get subproject-edn (:unless task)))))))
-
-(defn- has-dir-filter?
-  [task]
-  (or (some? (:when task))
-      (some? (:unless task))))
+  (->> (str dir "/deps.edn")
+       slurp
+       edn/read-string
+       (filter-dir? task)))
 
 (defn- task-relevant-dirs
-  "Process for-all statement, accounting for `:exoscale.project/when` predicate.
-   The predicate can be given a default value with `:exoscale.project/default`"
+  "Process for-all statement, accounting for `:exoscale.project/when` predicate"
   [deps-edn {:keys [for-all] :as task}]
   (let [dirs (or (get-in deps-edn for-all)
                  (throw (ex-info (format "Missing for-all key %s" for-all)
                                  task)))]
-    (cond->> dirs
-      (some? (has-dir-filter? task))
-      (filter (partial relevant-dir? task)))))
+    (filter (partial relevant-dir? task)
+            dirs)))
 
 (defn task
   [opts args]
