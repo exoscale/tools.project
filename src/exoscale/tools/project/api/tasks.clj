@@ -131,9 +131,12 @@
 
 (defn- filter-dir?
   [task sub-edn]
-  (let [when' (get sub-edn (:when task) true)
+  (let [when' (if-let [when-k (:when task)]
+                (get sub-edn when-k)
+                true)
         unless' (get sub-edn (:unless task))]
-    (and (not unless') when')))
+    (and (not unless')
+         when')))
 
 (defn- relevant-dir?
   [task dir]
