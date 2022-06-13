@@ -46,7 +46,6 @@
               :for-all [:exoscale.project/modules]}]
 
    :deploy [{:run :exoscale.tools.project.standalone/deploy
-             :unless :exoscale.project/prevent-deploy? ; legacy
              :when :exoscale.project/deploy?
              :for-all [:exoscale.project/modules]}]
 
