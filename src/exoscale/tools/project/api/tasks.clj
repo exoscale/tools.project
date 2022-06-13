@@ -46,7 +46,7 @@
               :for-all [:exoscale.project/modules]}]
 
    :deploy [{:run :exoscale.tools.project.standalone/deploy
-             :unless :exoscale.project/prevent-deploy?
+             :when :exoscale.project/deploy?
              :for-all [:exoscale.project/modules]}]
 
    :jar [{:run :exoscale.tools.project.standalone/jar
@@ -84,7 +84,6 @@
 
    :release [{:run :exoscale.tools.project.standalone/version-remove-snapshot}
              {:ref :deploy}
-             {:ref :uberjar}
              {:run :exoscale.tools.project.standalone/git-commit-version}
              {:run :exoscale.tools.project.standalone/git-tag-version}
              {:run :exoscale.tools.project.standalone/version-bump-and-snapshot}
@@ -129,29 +128,30 @@
       :ref (binding [td/*the-dir* dir]
              (exoscale.tools.project.api.tasks/task (assoc opts :id ref) opts)))))
 
+(defn- filter-dir?
+  [task sub-edn]
+  (let [when' (if-let [when-k (:when task)]
+                (get sub-edn when-k)
+                true)
+        unless' (get sub-edn (:unless task))]
+    (and (not unless')
+         when')))
+
 (defn- relevant-dir?
   [task dir]
-  (let [subproject-edn (edn/read-string (slurp (str dir "/deps.edn")))]
-    (boolean
-     (if (some? (:when task))
-       (get subproject-edn (:when task))
-       (not (get subproject-edn (:unless task)))))))
-
-(defn- has-dir-filter?
-  [task]
-  (or (some? (:when task))
-      (some? (:unless task))))
+  (->> (str dir "/deps.edn")
+       slurp
+       edn/read-string
+       (filter-dir? task)))
 
 (defn- task-relevant-dirs
-  "Process for-all statement, accounting for `:exoscale.project/when` predicate.
-   The predicate can be given a default value with `:exoscale.project/default`"
+  "Process for-all statement, accounting for `:exoscale.project/when` predicate"
   [deps-edn {:keys [for-all] :as task}]
   (let [dirs (or (get-in deps-edn for-all)
                  (throw (ex-info (format "Missing for-all key %s" for-all)
                                  task)))]
-    (cond->> dirs
-      (some? (has-dir-filter? task))
-      (filter (partial relevant-dir? task)))))
+    (filter (partial relevant-dir? task)
+            dirs)))
 
 (defn task
   [opts args]
@@ -173,7 +173,10 @@
       (println (format "Task '%s' not found" id))
       (System/exit 1))
 
-    (println "starting task:" task-id "for:" lib)
+    (println "starting task:" task-id
+             (if lib
+               (str "for:" lib)
+               "from `root`"))
     (flush)
 
     (doseq [{:as task :keys [for-all]} task-def
