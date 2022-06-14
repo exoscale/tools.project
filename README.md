@@ -16,7 +16,7 @@ Add this to your deps.edn
 Or install the tool locally:
 
 ``` bash
-clojure -Ttools install com.exoscale/tools.project {:git/sha "..." :git/url ""} :as project
+clojure -Ttools install com.exoscale/tools.project '{:git/sha "..." :git/url "https://github.com/exoscale/tools.project.git"}' :as project
 ```
 
 ## Usage
@@ -92,7 +92,7 @@ following functionality:
   additional tooling.
 - Default facilities are present to share dependencies and aliases across modules
   (through [deps-modules](https://github.com/exoscale/deps-modules).
-  
+
 Under the cover,
 [deps-modules](https://github.com/exoscale/deps-modules) uses a
 mechanism to allow dependency expressions to inherit dependencies from
