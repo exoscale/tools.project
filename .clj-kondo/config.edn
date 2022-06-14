@@ -1,17 +1,48 @@
 {:linters
- {:clojure-lsp/unused-public-var {:exclude [exoscale.tools.project.module/compile
+ {:clojure-lsp/unused-public-var {:exclude [exoscale.tools.project/add-module
+                                            exoscale.tools.project/check
+                                            exoscale.tools.project/clean
+                                            exoscale.tools.project/deploy
+                                            exoscale.tools.project/format-check
+                                            exoscale.tools.project/format-fix
+                                            exoscale.tools.project/git-commit+tag-version
+                                            exoscale.tools.project/git-commit-snapshot
+                                            exoscale.tools.project/git-push
+                                            exoscale.tools.project/info
+                                            exoscale.tools.project/init
+                                            exoscale.tools.project/install
+                                            exoscale.tools.project/jar
+                                            exoscale.tools.project/lint
+                                            exoscale.tools.project/merge-aliases
+                                            exoscale.tools.project/merge-deps
+                                            exoscale.tools.project/outdated
+                                            exoscale.tools.project/prep
+                                            exoscale.tools.project/prep-self
+                                            exoscale.tools.project/release
+                                            exoscale.tools.project/revision-sha
+                                            exoscale.tools.project/task
+                                            exoscale.tools.project/test
+                                            exoscale.tools.project/uberjar
+                                            exoscale.tools.project/version
+                                            exoscale.tools.project/version-bump-and-snapshot
+                                            exoscale.tools.project/version-remove-snapshot
+                                            exoscale.tools.project.api/version
+                                            exoscale.tools.project.api.java/compile
                                             exoscale.tools.project.module/clean
-                                            exoscale.tools.project.module/install
-                                            exoscale.tools.project.module/uberjar
-                                            exoscale.tools.project.module/jar
+                                            exoscale.tools.project.module/compile
                                             exoscale.tools.project.module/deploy
+                                            exoscale.tools.project.module/install
+                                            exoscale.tools.project.module/jar
                                             exoscale.tools.project.module/release
                                             exoscale.tools.project.module/task
-                                            exoscale.tools.project.api/version
-                                            exoscale.tools.project/version-remove-snapshot
-                                            exoscale.tools.project/version-bump-and-snapshot
-                                            exoscale.tools.project/jar
-                                            exoscale.tools.project/git-push
-                                            exoscale.tools.project/git-commit+tag-version
-                                            exoscale.tools.project/git-commit-snapshot]}}
+                                            exoscale.tools.project.module/uberjar
+                                            exoscale.tools.project.standalone/git-commit-version
+                                            exoscale.tools.project.standalone/git-push
+                                            exoscale.tools.project.standalone/git-tag-version
+                                            exoscale.tools.project.standalone/release
+                                            exoscale.tools.project.standalone/version-bump-and-snapshot
+                                            exoscale.tools.project.standalone/version-remove-snapshot
+                                            exoscale.tools.project.template/data-fn
+                                            exoscale.tools.project.template/module-data-fn
+                                            exoscale.tools.project.template/template-fn]}}
  :skip-comments true}

@@ -14,9 +14,9 @@
     (last
      (for [cmd cmds]
        (-> (p/process {:command-args (if (vector? cmd) cmd ["sh" "-c" cmd])
-                       :dir          dir
-                       :env          env
-                       :out          (or out :inherit)})
+                       :dir dir
+                       :env env
+                       :out (or out :inherit)})
            (check))))
     (catch Exception _
       ;; At this stage we already printed the relevant error to stdout
