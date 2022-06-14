@@ -9,25 +9,23 @@
   {:ns-default exoscale.tools.project
    :deps {io.github.exoscale/tools.project
           {:git/sha "c6a77dab7af6084c4321dc7ad6b02f2a27bc7471"}}
-  :exoscale.deps/inherit :all}
+   :exoscale.deps/inherit :all}
   :test
-  {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}
-                lambdaisland/kaocha-junit-xml {:exoscale.deps/inherit :all, :mvn/version "0.0.76"}}
+  {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}}
    :extra-paths ["test" "test/resources"]
    :exec-fn  kaocha.runner/exec-fn
    :exoscale.deps/inherit :all}}
 
- :exoscale.project/managed-dependencies
+ :exoscale.deps/managed-dependencies
  {org.clojure/clojure {:mvn/version "1.11.1"}}
 
- :exoscale.project/managed-aliases
+ :exoscale.deps/managed-aliases
  {:project
   {:ns-default exoscale.tools.project
    :deps {io.github.exoscale/tools.project
           {:git/sha "c6a77dab7af6084c4321dc7ad6b02f2a27bc7471"}}}
 
   :test
-  {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}
-                lambdaisland/kaocha-junit-xml {:exoscale.deps/inherit :all, :mvn/version "0.0.76"}}
+  {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}}
    :extra-paths ["test" "test/resources"]
    :exec-fn  kaocha.runner/exec-fn}}}

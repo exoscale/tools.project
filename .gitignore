@@ -4,3 +4,4 @@
 resources/git-version
 /target
 /modules/*/target
+.nrepl-port

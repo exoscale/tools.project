@@ -13,5 +13,34 @@
                                             exoscale.tools.project/jar
                                             exoscale.tools.project/git-push
                                             exoscale.tools.project/git-commit+tag-version
-                                            exoscale.tools.project/git-commit-snapshot]}}
+                                            exoscale.tools.project/git-commit-snapshot
+                                            exoscale.tools.project.template/data-fn
+                                            exoscale.tools.project.template/module-data-fn
+                                            exoscale.tools.project.template/template-fn
+                                            exoscale.tools.project.standalone/release
+                                            exoscale.tools.project.standalone/version-bump-and-snapshot
+                                            exoscale.tools.project.standalone/version-remove-snapshot
+                                            exoscale.tools.project.standalone/git-commit-version
+                                            exoscale.tools.project.standalone/git-tag-version
+                                            exoscale.tools.project.standalone/git-push
+                                            exoscale.tools.project.api.java/compile
+                                            exoscale.tools.project/add-module
+                                            exoscale.tools.project/check
+                                            exoscale.tools.project/clean
+                                            exoscale.tools.project/deploy
+                                            exoscale.tools.project/format-check
+                                            exoscale.tools.project/format-fix
+                                            exoscale.tools.project/init
+                                            exoscale.tools.project/install
+                                            exoscale.tools.project/lint
+                                            exoscale.tools.project/merge-deps
+                                            exoscale.tools.project/merge-aliases
+                                            exoscale.tools.project/outdated
+                                            exoscale.tools.project/prep
+                                            exoscale.tools.project/release
+                                            exoscale.tools.project/revision-sha
+                                            exoscale.tools.project/prep-self
+                                            exoscale.tools.project/task
+                                            exoscale.tools.project/test
+                                            exoscale.tools.project/uberjar]}}
  :skip-comments true}
