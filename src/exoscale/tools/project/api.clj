@@ -75,7 +75,7 @@
     :exoscale.tools.project.api.tasks/keys [dir]
     :or {dir "."}
     :as opts}]
-  (let [{:deps/keys [prep-lib]} (-> deps-file slurp edn/read-string)
+  (let [{:deps/keys [prep-lib]} (-> (fs/path dir deps-file) str slurp edn/read-string)
         {f :fn :keys [alias ensure]} prep-lib]
     (when (some? prep-lib)
       (when-not (s/valid? :deps/prep-lib prep-lib)
@@ -85,9 +85,10 @@
           (System/exit 1)))
       (println "running prep task for:" lib)
       (pio/shell [["clojure" (str "-X" alias) (str f)]] {:dir dir})
-      (when (and (some? ensure) (not (fs/exists? ensure)))
+      (when (and (some? ensure) (not (fs/exists? (fs/path dir ensure))))
         (binding [*out* *err*]
-          (println "prep failed to produce the required output file or directory:" ensure)
+          (println "prep failed to produce the required output file or directory:"
+                   (str (fs/path dir ensure)))
           (flush)
           (System/exit 1)))))
   opts)
