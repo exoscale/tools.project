@@ -26,7 +26,7 @@
    :exec-fn  kaocha.runner/exec-fn}
   :project
   {:extra-deps
-    {io.github.exoscale/tools.project {:git/sha "2f64ee6bcd46b0b2bc5a59997f546def1d9dd5df"}}
+    {io.github.exoscale/tools.project {:git/sha "29011d6f6245beeabe95c4b2d3eaa1617937b7e0"}}
    :ns-default exoscale.tools.project}}}
 ```
 
@@ -55,7 +55,7 @@
    :exoscale.deps/inherit :all} ;;
   :project
   {:extra-deps
-    {io.github.exoscale/tools.project {:git/sha "2f64ee6bcd46b0b2bc5a59997f546def1d9dd5df"}}
+    {io.github.exoscale/tools.project {:git/sha "29011d6f6245beeabe95c4b2d3eaa1617937b7e0"}}
    :exoscale.deps/inherit :all
    :ns-default exoscale.tools.project}}
 
@@ -64,7 +64,7 @@
  :exoscale.deps/managed-aliases
  {:project
   {:extra-deps
-    {io.github.exoscale/tools.project {:git/sha "2f64ee6bcd46b0b2bc5a59997f546def1d9dd5df"}}
+    {io.github.exoscale/tools.project {:git/sha "29011d6f6245beeabe95c4b2d3eaa1617937b7e0"}}
    :ns-default exoscale.tools.project}
   :test
   {:extra-deps {lambdaisland/kaocha {:exoscale.deps/inherit :all, :mvn/version "1.66.1034"}}
@@ -104,7 +104,7 @@
     :exoscale.deps/inherit :all}
   :project
   {:extra-deps
-    {io.github.exoscale/tools.project {:git/sha "2f64ee6bcd46b0b2bc5a59997f546def1d9dd5df"}}
+    {io.github.exoscale/tools.project {:git/sha "29011d6f6245beeabe95c4b2d3eaa1617937b7e0"}}
    :exoscale.deps/inherit :all
    :ns-default exoscale.tools.project}}}
 ```
