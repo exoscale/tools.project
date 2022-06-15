@@ -31,10 +31,10 @@ jobs:
     - name: Check
       id: check
       run: clojure -T:project check
-        
+
     - name: Test
       id: test
-      run: clojure -X:test
+      run: clojure -T:project test
 
     - name: Lint
       id: lint
