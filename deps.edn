@@ -18,7 +18,7 @@
         rewrite-clj/rewrite-clj {:mvn/version "1.0.767-alpha"}}
 
  :aliases
- {:project {:deps {com.exoscale/tools.project {:local/root "."}}
+ {:project {:deps {io.github.exoscale/tools.project {:local/root "."}}
             :ns-default exoscale.tools.project}}
 
  :slipset.deps-deploy/exec-args

@@ -9,14 +9,14 @@ the conventions enforced by [leiningen](http://leiningen.org)
 Add this to your deps.edn
 
 ``` clj
-  :project {:deps {com.exoscale/tools.project {:git/sha "..." :git/url "git@github.com:exoscale/tools.project.git"}}
+  :project {:deps {io.github.exoscale/tools.project {:git/sha "..."}}
             :ns-default exoscale.tools.project}
 ```
 
 Or install the tool locally:
 
 ``` bash
-clojure -Ttools install com.exoscale/tools.project '{:git/sha "..." :git/url "https://github.com/exoscale/tools.project.git"}' :as project
+clojure -Ttools install io.github.exoscale/tools.project '{:git/sha "..."}' :as project
 ```
 
 ## Usage
