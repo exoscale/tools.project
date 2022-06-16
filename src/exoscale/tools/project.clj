@@ -85,7 +85,7 @@
 
 (defn release
   [opts]
-  (ps/task (assoc opts :id :release)))
+  (task-or-tool opts :release/modules ps/release))
 
 (defn revision-sha
   [opts]
