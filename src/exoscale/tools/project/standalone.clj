@@ -135,7 +135,7 @@
   [opts]
   (-> opts
       into-opts
-      (assoc :id :release)
+      (assoc :id :release/single)
       (tasks/task opts)))
 
 (def ^{:arglists '([opts])} version-bump-and-snapshot
