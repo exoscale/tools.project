@@ -4,7 +4,7 @@
 # Internal
 ROOT_DIR=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 VERSION=$(shell cat $(ROOT_DIR)/VERSION)
-CLJ=clojure
+CLJ=clojure -J-Dclojure.main.report=stderr
 
 ##@ Testing
 
