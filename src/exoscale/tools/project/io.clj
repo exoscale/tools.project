@@ -4,7 +4,7 @@
 (defn- check
   [{:keys [exit] :as res}]
   (when-not (zero? exit)
-    (throw (ex-info "non zero exit" {})))
+    (throw (ex-info "non zero exit" res)))
   res)
 
 (defn shell

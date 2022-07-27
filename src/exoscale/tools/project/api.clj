@@ -67,7 +67,7 @@
     :or {dir "."}
     :as opts}]
   (println "running prep task for dependencies in:" lib)
-  (pio/shell [["clojure" "-X:deps" "prep"]] {:dir dir})
+  (pio/shell [["clojure" "-J-Dclojure.main.report=stderr" "-X:deps" "prep" ":log" "debug"]] {:dir dir})
   opts)
 
 (defn prep-self
@@ -84,7 +84,7 @@
           (flush)
           (System/exit 1)))
       (println "running prep task for:" lib)
-      (pio/shell [["clojure" (str "-X" alias) (str f)]] {:dir dir})
+      (pio/shell [["clojure" "-J-Dclojure.main.report=stderr" (str "-X" alias) (str f)]] {:dir dir})
       (when (and (some? ensure) (not (fs/exists? (fs/path dir ensure))))
         (binding [*out* *err*]
           (println "prep failed to produce the required output file or directory:"
@@ -138,22 +138,22 @@
 
 (defn check
   [opts]
-  (let [dir         (or (:exoscale.tools.project.api.tasks/dir opts) ".")
+  (let [dir (or (:exoscale.tools.project.api.tasks/dir opts) ".")
         source-dirs (find-source-dirs opts)]
-    (pio/shell [["clojure" "-Sdeps" (pr-str deps-check-config) "-X:spootnik-deps-check:test"
+    (pio/shell [["clojure" "-J-Dclojure.main.report=stderr" "-Sdeps" (pr-str deps-check-config) "-X:spootnik-deps-check:test"
                  "spootnik.deps-check/check" ":paths" (pr-str source-dirs)]]
                {:dir dir})
     opts))
 
 (defn test
   [opts]
-  (let [dir     (or (:exoscale.tools.project.api.tasks/dir opts) ".")
+  (let [dir (or (:exoscale.tools.project.api.tasks/dir opts) ".")
         cmdline (reduce-kv
                  (fn [cmdline k v]
                    (-> cmdline
                        (conj (pr-str k))
                        (conj (pr-str v))))
-                 ["clojure" "-X:test"]
+                 ["clojure" "-J-Dclojure.main.report=stderr" "-X:test"]
                  (dissoc opts :exoscale.tools.project.api.tasks/dir))]
     (pio/shell [cmdline] {:dir dir}))
   opts)
