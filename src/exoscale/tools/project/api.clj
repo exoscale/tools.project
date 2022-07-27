@@ -67,7 +67,7 @@
     :or {dir "."}
     :as opts}]
   (println "running prep task for dependencies in:" lib)
-  (pio/shell [["clojure" "-J-Dclojure.main.report=stderr" "-X:deps" "prep"]] {:dir dir})
+  (pio/shell [["clojure" "-J-Dclojure.main.report=stderr" "-X:deps" "prep" ":log" "debug"]] {:dir dir})
   opts)
 
 (defn prep-self
