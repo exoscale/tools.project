@@ -12,7 +12,7 @@
         io.github.slipset/deps-deploy {:git/sha "b87c9299761762984bd54a285ca8fa0aac81809f"
                                        :exclusions [s3-wagon-private/s3-wagon-private]}
         exoscale/sos-wagon-private {:mvn/version "1.3.2-exoscale11"}
-        io.github.exoscale/deps-modules {:git/sha "7b531cc38904c03d808528bc0a1f306728db8579"}
+        io.github.exoscale/deps-modules {:git/sha "7347a3bb40bf619176404866ffd75bd80e9a75a5"}
         org.clojure/tools.deps.alpha {:mvn/version "0.14.1178"}
         babashka/fs {:mvn/version "0.1.6"}
         rewrite-clj/rewrite-clj {:mvn/version "1.0.767-alpha"}}
