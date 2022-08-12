@@ -3,11 +3,11 @@
         io.github.seancorfield/deps-new {:git/tag "v0.4.9"
                                          :git/sha "ba30a76af8b42a45f8498a168bf89518a794fce5"}
         com.github.liquidz/antq {:mvn/version "1.7.798"}
-        cljfmt/cljfmt {:mvn/version "0.8.0"}
+        cljfmt/cljfmt {:mvn/version "0.8.2"}
         clj-kondo/clj-kondo {:mvn/version "2022.05.31"}
         timofreiberg/bultitude {:mvn/version "0.3.1"}
         io.github.clojure/tools.build {:git/tag "v0.8.2" :git/sha "ba1a2bf"}
-        io.github.exoscale/deps-version {:git/sha "e5caeb9dcb4b691de59b271c36e9c21093db6557"}
+        io.github.exoscale/deps-version {:git/sha "7b531cc38904c03d808528bc0a1f306728db8579"}
         com.exoscale/lingo {:mvn/version "1.0.0-alpha19"}
         io.github.slipset/deps-deploy {:git/sha "b87c9299761762984bd54a285ca8fa0aac81809f"
                                        :exclusions [s3-wagon-private/s3-wagon-private]}
