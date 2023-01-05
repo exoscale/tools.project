@@ -148,6 +148,7 @@
 (defn test
   [opts]
   (let [dir (or (:exoscale.tools.project.api.tasks/dir opts) ".")
+        _ (println opts)
         cmdline (reduce-kv
                  (fn [cmdline k v]
                    (-> cmdline
