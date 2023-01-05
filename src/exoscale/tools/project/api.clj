@@ -155,7 +155,7 @@
                        (conj (pr-str v))))
                  ["clojure" "-J-Dclojure.main.report=stderr" "-X:test"]
                  (dissoc opts :exoscale.tools.project.api.tasks/dir))]
-    (pio/shell [cmdline] {:dir dir #_#_:env {"JAVA_OPTS" (System/getenv "JAVA_OPTS")}}))
+    (pio/shell [cmdline] {:dir dir :env {"JAVA_OPTS" (System/getenv "JAVA_OPTS")}}))
   opts)
 
 (defn version
