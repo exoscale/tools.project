@@ -67,7 +67,7 @@
     :or {dir "."}
     :as opts}]
   (println "running prep task for dependencies in:" lib)
-  (pio/shell [["clojure" "-J-Dclojure.main.report=stderr" "-X:deps" "prep" ":log" "debug"]] {:dir dir})
+  (pio/shell [["clojure" "-J-Dclojure.main.report=stderr" "-X:deps" "prep" ":log" "debug"]] {:dir dir :env {"JAVA_OPTS" (System/getenv "JAVA_OPTS")}})
   opts)
 
 (defn prep-self
@@ -142,13 +142,12 @@
         source-dirs (find-source-dirs opts)]
     (pio/shell [["clojure" "-J-Dclojure.main.report=stderr" "-Sdeps" (pr-str deps-check-config) "-X:spootnik-deps-check:test"
                  "spootnik.deps-check/check" ":paths" (pr-str source-dirs)]]
-               {:dir dir})
+               {:dir dir :env {"JAVA_OPTS" (System/getenv "JAVA_OPTS")}})
     opts))
 
 (defn test
   [opts]
   (let [dir (or (:exoscale.tools.project.api.tasks/dir opts) ".")
-        _ (println opts)
         cmdline (reduce-kv
                  (fn [cmdline k v]
                    (-> cmdline
@@ -156,7 +155,7 @@
                        (conj (pr-str v))))
                  ["clojure" "-J-Dclojure.main.report=stderr" "-X:test"]
                  (dissoc opts :exoscale.tools.project.api.tasks/dir))]
-    (pio/shell [cmdline] {:dir dir}))
+    (pio/shell [cmdline] {:dir dir :env {"JAVA_OPTS" (System/getenv "JAVA_OPTS")}}))
   opts)
 
 (defn version
