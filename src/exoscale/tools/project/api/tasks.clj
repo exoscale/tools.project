@@ -129,10 +129,11 @@
 (defn- run-task!
   [{:as task :keys [shell ref run args]}
    {::keys [dir] :as opts}]
-  (let [ret (s/conform :exoscale.project/task task)]
+  (let [ret (s/conform :exoscale.project/task task)
+        metadata (meta task)]
     (case (first ret)
       :shell (shell* shell opts)
-      :run (run* run (merge {} args opts))
+      :run (run* run (merge metadata args opts))
       :ref (binding [td/*the-dir* dir]
              (exoscale.tools.project.api.tasks/task (assoc opts :id ref) opts)))))
 

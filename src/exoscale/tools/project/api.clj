@@ -148,12 +148,15 @@
 (defn test
   [opts]
   (let [dir (or (:exoscale.tools.project.api.tasks/dir opts) ".")
+        edn (:exoscale.tools.project.api.tasks/task-deps-edn opts)
+        jvm-flags (->> (get-in edn [:aliases :test :jvm-opts])
+                       (mapv #(str "-J" %)))
         cmdline (reduce-kv
                  (fn [cmdline k v]
                    (-> cmdline
                        (conj (pr-str k))
                        (conj (pr-str v))))
-                 ["clojure" "-J--enable-preview" "-J-Dclojure.main.report=stderr" "-X:test"]
+                 (reduce into ["clojure"]  (vector jvm-flags ["-J-Dclojure.main.report=stderr" "-X:test"]))
                  (dissoc opts :exoscale.tools.project.api.tasks/dir))]
     (pio/shell [cmdline] {:dir dir}))
   opts)
