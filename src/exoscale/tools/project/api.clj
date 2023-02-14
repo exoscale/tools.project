@@ -46,6 +46,16 @@
     (println "storing git sha in" git-version-file)
     opts))
 
+(defn revision-version
+  [opts]
+  (let [{:exoscale.tools.project.api.tasks/keys [dir]} opts
+        version (:exoscale.project/version opts)
+        version-file (str (fs/path dir "resources" "VERSION"))]
+    (fs/create-dirs (fs/path dir "resources"))
+    (spit version-file version)
+    (println "storing version in" version-file)
+    opts))
+
 (defn info
   [opts]
   (let [{:exoscale.project/keys [extra-deps-files version modules lib]} opts]
