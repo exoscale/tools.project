@@ -179,10 +179,10 @@
   (comp api/revision-sha into-opts))
 
 (def ^{:arglists '([opts])} check
-  (comp api/check api/revision-sha api/prep-self api/prep into-opts))
+  (comp api/check api/revision-version api/revision-sha api/prep-self api/prep into-opts))
 
 (def ^{:arglists '([opts])} uberjar
-  (comp jar/uberjar api/revision-sha api/prep-self api/prep api/clean into-opts))
+  (comp jar/uberjar api/revision-version api/revision-sha api/prep-self api/prep api/clean into-opts))
 
 (def ^{:arglists '([opts])} test
   api/test)
