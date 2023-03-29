@@ -24,7 +24,7 @@
 (defn- lifted-basis
   "This creates a basis where source deps have their primary
   external dependencies lifted to the top-level, such as is
-  needed by Polylith and possibly other monorepo setups."
+  needed by monorepo setups."
   [deps-file]
   (let [default-libs (:libs (create-basis deps-file))
         source-dep? #(not (:mvn/version (get default-libs %)))
