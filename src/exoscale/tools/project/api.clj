@@ -10,6 +10,7 @@
             [antq.core :as antq]
             [exoscale.tools.project.dir :as dir]
             [exoscale.tools.project.api.git :as git]
+            [exoscale.tools.project.api.version :as version]
             [exoscale.tools.project.io :as pio]))
 
 (defn- find-source-dirs
@@ -49,7 +50,7 @@
 (defn revision-version
   [opts]
   (let [{:exoscale.tools.project.api.tasks/keys [dir]} opts
-        version (:exoscale.project/version opts)
+        version (version/get-version opts)
         version-file (str (fs/path dir "resources" "VERSION"))]
     (fs/create-dirs (fs/path dir "resources"))
     (spit version-file version)
