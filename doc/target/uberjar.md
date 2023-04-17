@@ -17,4 +17,6 @@ clojure -T:project uberjar
 
 When a `:exoscale.project/modules` key is present in the project's
 configuration, runs through all configured module to call the
-`uberjar` target instead of running on the project.
+`uberjar` target instead of running on the project.  
+Additionally, a `resources/VERSION` file is added to the uberjar, containing
+the specified project's version.
