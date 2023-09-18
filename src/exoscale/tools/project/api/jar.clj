@@ -34,7 +34,7 @@
     (b/write-pom {:basis basis
                   :class-dir class-dir
                   :lib lib
-                  :src-dirs src-dirs
+                  :src-dirs (:exoscale.project/src-dirs ops)
                   :version version})
     (println "Copying src-dirs: " src-dirs)
     (b/copy-dir {:src-dirs src-dirs
@@ -66,7 +66,7 @@
     (b/write-pom {:basis basis
                   :class-dir class-dir
                   :lib lib
-                  :src-dirs src-dirs
+                  :src-dirs (:exoscale.project/src-dirs ops)
                   :version version})
     (println "Compiling" src-dirs)
     (b/compile-clj (cond-> {:basis basis
