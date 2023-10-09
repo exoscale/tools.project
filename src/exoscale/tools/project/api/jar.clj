@@ -22,7 +22,7 @@
 
 (defn jar [opts]
   (let [{:exoscale.project/keys [_env lib _version _version-file class-dir
-                                 src-dirs basis jar-file deps-file licenses]
+                                 src-dirs basis jar-file deps-file pom-data]
          :as opts} opts
         version (v/get-version opts)
         deps-file (dir/canonicalize deps-file)
@@ -35,7 +35,7 @@
     (b/write-pom {:basis basis
                   :class-dir class-dir
                   :lib lib
-                  :licenses licenses
+                  :pom-data pom-data
                   :src-dirs (:exoscale.project/src-dirs opts)
                   :version version})
     (println "Copying src-dirs: " src-dirs)
@@ -53,7 +53,7 @@
   [opts]
   (let [{:exoscale.project/keys [_env lib _version _version-file main compile-opts
                                  src-dirs class-dir basis uberjar-file uber-opts deps-file
-                                 licenses]
+                                 pom-data]
          :as opts} opts
         version (v/get-version opts)
         deps-file (dir/canonicalize deps-file)
@@ -69,7 +69,7 @@
     (b/write-pom {:basis basis
                   :class-dir class-dir
                   :lib lib
-                  :licenses licenses
+                  :pom-data pom-data
                   :src-dirs (:exoscale.project/src-dirs opts)
                   :version version})
     (println "Compiling" src-dirs)
