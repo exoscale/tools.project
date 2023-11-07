@@ -46,4 +46,4 @@
                                             exoscale.tools.project.template/module-data-fn
                                             exoscale.tools.project.template/template-fn]}}
  :skip-comments true
- :output {:exclude-files "^resources/exoscale"}}
+ :output {:exclude-files ["^resources/exoscale"]}}
