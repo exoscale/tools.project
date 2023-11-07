@@ -17,7 +17,6 @@
         org.clojure/tools.deps.alpha {:mvn/version "0.14.1178"}
         babashka/fs {:mvn/version "0.1.6"}
         rewrite-clj/rewrite-clj {:mvn/version "1.0.767-alpha"}}
- :jvm
 
  :aliases
  {:project {:deps {io.github.exoscale/tools.project {:local/root "."}}
