@@ -177,13 +177,13 @@
       (flush)
       (System/exit 1))
 
-    (when-not task
-      (println (format "Task '%s' not found" id))
+    (when-not task-def
+      (println (format "Task '%s' not found" task-id))
       (System/exit 1))
 
     (println "starting task:" task-id
              (if lib
-               (str "for:" lib)
+               (str "for: " lib)
                "from `root`"))
     (flush)
 
