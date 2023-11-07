@@ -20,7 +20,8 @@
 
  :aliases
  {:project {:deps {io.github.exoscale/tools.project {:local/root "."}}
-            :ns-default exoscale.tools.project}}
+            :ns-default exoscale.tools.project
+            :jvm-opts ["-Dclojure.main.report=stderr"]}}
 
  :slipset.deps-deploy/exec-args
  {:installer :remote :sign-releases? false :repository "clojars"}
