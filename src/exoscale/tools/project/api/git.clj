@@ -25,6 +25,9 @@
 
 (defn revision-sha
   [_]
-  (-> (pio/shell ["git rev-parse HEAD"] {:dir td/*the-dir* :out :capture})
+  (-> (pio/shell ["git rev-parse HEAD"]
+                 {:dir td/*the-dir*
+                  :out :capture
+                  :fatal? false})
       :out
       str/trim-newline))

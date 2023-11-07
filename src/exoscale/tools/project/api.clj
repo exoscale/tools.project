@@ -46,10 +46,10 @@
           git-version-file (str (fs/path dir "resources" "git-version"))]
       (fs/create-dirs (fs/path dir "resources"))
       (spit git-version-file revision-sha)
-      (println "storing git sha in" git-version-file)
-      opts)
+      (println "storing git sha in" git-version-file))
     (catch Exception e
-      (println (format "failed to retrieve git version %s" (ex-message e))))))
+      (println (format "failed to retrieve git version %s" (ex-message e)))))
+  opts)
 
 (defn revision-version
   [opts]

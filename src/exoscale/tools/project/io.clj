@@ -9,7 +9,7 @@
 
 (defn shell
   "Run shell commands contained in `cmds`. The first unsuccesful exit triggers a system exit."
-  [cmds {:keys [dir env out]}]
+  [cmds {:keys [dir env out fatal?] :or {fatal? true}}]
   (try
     (last
      (for [cmd cmds]
@@ -20,4 +20,5 @@
            (check))))
     (catch Exception _
       ;; At this stage we already printed the relevant error to stdout
-      (System/exit 1))))
+      (when (true? fatal?)
+        (System/exit 1)))))
