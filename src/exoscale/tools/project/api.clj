@@ -40,12 +40,16 @@
 
 (defn revision-sha
   [opts]
-  (let [{:exoscale.tools.project.api.tasks/keys [dir]} opts
-        git-version-file (str (fs/path dir "resources" "git-version"))]
-    (fs/create-dirs (fs/path dir "resources"))
-    (spit git-version-file (git/revision-sha opts))
-    (println "storing git sha in" git-version-file)
-    opts))
+  (try
+    (let [revision-sha (git/revision-sha opts)
+          {:exoscale.tools.project.api.tasks/keys [dir]} opts
+          git-version-file (str (fs/path dir "resources" "git-version"))]
+      (fs/create-dirs (fs/path dir "resources"))
+      (spit git-version-file revision-sha)
+      (println "storing git sha in" git-version-file)
+      opts)
+    (catch Exception e
+      (println (format "failed to retrieve git version %s" (ex-message e))))))
 
 (defn revision-version
   [opts]
