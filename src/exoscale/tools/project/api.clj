@@ -47,7 +47,7 @@
       (fs/create-dirs (fs/path dir "resources"))
       (spit git-version-file revision-sha)
       (println "storing git sha in" git-version-file))
-    (catch Throwable e
+    (catch Exception e
       (println (format "failed to retrieve git version %s" (ex-message e)))))
   opts)
 
