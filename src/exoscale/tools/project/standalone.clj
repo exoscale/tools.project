@@ -30,6 +30,8 @@
 
 (s/def :exoscale.project/lib qualified-ident?)
 (s/def :exoscale.project/version string?)
+(s/def :exoscale.project/version-file string?)
+(s/def :exoscale.project/version-fn qualified-ident?)
 (s/def :exoscale.project/target-dir string?)
 (s/def :exoscale.project/class-dir string?)
 (s/def :exoscale.project/javac-opts (s/coll-of string?))
@@ -42,6 +44,7 @@
   (s/keys :opt [:exoscale.project/lib
                 :exoscale.project/version
                 :exoscale.project/version-file
+                :exoscale.project/version-fn
                 :exoscale.project/target-dir
                 :exoscale.project/class-dir
                 :exoscale.project/javac-opts
