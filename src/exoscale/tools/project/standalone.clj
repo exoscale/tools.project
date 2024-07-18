@@ -1,21 +1,21 @@
 (ns exoscale.tools.project.standalone
   (:refer-clojure :exclude [test])
-  (:require [clojure.edn :as edn]
+  (:require [babashka.fs :as fs]
+            [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.spec.alpha :as s]
-            [clojure.tools.deps.alpha.util.dir :as td]
             [clojure.tools.deps.alpha.specs]
-            [babashka.fs :as fs]
-            [exoscale.deps-version :as version]
+            [clojure.tools.deps.alpha.util.dir :as td]
             [exoscale.deps-modules :as deps-modules]
+            [exoscale.deps-version :as version]
             [exoscale.lingo :as l]
-            [exoscale.tools.project.template :as template]
             [exoscale.tools.project.api :as api]
             [exoscale.tools.project.api.deploy :as deploy]
             [exoscale.tools.project.api.git :as git]
             [exoscale.tools.project.api.jar :as jar]
             [exoscale.tools.project.api.tasks :as tasks]
-            [exoscale.tools.project.api.version :as v]))
+            [exoscale.tools.project.api.version :as v]
+            [exoscale.tools.project.template :as template]))
 
 (def default-opts
   #:exoscale.project{:file "deps.edn"
@@ -143,6 +143,9 @@
 
 (def ^{:arglists '([opts])} version-remove-snapshot
   (comp v/remove-snapshot into-opts))
+
+(def ^{:arglists '([opts])} version-git-count-revs
+  (comp v/git-count-revs into-opts))
 
 (def ^{:arglists '([opts])} git-commit-version
   (comp git/commit-version into-opts))
