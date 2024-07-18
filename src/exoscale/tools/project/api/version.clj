@@ -34,8 +34,16 @@
                            :suffix version-suffix}))
 
 (defn git-count-revs
+  "To be used via version-fn, returns version as VERSION_TEMPLATE with number of
+  commits on current branch replacing the GENERATED_VERSION placeholder"
   [{:as _opts :exoscale.project/keys [version-template-file]
     :or {version-template-file "VERSION_TEMPLATE"}}]
   (str/replace (slurp (td/canonicalize (io/file version-template-file)))
                "GENERATED_VERSION"
                (b/git-count-revs nil)))
+
+(defn epoch
+  "To be used via version-fn, returns version as VERSION_TEMPLATE with number of
+  seconds since epoch replacing the GENERATED_VERSION placeholder"
+  [_opts]
+  (.getEpochSecond (java.time.Instant/now)))
