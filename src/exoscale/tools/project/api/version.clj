@@ -11,9 +11,11 @@
 
 (defn get-version
   [{:as _opts :exoscale.project/keys [version-file version-fn version]}]
-  (or version
-      (some-> version-file version/read-version-file*)
-      (qualified-ident? version-fn) (run-version-fn version-fn)))
+  (let [version-from-file (some-> version-file version/read-version-file*)]
+    (cond
+      (string? version) version
+      (string? version-from-file) version-from-file
+      (qualified-ident? version-fn) (run-version-fn version-fn))))
 
 (defn remove-snapshot
   [{:as _opts
