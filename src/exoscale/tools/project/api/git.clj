@@ -5,8 +5,8 @@
             [exoscale.tools.project.io :as pio]))
 
 (defn commit-version
-  [{:as opts :exoscale.project/keys [version-file]}]
-  (pio/shell [(format "git add %s" version-file)
+  [opts]
+  (pio/shell [(format "git add VERSION")
               "git commit -m \"Version $VERSION\""]
              {:dir td/*the-dir*
               :env {"VERSION" (v/get-version opts)}}))
