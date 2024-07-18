@@ -138,6 +138,13 @@
       (assoc :id :release/single)
       (tasks/task opts)))
 
+(defn release-git-count-revs
+  [opts]
+  (-> opts
+      into-opts
+      (assoc :id :release/git-count-revs)
+      (tasks/task opts)))
+
 (def ^{:arglists '([opts])} version-bump-and-snapshot
   (comp v/bump-and-snapshot into-opts))
 
@@ -145,7 +152,7 @@
   (comp v/remove-snapshot into-opts))
 
 (def ^{:arglists '([opts])} version-git-count-revs
-  (comp v/git-count-revs into-opts))
+  (comp v/update-as-git-count-revs into-opts))
 
 (def ^{:arglists '([opts])} git-commit-version
   (comp git/commit-version into-opts))

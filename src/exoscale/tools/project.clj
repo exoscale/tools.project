@@ -87,6 +87,10 @@
   [opts]
   (task-or-tool opts :release/modules ps/release))
 
+(defn release-git-count-revs
+  [opts]
+  (task-or-tool opts :release/git-count-revs ps/release))
+
 (defn revision-sha
   [opts]
   (task-or-tool opts :revision-sha ps/revision-sha))
