@@ -6,7 +6,7 @@
             [exoscale.deps-version :as version]))
 
 (defn run-version-fn [version-fn]
-  (when-let [f (requiring-resolve version-fn)]
+  (when-let [f (requiring-resolve (symbol version-fn))]
     (f)))
 
 (defn get-version
