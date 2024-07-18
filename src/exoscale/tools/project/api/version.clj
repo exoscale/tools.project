@@ -1,9 +1,8 @@
 (ns exoscale.tools.project.api.version
   (:require [clojure.java.io :as io]
-            [clojure.string :as str]
-            [clojure.tools.build.api :as b]
             [clojure.tools.deps.alpha.util.dir :as td]
-            [exoscale.deps-version :as version]))
+            [exoscale.deps-version :as version]
+            [exoscale.tools.project.api.git :as git]))
 
 (defn get-version
   [{:as _opts :exoscale.project/keys [version-file version]}]
@@ -26,13 +25,9 @@
                            :key version-key
                            :suffix version-suffix}))
 
-(defn git-count-revs-version
+(defn git-count-revs
   "Updates VERSION file with clojure core libs like version scheme"
-  [{:as _opts
-    :exoscale.project/keys [version-file version-template-file]
-    :or {version-file "VERSION"
-         version-template-file "VERSION_TEMPLATE"}}]
+  [{:as opts :exoscale.project/keys [version-file]
+    :or {version-file "VERSION"}}]
   (spit (td/canonicalize (io/file version-file))
-        (str/replace (slurp (td/canonicalize (io/file version-template-file)))
-                     "GENERATED_VERSION"
-                     (b/git-count-revs nil))))
+        (git/git-count-revs opts)))

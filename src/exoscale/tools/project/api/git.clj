@@ -1,5 +1,7 @@
 (ns exoscale.tools.project.api.git
-  (:require [clojure.string :as str]
+  (:require [clojure.java.io :as io]
+            [clojure.string :as str]
+            [clojure.tools.build.api :as b]
             [clojure.tools.deps.alpha.util.dir :as td]
             [exoscale.tools.project.api.version :as v]
             [exoscale.tools.project.io :as pio]))
@@ -31,3 +33,10 @@
                   :fatal? false})
       :out
       str/trim-newline))
+
+(defn git-count-revs
+  [{:as _opts :exoscale.project/keys [version-template-file]
+    :or {version-template-file "VERSION_TEMPLATE"}}]
+  (str/replace (slurp (td/canonicalize (io/file version-template-file)))
+               "GENERATED_VERSION"
+               (b/git-count-revs nil)))
