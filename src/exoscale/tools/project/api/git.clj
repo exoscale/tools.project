@@ -1,12 +1,12 @@
 (ns exoscale.tools.project.api.git
-  (:require [clojure.tools.deps.alpha.util.dir :as td]
+  (:require [clojure.string :as str]
+            [clojure.tools.deps.alpha.util.dir :as td]
             [exoscale.tools.project.api.version :as v]
-            [exoscale.tools.project.io :as pio]
-            [clojure.string :as str]))
+            [exoscale.tools.project.io :as pio]))
 
 (defn commit-version
-  [opts]
-  (pio/shell ["git add VERSION"
+  [{:as opts :exoscale.project/keys [version-file]}]
+  (pio/shell [(format "git add %s" version-file)
               "git commit -m \"Version $VERSION\""]
              {:dir td/*the-dir*
               :env {"VERSION" (v/get-version opts)}}))
