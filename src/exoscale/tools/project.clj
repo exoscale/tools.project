@@ -87,6 +87,10 @@
   [opts]
   (task-or-tool opts :release/modules ps/release))
 
+(defn release+tag
+  [opts]
+  (task-or-tool opts :release+tag/modules ps/release+tag))
+
 (defn revision-sha
   [opts]
   (task-or-tool opts :revision-sha ps/revision-sha))

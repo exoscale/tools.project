@@ -82,13 +82,13 @@
    :revision-sha [{:run :exoscale.tools.project.standalone/revision-sha
                    :for-all [:exoscale.project/modules]}]
 
-   :release/single  [{:run :exoscale.tools.project.standalone/version-remove-snapshot}
-                     {:run :exoscale.tools.project.standalone/deploy}
-                     {:run :exoscale.tools.project.standalone/git-commit-version}
-                     {:run :exoscale.tools.project.standalone/git-tag-version}
-                     {:run :exoscale.tools.project.standalone/version-bump-and-snapshot}
-                     {:run :exoscale.tools.project.standalone/git-commit-version}
-                     {:run :exoscale.tools.project.standalone/git-push}]
+   :release/single [{:run :exoscale.tools.project.standalone/version-remove-snapshot}
+                    {:run :exoscale.tools.project.standalone/deploy}
+                    {:run :exoscale.tools.project.standalone/git-commit-version}
+                    {:run :exoscale.tools.project.standalone/git-tag-version}
+                    {:run :exoscale.tools.project.standalone/version-bump-and-snapshot}
+                    {:run :exoscale.tools.project.standalone/git-commit-version}
+                    {:run :exoscale.tools.project.standalone/git-push}]
 
    :release/modules [{:run :exoscale.tools.project.standalone/version-remove-snapshot}
                      {:ref :deploy}
@@ -97,6 +97,16 @@
                      {:run :exoscale.tools.project.standalone/version-bump-and-snapshot}
                      {:run :exoscale.tools.project.standalone/git-commit-version}
                      {:run :exoscale.tools.project.standalone/git-push}]
+
+   :release+tag/single
+   [{:run :exoscale.tools.project.standalone/deploy}
+    {:run :exoscale.tools.project.standalone/git-tag-version}
+    {:run :exoscale.tools.project.standalone/git-push}]
+
+   :release+tag/modules
+   [{:ref :deploy}
+    {:run :exoscale.tools.project.standalone/git-tag-version}
+    {:run :exoscale.tools.project.standalone/git-push}]
 
    :prep-self [{:run :exoscale.tools.project.standalone/prep-self
                 :for-all [:exoscale.project/modules]
