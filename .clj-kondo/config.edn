@@ -7,14 +7,12 @@
                                             exoscale.tools.project.module/install
                                             exoscale.tools.project.module/jar
                                             exoscale.tools.project.module/release
-                                            exoscale.tools.project.module/release-git-count-revs
                                             exoscale.tools.project.module/task
                                             exoscale.tools.project.module/uberjar
                                             exoscale.tools.project.standalone/git-commit-version
                                             exoscale.tools.project.standalone/git-push
                                             exoscale.tools.project.standalone/git-tag-version
                                             exoscale.tools.project.standalone/release
-                                            exoscale.tools.project.standalone/release-git-count-revs
                                             exoscale.tools.project.standalone/version-bump-and-snapshot
                                             exoscale.tools.project.standalone/version-remove-snapshot
                                             exoscale.tools.project.template/data-fn
