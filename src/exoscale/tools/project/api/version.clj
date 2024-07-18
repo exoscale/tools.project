@@ -5,10 +5,15 @@
             [clojure.tools.deps.alpha.util.dir :as td]
             [exoscale.deps-version :as version]))
 
+(defn run-version-fn [version-fn]
+  (when-let [f (requiring-resolve version-fn)]
+    (f)))
+
 (defn get-version
-  [{:as _opts :exoscale.project/keys [version-file version]}]
+  [{:as _opts :exoscale.project/keys [version-file version-fn version]}]
   (or version
-      (some-> version-file version/read-version-file*)))
+      (some-> version-file version/read-version-file*)
+      (qualified-ident? version-fn) (run-version-fn version-fn)))
 
 (defn remove-snapshot
   [{:as _opts

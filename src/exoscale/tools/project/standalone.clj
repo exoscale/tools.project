@@ -60,7 +60,6 @@
 
 (defn assoc-version
   [{:as opts :exoscale.project/keys [version-file]}]
-
   (let [v (version/read-version-file* version-file)]
     (cond-> opts
       (some? v)
