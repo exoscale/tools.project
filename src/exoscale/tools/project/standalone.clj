@@ -59,11 +59,11 @@
        (catch java.io.FileNotFoundException _fnf)))
 
 (defn assoc-version
-  [{:as opts :exoscale.project/keys [version-file]}]
-  (let [v (version/read-version-file* version-file)]
+  [{:as opts}]
+  (let [v (v/get-version opts)]
     (cond-> opts
       (some? v)
-      (assoc :exoscale.project/version (version/read-version-file* version-file)))))
+      (assoc :exoscale.project/version v))))
 
 (defn- assoc-deps-file
   "unless explicit options are given, prepare deps-module configuration"
