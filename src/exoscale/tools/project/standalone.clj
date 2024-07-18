@@ -60,9 +60,11 @@
 
 (defn assoc-version
   [{:as opts :exoscale.project/keys [version-file]}]
-  (cond-> opts
-    (some? version-file)
-    (assoc :exoscale.project/version (version/read-version-file* version-file))))
+
+  (let [v (version/read-version-file* version-file)]
+    (cond-> opts
+      (some? v)
+      (assoc :exoscale.project/version (version/read-version-file* version-file)))))
 
 (defn- assoc-deps-file
   "unless explicit options are given, prepare deps-module configuration"
