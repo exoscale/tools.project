@@ -37,10 +37,3 @@
   (str/replace (slurp (td/canonicalize (io/file version-template-file)))
                "GENERATED_VERSION"
                (b/git-count-revs nil)))
-
-(defn update-as-git-count-revs
-  "Updates VERSION file with clojure core libs like version scheme"
-  [{:as opts :exoscale.project/keys [version-file]
-    :or {version-file "VERSION"}}]
-  (spit (td/canonicalize (io/file version-file))
-        (git-count-revs opts)))
