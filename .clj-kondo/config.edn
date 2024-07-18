@@ -14,6 +14,7 @@
                                             exoscale.tools.project.standalone/git-push
                                             exoscale.tools.project.standalone/git-tag-version
                                             exoscale.tools.project.standalone/release
+                                            exoscale.tools.project.standalone/release-git-count-revs
                                             exoscale.tools.project.standalone/version-bump-and-snapshot
                                             exoscale.tools.project.standalone/version-remove-snapshot
                                             exoscale.tools.project.template/data-fn

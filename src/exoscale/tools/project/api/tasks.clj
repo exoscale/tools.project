@@ -98,9 +98,15 @@
                      {:run :exoscale.tools.project.standalone/git-commit-version}
                      {:run :exoscale.tools.project.standalone/git-push}]
 
-   :release/git-count-revs
+   :release-git-count-revs/single
    [{:run :exoscale.tools.project.standalone/version-git-count-revs}
     {:run :exoscale.tools.project.standalone/deploy}
+    {:run :exoscale.tools.project.standalone/git-tag-version}
+    {:run :exoscale.tools.project.standalone/git-push}]
+
+   :release-git-count-revs/modules
+   [{:run :exoscale.tools.project.standalone/version-git-count-revs}
+    {:ref :deploy}
     {:run :exoscale.tools.project.standalone/git-tag-version}
     {:run :exoscale.tools.project.standalone/git-push}]
 

@@ -142,7 +142,7 @@
   [opts]
   (-> opts
       into-opts
-      (assoc :id :release/git-count-revs)
+      (assoc :id :release-git-count-revs/single)
       (tasks/task opts)))
 
 (def ^{:arglists '([opts])} version-bump-and-snapshot
