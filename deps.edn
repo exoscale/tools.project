@@ -6,15 +6,14 @@
         cljfmt/cljfmt {:mvn/version "0.8.0"}
         clj-kondo/clj-kondo {:mvn/version "2023.12.15"}
         timofreiberg/bultitude {:mvn/version "0.3.1"}
-        io.github.clojure/tools.build {:git/sha "cc1e33d003e2e9507e8e6e899611f56172dacc0a"
-                                       :git/url "https://github.com/clojure/tools.build.git"}
+        io.github.clojure/tools.build {:git/sha "0.10.5"}
         io.github.exoscale/deps-version {:git/sha "e5caeb9dcb4b691de59b271c36e9c21093db6557"}
         com.exoscale/lingo {:mvn/version "1.0.0-alpha19"}
         io.github.slipset/deps-deploy {:git/sha "b87c9299761762984bd54a285ca8fa0aac81809f"
                                        :exclusions [s3-wagon-private/s3-wagon-private]}
         exoscale/sos-wagon-private {:mvn/version "1.3.2-exoscale11"}
         io.github.exoscale/deps-modules {:git/sha "7347a3bb40bf619176404866ffd75bd80e9a75a5"}
-        org.clojure/tools.deps.alpha {:mvn/version "0.14.1178"}
+        org.clojure/tools.deps.alpha {:mvn/version "0.21.1449"}
         babashka/fs {:mvn/version "0.2.16"}
         rewrite-clj/rewrite-clj {:mvn/version "1.0.767-alpha"}}
 
