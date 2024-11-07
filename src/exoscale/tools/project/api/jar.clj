@@ -53,6 +53,7 @@
   [opts]
   (let [{:exoscale.project/keys [_env lib _version _version-file main compile-opts
                                  src-dirs class-dir basis uberjar-file uber-opts deps-file
+                                 ns-compile
                                  pom-data]
          :as opts} opts
         version (v/get-version opts)
@@ -76,6 +77,8 @@
     (b/compile-clj (cond-> {:basis basis
                             :class-dir class-dir
                             :src-dirs src-dirs}
+                     (some? ns-compile)
+                     (assoc :ns-compile ns-compile)
                      (some? compile-opts)
                      (assoc :compile-opts compile-opts)))
     (println "Creating uberjar: " uber-file)
