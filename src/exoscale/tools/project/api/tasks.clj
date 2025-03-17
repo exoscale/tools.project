@@ -42,53 +42,53 @@
 
 (def default-tasks
   "Sets some desirable default tasks"
-  {:install [{:run :exoscale.tools.project.standalone/install
-              :for-all [:exoscale.project/modules]}]
+  {:install         [{:run     :exoscale.tools.project.standalone/install
+                      :for-all [:exoscale.project/modules]}]
 
-   :deploy [{:run :exoscale.tools.project.standalone/deploy
-             :when :exoscale.project/deploy?
-             :for-all [:exoscale.project/modules]}]
+   :deploy          [{:run     :exoscale.tools.project.standalone/deploy
+                      :when    :exoscale.project/deploy?
+                      :for-all [:exoscale.project/modules]}]
 
-   :jar [{:run :exoscale.tools.project.standalone/jar
-          :for-all [:exoscale.project/modules]}]
+   :jar             [{:run     :exoscale.tools.project.standalone/jar
+                      :for-all [:exoscale.project/modules]}]
 
-   :uberjar [{:run :exoscale.tools.project.standalone/uberjar
-              :when :exoscale.project/uberjar?
-              :for-all [:exoscale.project/modules]}]
+   :uberjar         [{:run     :exoscale.tools.project.standalone/uberjar
+                      :when    :exoscale.project/uberjar?
+                      :for-all [:exoscale.project/modules]}]
 
-   :clean [{:run :exoscale.tools.project.standalone/clean
-            :for-all [:exoscale.project/modules]}]
+   :clean           [{:run     :exoscale.tools.project.standalone/clean
+                      :for-all [:exoscale.project/modules]}]
 
-   :check [{:run :exoscale.tools.project.standalone/check
-            :for-all [:exoscale.project/modules]}]
+   :check           [{:run     :exoscale.tools.project.standalone/check
+                      :for-all [:exoscale.project/modules]}]
 
-   :test [{:run :exoscale.tools.project.standalone/test
-           :for-all [:exoscale.project/modules]
-           :unless :exoscale.project/bypass-test?}]
+   :test            [{:run     :exoscale.tools.project.standalone/test
+                      :for-all [:exoscale.project/modules]
+                      :unless  :exoscale.project/bypass-test?}]
 
-   :format/check [{:run :exoscale.tools.project.standalone/format-check
-                   :for-all [:exoscale.project/modules]}]
+   :format/check    [{:run     :exoscale.tools.project.standalone/format-check
+                      :for-all [:exoscale.project/modules]}]
 
-   :format/fix [{:run :exoscale.tools.project.standalone/format-fix
-                 :for-all [:exoscale.project/modules]}]
+   :format/fix      [{:run     :exoscale.tools.project.standalone/format-fix
+                      :for-all [:exoscale.project/modules]}]
 
-   :lint [{:run :exoscale.tools.project.standalone/lint
-           :for-all [:exoscale.project/modules]}]
+   :lint            [{:run     :exoscale.tools.project.standalone/lint
+                      :for-all [:exoscale.project/modules]}]
 
-   :prep [{:run :exoscale.tools.project.standalone/prep
-           :for-all [:exoscale.project/modules]
-           :when :exoscale.project/needs-prep?}]
+   :prep            [{:run     :exoscale.tools.project.standalone/prep
+                      :for-all [:exoscale.project/modules]
+                      :when    :exoscale.project/needs-prep?}]
 
-   :revision-sha [{:run :exoscale.tools.project.standalone/revision-sha
-                   :for-all [:exoscale.project/modules]}]
+   :revision-sha    [{:run     :exoscale.tools.project.standalone/revision-sha
+                      :for-all [:exoscale.project/modules]}]
 
-   :release/single [{:run :exoscale.tools.project.standalone/version-remove-snapshot}
-                    {:run :exoscale.tools.project.standalone/deploy}
-                    {:run :exoscale.tools.project.standalone/git-commit-version}
-                    {:run :exoscale.tools.project.standalone/git-tag-version}
-                    {:run :exoscale.tools.project.standalone/version-bump-and-snapshot}
-                    {:run :exoscale.tools.project.standalone/git-commit-version}
-                    {:run :exoscale.tools.project.standalone/git-push}]
+   :release/single  [{:run :exoscale.tools.project.standalone/version-remove-snapshot}
+                     {:run :exoscale.tools.project.standalone/deploy}
+                     {:run :exoscale.tools.project.standalone/git-commit-version}
+                     {:run :exoscale.tools.project.standalone/git-tag-version}
+                     {:run :exoscale.tools.project.standalone/version-bump-and-snapshot}
+                     {:run :exoscale.tools.project.standalone/git-commit-version}
+                     {:run :exoscale.tools.project.standalone/git-push}]
 
    :release/modules [{:run :exoscale.tools.project.standalone/version-remove-snapshot}
                      {:ref :deploy}
@@ -108,9 +108,9 @@
     {:run :exoscale.tools.project.standalone/git-tag-version}
     {:run :exoscale.tools.project.standalone/git-push}]
 
-   :prep-self [{:run :exoscale.tools.project.standalone/prep-self
-                :for-all [:exoscale.project/modules]
-                :when :deps/prep-lib}]})
+   :prep-self       [{:run     :exoscale.tools.project.standalone/prep-self
+                      :for-all [:exoscale.project/modules]
+                      :when    :deps/prep-lib}]})
 
 (defn shell*
   [cmds {::keys [dir env]}]
@@ -119,7 +119,7 @@
 (defn run*
   [task {::keys [dir] :as opts}]
   (binding [tb/*project-root* dir
-            td/*the-dir* (td/as-canonical (io/file dir))]
+            td/*the-dir*      (td/as-canonical (io/file dir))]
     ((requiring-resolve (symbol task)) opts)))
 
 (declare exoscale.tools.project.api.tasks/task)
@@ -148,9 +148,9 @@
 
 (defn- filter-dir?
   [task sub-edn]
-  (let [when' (if-let [when-k (:when task)]
-                (get sub-edn when-k)
-                true)
+  (let [when'   (if-let [when-k (:when task)]
+                  (get sub-edn when-k)
+                  true)
         unless' (get sub-edn (:unless task))]
     (and (not unless')
          when')))
@@ -212,11 +212,27 @@
          (sort-by key)
          (map val))))
 
-(defn depdendency-graph [task-deps-edn task args]
-  (let [all-deps (->> (task-relevant-dirs task-deps-edn task)
-                      ;; TODO activate alias?
-                      (mapv #(assoc (edn/read-string (slurp (str % "/deps.edn")))
-                                    ::task task ::args args)))
+(defn toposort-prep-aware
+  "Same as toposort but tasks that needs prep are not processed in parallel"
+  [depgraph]
+  (loop [tasks (toposort depgraph)
+         res   []]
+    (if (empty? tasks)
+      res
+      (let [taskset   (first tasks)
+            prep?     (fn [id] (-> depgraph id :exoscale.project/needs-prep?))
+            prep      (filterv prep? taskset)
+            noprep    (filterv (complement prep?) taskset)
+            ;; add preptasks first
+            preptasks (reduce (fn [acc v] (conj acc [v])) res prep)]
+        (recur (rest tasks)
+               (conj preptasks noprep))))))
+
+(defn depdendency-graph [task-deps-edn task]
+  (let [all-deps  (->> (task-relevant-dirs task-deps-edn task)
+                       ;; TODO activate alias?
+                       (mapv #(assoc (edn/read-string (slurp (str % "/deps.edn")))
+                                ::task task ::dir %)))
         all-projs (set (map :exoscale.project/lib all-deps))]
     (->> all-deps
          ;; keep only local deps
@@ -231,30 +247,45 @@
          ;; keep only the dependency graph
          (mapv #(update % :deps keys))
          ;; keep only required args
-         (mapv #(select-keys % [:exoscale.project/lib :deps ::task ::args]))
+         (mapv #(select-keys % [:exoscale.project/lib :exoscale.project/needs-prep?
+                                :deps
+                                ::task ::dir]))
          (reduce (fn [m v] (assoc m (:exoscale.project/lib v) v)) {}))))
 
-(defn sequence-tasks! [task-deps-edn task {:keys [run fail-fast?] :as args}]
-  (if (= run :parallel)
-    (let [depgraph (depdendency-graph task-deps-edn task args)
-          ordered  (toposort depgraph)]
-      ;; TODO fulfill
-      (clojure.pprint/pprint ordered))
+(defn sequence-tasks!
+  "Runs tasks in parallel or sequentially"
+  [task-deps-edn task {:keys [id run] :as args}]
+  (if false ;(= run :parallel)
+    (let [depgraph (depdendency-graph task-deps-edn task)
+          ordered  (if (= :check id)
+                     (toposort-prep-aware depgraph)
+                     (toposort depgraph))]
+      (doseq [taskset ordered]
+        (println (format "Running %s in parallel for %d submodules: %s" id (count taskset) taskset))
+        (->> taskset
+             (mapv (fn [id]
+                     (let [task (-> depgraph id ::task)
+                           dir  (-> depgraph id ::dir)]
+                       ;; TODO it may consume alot of memory
+                       (future (with-out-str
+                                 (run-task! task (merge args {::dir (dir/canonicalize dir)})))))))
+             (mapv deref)
+             (mapv print))))
     ;; else
     (doseq [dir (task-relevant-dirs task-deps-edn task)]
       (run-task! task (merge args {::dir (dir/canonicalize dir)})))))
 
 (defn task
   [opts args]
-   ;; let's assume we have the full env here
-  (let [{:as task-deps-edn
+  ;; let's assume we have the full env here
+  (let [{:as                    task-deps-edn
          :exoscale.project/keys [tasks lib]
-         :keys [id]} (edn/read-string (slurp (dir/canonicalize "deps.edn")))
-        tasks (merge default-tasks tasks)
-        task-id (keyword (:id opts))
+         :keys                  [id]} (edn/read-string (slurp (dir/canonicalize "deps.edn")))
+        tasks    (merge default-tasks tasks)
+        task-id  (keyword (:id opts))
         task-def (get tasks task-id)]
 
-     ;; validate early
+    ;; validate early
     (when-not (s/valid? :exoscale.project/tasks tasks)
       (l/explain :exoscale.project/tasks tasks)
       (flush)
