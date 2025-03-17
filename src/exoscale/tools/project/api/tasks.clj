@@ -171,6 +171,79 @@
     (filter (partial relevant-dir? task)
             dirs)))
 
+;;;;
+;; parallelization
+
+;; https://dreampuf.github.io/GraphvizOnline/?engine=dot
+(defn digraph [m]
+  (println "digraph G {")
+  (doseq [[k v] m
+          :let [deps (:deps v)]]
+    (doseq [dep deps]
+      (println (format "  \"%s\" -> \"%s\" ;" k dep))))
+  (println "}"))
+
+(defn toposort
+  "Runs a topological sort of {key :deps [dep1, d2] ...}
+  and emits a seq of [t1, t2] for sequential fulfillment.
+  Each item may be processed in parallel"
+  [m]
+  (let [depth (fn depth [x]
+                (let [deps (get-in m [x :deps])]
+                  (if (empty? deps)
+                    0
+                    (->> deps
+                         (map depth)
+                         (apply max)
+                         inc))))]
+    ;; example
+    ;([com.exoscale/sos-common com.exoscale/sos-flake com.exoscale/sos-client com.exoscale/sos-interceptors]
+    ; [com.exoscale/sos-protobuf com.exoscale/sos-model]
+    ; [com.exoscale/sos-test-common com.exoscale/sos-fdb com.exoscale/sos-bucketstore]
+    ; [com.exoscale/sos-metastore com.exoscale/sos-blobstore]
+    ; [com.exoscale/sos-query
+    ;  com.exoscale/sos-collector
+    ;  com.exoscale/sos-worker
+    ;  com.exoscale/sos-events
+    ;  com.exoscale/sos-inventory]
+    ; [com.exoscale/sos-proxy com.exoscale/sos-replication])
+    (->> (keys m)
+         (group-by depth)
+         (sort-by key)
+         (map val))))
+
+(defn depdendency-graph [task-deps-edn task args]
+  (let [all-deps (->> (task-relevant-dirs task-deps-edn task)
+                      ;; TODO activate alias?
+                      (mapv #(assoc (edn/read-string (slurp (str % "/deps.edn")))
+                                    ::task task ::args args)))
+        all-projs (set (map :exoscale.project/lib all-deps))]
+    (->> all-deps
+         ;; keep only local deps
+         (mapv #(update % :deps (fn [depsmap] (reduce-kv (fn [m k v]
+                                                           (if (and
+                                                                 (all-projs k)
+                                                                 (some? (:local/root v)))
+                                                             (assoc m k v)
+                                                             m))
+                                                         {}
+                                                         depsmap))))
+         ;; keep only the dependency graph
+         (mapv #(update % :deps keys))
+         ;; keep only required args
+         (mapv #(select-keys % [:exoscale.project/lib :deps ::task ::args]))
+         (reduce (fn [m v] (assoc m (:exoscale.project/lib v) v)) {}))))
+
+(defn sequence-tasks! [task-deps-edn task {:keys [run fail-fast?] :as args}]
+  (if (= run :parallel)
+    (let [depgraph (depdendency-graph task-deps-edn task args)
+          ordered  (toposort depgraph)]
+      ;; TODO fulfill
+      (clojure.pprint/pprint ordered))
+    ;; else
+    (doseq [dir (task-relevant-dirs task-deps-edn task)]
+      (run-task! task (merge args {::dir (dir/canonicalize dir)})))))
+
 (defn task
   [opts args]
    ;; let's assume we have the full env here
@@ -200,6 +273,5 @@
     (doseq [{:as task :keys [for-all]} task-def
             :let [task (vary-meta task assoc :exoscale.tools.project.api.tasks/task-deps-edn task-deps-edn)]]
       (if (seq for-all)
-        (doseq [dir (task-relevant-dirs task-deps-edn task)]
-          (run-task! task (merge args {::dir (dir/canonicalize dir)})))
+        (sequence-tasks! task-deps-edn task args)
         (run-task! task (merge args {::dir td/*the-dir*}))))))
