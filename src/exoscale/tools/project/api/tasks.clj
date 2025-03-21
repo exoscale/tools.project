@@ -253,13 +253,16 @@
          (reduce (fn [m v] (assoc m (:exoscale.project/lib v) v)) {}))))
 
 (defn sequence-tasks!
-  "Runs tasks in parallel or sequentially"
+  "Runs tasks in parallel (either concurrently or via topological sort) or sequentially"
   [task-deps-edn task {:keys [id run] :as args}]
-  (if false ;(= run :parallel)
+  (if (or (= run :parallel) (= run :toposort))
     (let [depgraph (depdendency-graph task-deps-edn task)
-          ordered  (if (= :check id)
-                     (toposort-prep-aware depgraph)
-                     (toposort depgraph))]
+          ordered  (if (= run :parallel)
+                     [(keys depgraph)] ;; all in parallel
+                      ;; doing a check needs to do the 'prep' sequentially
+                     (if (= id :check)
+                       (toposort-prep-aware depgraph)
+                       (toposort depgraph)))]
       (doseq [taskset ordered]
         (println (format "Running %s in parallel for %d submodules: %s" id (count taskset) taskset))
         (->> taskset
@@ -269,8 +272,7 @@
                        ;; TODO it may consume alot of memory
                        (future (with-out-str
                                  (run-task! task (merge args {::dir (dir/canonicalize dir)})))))))
-             (mapv deref)
-             (mapv print))))
+             (mapv (comp print deref)))))
     ;; else
     (doseq [dir (task-relevant-dirs task-deps-edn task)]
       (run-task! task (merge args {::dir (dir/canonicalize dir)})))))
