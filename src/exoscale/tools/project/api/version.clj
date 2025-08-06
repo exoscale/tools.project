@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.tools.build.api :as b]
-            [clojure.tools.deps.alpha.util.dir :as td]
+            [clojure.tools.deps.util.dir :as td]
             [exoscale.deps-version :as version]))
 
 (defn run-version-fn [{:as opts :exoscale.project/keys [version-fn]}]
