@@ -1,6 +1,6 @@
 (ns exoscale.tools.project.api.git
   (:require [clojure.string :as str]
-            [clojure.tools.deps.alpha.util.dir :as td]
+            [clojure.tools.deps.util.dir :as td]
             [exoscale.tools.project.api.version :as v]
             [exoscale.tools.project.io :as pio]))
 

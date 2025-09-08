@@ -13,7 +13,7 @@
                                        :exclusions [s3-wagon-private/s3-wagon-private]}
         exoscale/sos-wagon-private {:mvn/version "1.3.2-exoscale11"}
         io.github.exoscale/deps-modules {:git/sha "7347a3bb40bf619176404866ffd75bd80e9a75a5"}
-        org.clojure/tools.deps.alpha {:mvn/version "0.15.1254"}
+        org.clojure/tools.deps {:mvn/version "0.24.1523"}
         babashka/fs {:mvn/version "0.2.16"}
         rewrite-clj/rewrite-clj {:mvn/version "1.0.767-alpha"}}
 
