@@ -135,13 +135,14 @@ help on how to add a first module.
 
 ## Debugging
 
-The easiest way is to pass `JAVA_OPTS` env variable to the `clj` invocation and then connect a remote debugger:
+The easiest way is to pass `JAVA_OPTS` env variable to the `clj` invocation and then connect a remote debugger (via eg: IntelliJ):
 
 ```shell
 JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" clj -T:project check
 ```
 
-Alternatively, it's possible to call the task directly from your clojure REPl, provided you supply the `project` alias:
+Alternatively, it's possible to call the task directly from your clojure REPl, provided you supply the `project` alias.
+Then, you can use your emacs/vim/IDE to debug possible issues.
 
 ```shell
 $ clj -A:project
