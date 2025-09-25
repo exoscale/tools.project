@@ -133,6 +133,31 @@ add the following:
 to multi module ones. See [`add-module`](doc/target/add-module.md) for
 help on how to add a first module.
 
+## Debugging
+
+The easiest way is to pass `JAVA_OPTS` env variable to the `clj` invocation and then connect a remote debugger (via eg: IntelliJ):
+
+```shell
+JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" clj -T:project check
+```
+
+Alternatively, it's possible to call the task directly from your clojure REPl, provided you supply the `project` alias.
+Then, you can use your emacs/vim/IDE to debug possible issues.
+
+```shell
+$ clj -A:project
+Clojure 1.12.2
+user=> (require 'exoscale.tools.project)
+nil
+user=> (exoscale.tools.project/check nil)
+running prep task for dependencies in: exoscale/partner-api
+storing git sha in resources/git-version
+Downloading: org/spootnik/deps-check/0.5.2/deps-check-0.5.2.pom from clojars
+Downloading: org/spootnik/deps-check/0.5.2/deps-check-0.5.2.jar from clojars
+compiling namespace partner-api.basic-handlers
+...
+```
+
 ## Contributing
 
 When developing against **tools.project**, due to the presence of a
