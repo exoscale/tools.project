@@ -119,7 +119,7 @@
 (defn run*
   [task {::keys [dir] :as opts}]
   (binding [tb/*project-root* dir
-            td/*the-dir* (td/as-canonical (io/file dir))]
+            td/*the-dir* (td/canonicalize (io/file dir))]
     ((requiring-resolve (symbol task)) opts)))
 
 (declare exoscale.tools.project.api.tasks/task)
