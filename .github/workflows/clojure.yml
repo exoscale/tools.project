@@ -3,7 +3,7 @@ name: Clojure CI
 on: [push]
 
 env:
-  GIT_SSH_COMMAND: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+  GIT_SSH_COMMAND: "ssh -i /root/.ssh/id_deps -o IdentitiesOnly=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
 jobs:
   build:
@@ -19,6 +19,14 @@ jobs:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       name: "Checkout git repository"
 
+    - name: Set up SSH key for git deps
+      env:
+        SSH_KEY: ${{ secrets.SSH_KEY }}
+      run: |
+        install -m 700 -d /root/.ssh
+        printf '%s\n' "$SSH_KEY" > /root/.ssh/id_deps
+        chmod 600 /root/.ssh/id_deps
+
     - name: Cache dependencies
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       id: cache-deps
@@ -30,11 +38,11 @@ jobs:
 
     - name: Check
       id: check
-      run: clojure --ssh -T:project check
+      run: clojure -T:project check
 
     - name: Lint
       id: lint
-      run: clojure --ssh -T:project lint
+      run: clojure -T:project lint
 
     - name: Format
-      run: clojure --ssh -T:project format-check
+      run: clojure -T:project format-check
