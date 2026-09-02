@@ -30,11 +30,11 @@ jobs:
 
     - name: Check
       id: check
-      run: clojure -T:project check
+      run: clojure --ssh -T:project check
 
     - name: Lint
       id: lint
-      run: clojure -T:project lint
+      run: clojure --ssh -T:project lint
 
     - name: Format
-      run: clojure -T:project format-check
+      run: clojure --ssh -T:project format-check
